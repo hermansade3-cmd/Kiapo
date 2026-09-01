@@ -1,1258 +1,316 @@
 <!DOCTYPE html>
+<!--
+  Kumbukumbu binafsi — Historia ya Mahusiano na Watoto (Herman Onesmo Sade)
+
+  MUHIMU: Ukurasa huu SI tovuti ya Serikali wala Mahakama. Ni faili la HTML la
+  matumizi binafsi tu. "Password" iliyowekwa hapa chini inaonekana wazi kwa
+  yeyote atakayefungua "View Page Source" ya ukurasa huu — HAINA ulinzi wa
+  kweli. Usiiweke kwenye seva ya umma/mtandaoni ukitegemea itakuwa faragha.
+  Itumike kwenye kifaa chako binafsi tu.
+-->
 <html lang="sw">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Historia ya Mahusiano</title>
-
+<meta name="robots" content="noindex, nofollow">
+<title>Historia ya Mahusiano — Herman Onesmo Sade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <style>
-*{
-    box-sizing:border-box;
-    margin:0;
-    padding:0;
-}
+  :root{
+    --paper:#FAF8F1;
+    --ink:#1C1B18;
+    --ink-soft:#4a4740;
+    --tz-green:#1EB53A;
+    --tz-gold:#FCD116;
+    --tz-blue:#0A7BC4;
+    --tz-black:#101010;
+    --line:#E4DFD0;
+    --warn-bg:#FDF3D9;
+    --warn-border:#D9A82A;
+    --warn-ink:#5c4300;
+    --caution-bg:#FBEAE8;
+    --caution-border:#C0504D;
+    --caution-ink:#5c1613;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:"Source Serif 4", Georgia, "Times New Roman", serif;
+    color:var(--ink);
+    background:var(--paper);
+  }
+  ::selection{background:var(--tz-gold); color:var(--tz-black);}
 
-body{
-    font-family:Arial, Helvetica, sans-serif;
-    background:#f2f4f7;
-    color:#202124;
-    line-height:1.65;
-    padding-bottom:40px;
-}
-
-header{
-    background:linear-gradient(135deg,#172554,#1d4ed8);
-    color:white;
-    padding:25px 18px;
+  /* ===== LOCK SCREEN ===== */
+  #lock-screen{
+    position:fixed; inset:0;
+    background:var(--tz-black);
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+    z-index:100;
+  }
+  #lock-screen::before{
+    content:"";
+    position:absolute;
+    width:220%; height:60px;
+    left:-60%; top:38%;
+    background:linear-gradient(90deg, var(--tz-green) 0 33%, var(--tz-gold) 33% 38%, var(--tz-black) 38% 62%, var(--tz-gold) 62% 67%, var(--tz-blue) 67% 100%);
+    transform:rotate(-18deg);
+    opacity:0.9;
+  }
+  .lock-card{
+    position:relative;
+    z-index:2;
+    background:var(--paper);
+    padding:2.6rem 2.4rem;
+    width:min(360px, 88vw);
     text-align:center;
-    box-shadow:0 3px 12px rgba(0,0,0,.15);
-}
+    box-shadow:0 30px 70px rgba(0,0,0,0.45);
+  }
+  .lock-mark{
+    width:34px; height:22px; margin:0 auto 1rem;
+    background:linear-gradient(135deg, var(--tz-green) 0 45%, var(--tz-black) 45% 55%, var(--tz-blue) 55% 100%);
+    border:1px solid var(--tz-gold);
+  }
+  .lock-card h1{ font-size:1.05rem; font-weight:600; line-height:1.4; margin:0 0 0.35rem; }
+  .lock-card p{ font-size:0.85rem; color:var(--ink-soft); margin:0 0 1.5rem; line-height:1.5; }
+  #password-input{
+    width:100%; font-family:inherit; font-size:1.4rem; letter-spacing:0.5em; text-align:center;
+    padding:0.6rem 0 0.6rem 0.5em; border:none; border-bottom:2px solid var(--line);
+    background:transparent; color:var(--ink); outline:none;
+  }
+  #password-input:focus{ border-bottom-color:var(--tz-blue); }
+  #unlock-btn{
+    margin-top:1.3rem; width:100%; padding:0.7rem 1rem; font-family:inherit; font-size:0.95rem;
+    font-weight:600; background:var(--tz-black); color:var(--paper); border:none; cursor:pointer;
+  }
+  #unlock-btn:hover{ background:var(--tz-blue); }
+  #lock-error{ margin-top:0.9rem; font-size:0.8rem; color:var(--caution-ink); min-height:1.2em; }
+  .lock-footnote{
+    position:absolute; bottom:1.4rem; left:0; right:0; text-align:center; font-size:0.7rem;
+    color:#a8a8a8; z-index:2; padding:0 1.5rem; line-height:1.5;
+  }
 
-header h1{
-    font-size:23px;
-    line-height:1.3;
-    margin-bottom:8px;
-}
+  /* ===== DOCUMENT VIEW ===== */
+  #content{ display:none; }
+  .stripe{ height:5px; background:linear-gradient(90deg, var(--tz-green) 0 33.33%, var(--tz-gold) 33.33% 36%, var(--tz-blue) 36% 100%); }
+  .wrap{ max-width:700px; margin:0 auto; padding:2.2rem 1.4rem 5rem; }
 
-header p{
-    font-size:14px;
-    opacity:.9;
-}
+  .backlink{
+    display:inline-block; font-size:0.82rem; color:var(--ink-soft);
+    text-decoration:none; border-bottom:1px solid var(--line); margin-bottom:1.8rem;
+  }
+  .backlink:hover{ color:var(--tz-blue); border-bottom-color:var(--tz-blue); }
 
-.container{
-    width:100%;
-    max-width:850px;
-    margin:auto;
-    padding:15px;
-}
+  .doc-top{ text-align:center; margin-bottom:2rem; }
+  .doc-title{ font-size:1.3rem; font-weight:700; line-height:1.45; margin:0 0 0.3rem; }
+  .doc-subtitle{ font-style:italic; color:var(--ink-soft); font-size:0.9rem; margin:0 0 1rem; }
+  hr.rule{ border:none; border-top:1px solid var(--line); margin:1.2rem 0; }
 
-.tools{
-    position:sticky;
-    top:0;
-    z-index:20;
-    background:#f2f4f7;
-    padding:10px 0;
-}
+  h2.section{ font-size:1.02rem; font-weight:700; margin:2.1rem 0 0.9rem; padding-top:0.9rem; border-top:1px solid var(--line); }
+  h3.sub{ font-size:0.95rem; font-weight:600; margin:1.1rem 0 0.5rem; color:var(--ink); }
+  p{ font-size:1rem; line-height:1.65; text-align:justify; margin:0 0 0.8rem; }
+  ul.plain{ margin:0 0 1rem; padding-left:1.2rem; }
+  ul.plain li{ margin-bottom:0.35rem; line-height:1.55; }
 
-.search{
-    width:100%;
-    padding:13px 15px;
-    border:1px solid #d1d5db;
-    border-radius:10px;
-    font-size:15px;
-    outline:none;
-    background:white;
-}
+  .onyo{ background:var(--warn-bg); border:1px solid var(--warn-border); padding:0.9rem 1.1rem; margin:1.1rem 0 1.3rem; }
+  .onyo .label{ font-weight:700; font-size:0.82rem; color:var(--warn-ink); margin:0 0 0.4rem; }
+  .onyo p{ font-size:0.9rem; color:var(--warn-ink); margin:0; text-align:justify; }
 
-.search:focus{
-    border-color:#2563eb;
-    box-shadow:0 0 0 3px rgba(37,99,235,.12);
-}
+  .caution{ background:var(--caution-bg); border:1px solid var(--caution-border); padding:1rem 1.15rem; margin:0 0 1rem; }
+  .caution .label{ font-weight:700; font-size:0.92rem; color:var(--caution-ink); margin:0 0 0.45rem; }
+  .caution p{ font-size:0.88rem; color:var(--caution-ink); margin:0; text-align:justify; }
 
-.buttons{
-    display:flex;
-    gap:8px;
-    margin-top:9px;
-}
+  .cover-title{ text-align:center; font-size:1.35rem; font-weight:700; margin:0 0 0.3rem; }
+  .cover-sub{ text-align:center; font-style:italic; color:var(--ink-soft); font-size:0.88rem; margin:0 0 1.8rem; }
 
-button{
-    flex:1;
-    border:none;
-    border-radius:9px;
-    padding:11px 8px;
-    font-size:13px;
-    font-weight:bold;
-    cursor:pointer;
-}
+  table.family{ width:100%; border-collapse:collapse; margin:0.5rem 0 1.4rem; font-size:0.92rem; }
+  table.family th, table.family td{ text-align:left; padding:0.5rem 0.6rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  table.family th{ font-weight:700; border-bottom:2px solid var(--ink); }
 
-.btn-blue{
-    background:#2563eb;
-    color:white;
-}
+  .divider-doc{ margin:3rem 0 2.4rem; text-align:center; color:var(--ink-soft); font-size:0.8rem; }
+  .divider-doc::before, .divider-doc::after{ content:"— — —"; letter-spacing:0.3em; }
 
-.btn-gray{
-    background:#e5e7eb;
-    color:#111827;
-}
+  .site-footer{ max-width:700px; margin:0 auto; padding:0 1.4rem 3rem; font-size:0.72rem; color:#9a9689; line-height:1.6; text-align:center; }
 
-.contents{
-    background:white;
-    border-radius:12px;
-    padding:15px;
-    margin-bottom:15px;
-    box-shadow:0 1px 5px rgba(0,0,0,.08);
-}
-
-.contents h2{
-    font-size:17px;
-    margin-bottom:10px;
-    color:#172554;
-}
-
-.contents a{
-    display:block;
-    text-decoration:none;
-    color:#1d4ed8;
-    font-size:14px;
-    padding:5px 0;
-}
-
-.document{
-    background:white;
-    padding:22px 18px;
-    border-radius:12px;
-    box-shadow:0 1px 5px rgba(0,0,0,.08);
-}
-
-.intro{
-    background:#eff6ff;
-    border-left:4px solid #2563eb;
-    padding:13px;
-    margin-bottom:20px;
-    border-radius:5px;
-}
-
-.section{
-    margin-bottom:27px;
-    padding-bottom:20px;
-    border-bottom:1px solid #e5e7eb;
-}
-
-.section:last-child{
-    border-bottom:none;
-}
-
-.section h2{
-    font-size:18px;
-    color:#172554;
-    line-height:1.4;
-    margin-bottom:10px;
-}
-
-.section p{
-    font-size:15px;
-    margin-bottom:10px;
-    text-align:justify;
-}
-
-.section ul,
-.section ol{
-    padding-left:25px;
-    margin:8px 0 12px;
-}
-
-.section li{
-    font-size:15px;
-    margin-bottom:5px;
-}
-
-.highlight{
-    background:#f8fafc;
-    border-left:4px solid #64748b;
-    padding:12px;
-    margin:10px 0;
-    border-radius:5px;
-}
-
-.child{
-    background:#f8fafc;
-    border:1px solid #e5e7eb;
-    padding:12px;
-    border-radius:9px;
-    margin:9px 0;
-}
-
-.child strong{
-    color:#172554;
-}
-
-.footer{
-    text-align:center;
-    font-size:12px;
-    color:#6b7280;
-    padding:20px 10px;
-}
-
-mark{
-    background:#fde68a;
-    padding:1px 2px;
-}
-
-.hidden{
-    display:none;
-}
-
-@media(max-width:600px){
-    header{
-        padding:21px 14px;
-    }
-
-    header h1{
-        font-size:20px;
-    }
-
-    .container{
-        padding:10px;
-    }
-
-    .document{
-        padding:17px 14px;
-    }
-
-    .section h2{
-        font-size:17px;
-    }
-
-    .section p,
-    .section li{
-        font-size:14.5px;
-    }
-
-    button{
-        font-size:12px;
-    }
-}
-
-@media print{
-    body{
-        background:white;
-        padding:0;
-    }
-
-    header{
-        background:white !important;
-        color:black;
-        box-shadow:none;
-        border-bottom:1px solid #aaa;
-    }
-
-    .tools,
-    .contents,
-    .footer{
-        display:none !important;
-    }
-
-    .container{
-        max-width:none;
-        padding:0;
-    }
-
-    .document{
-        box-shadow:none;
-        padding:0;
-    }
-
-    .section{
-        break-inside:avoid;
-    }
-
-    .section h2{
-        color:black;
-    }
-
-    .section p,
-    .section li{
-        font-size:12pt;
-    }
-}
+  @media (max-width:520px){
+    .doc-title{ font-size:1.1rem; }
+    p, .caution p, .onyo p{ text-align:left; }
+    table.family{ font-size:0.85rem; }
+  }
 </style>
 </head>
-
 <body>
 
-<header>
-    <h1>HISTORIA YA MAHUSIANO, KUZAA WATOTO NA SABABU ZA KUTOKUISHI PAMOJA NA WAZAZI WENZANGU</h1>
-    <p>Maelezo ya historia ya mahusiano, watoto na hali ya sasa</p>
-</header>
+  <!-- ===================== LOCK SCREEN ===================== -->
+  <div id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-mark" aria-hidden="true"></div>
+      <h1>Kumbukumbu ya faragha</h1>
+      <p>Ingiza namba ya siri ili kuendelea.</p>
+      <form id="lock-form" autocomplete="off" novalidate>
+        <input type="password" id="password-input" inputmode="numeric" maxlength="4" placeholder="••••" aria-label="Namba ya siri">
+        <button type="submit" id="unlock-btn">Fungua</button>
+        <div id="lock-error" role="alert"></div>
+      </form>
+    </div>
+    <div class="lock-footnote">Ukurasa huu ni wa matumizi binafsi tu — si tovuti ya Serikali wala Mahakama.</div>
+  </div>
 
-<div class="container">
+  <!-- ===================== DOCUMENT CONTENT ===================== -->
+  <div id="content">
+    <div class="stripe" aria-hidden="true"></div>
 
-    <div class="tools">
-        <input
-            type="search"
-            id="search"
-            class="search"
-            placeholder="Tafuta ndani ya historia..."
-            oninput="searchText()"
-        >
+    <div class="wrap">
+      <a class="backlink" href="index.html">&larr; Rudi kwenye Kiapo na Kielelezo &quot;D&quot;</a>
 
-        <div class="buttons">
-            <button class="btn-blue" onclick="window.print()">🖨️ Chapisha / PDF</button>
-            <button class="btn-gray" onclick="clearSearch()">✕ Futa utafutaji</button>
-        </div>
+      <div class="doc-top">
+        <p class="cover-title">Historia ya Mahusiano na Watoto</p>
+        <p class="cover-sub">Kumbukumbu binafsi ya matukio, tarehe na sababu za kutokuishi pamoja na wazazi wenzangu</p>
+      </div>
+
+      <div class="caution">
+        <p class="label">Kuhusu kumbukumbu hii</p>
+        <p>
+          Hii ni kumbukumbu ya kibinafsi inayoeleza historia ya mahusiano yangu, kuzaliwa kwa watoto wangu, na
+          sababu za kutokuishi pamoja na wazazi wenzangu wa awali. Si hati ya kiapo, wala hati ya Mahakama.
+          Baadhi ya ukweli ndani yake — hasa suala la ubaba wa Dayness — bado haujathibitishwa kwa kipimo cha
+          kisayansi (DNA), kama ilivyoainishwa wazi katika Sehemu ya 6 hapa chini. Endapo kumbukumbu hii
+          itahitajika kwa jambo rasmi la kisheria, inashauriwa kupata ushauri wa Wakili kwanza.
+        </p>
+      </div>
+
+      <table class="family">
+        <tr><th>Mama wa Mtoto</th><th>Mtoto</th><th>Alizaliwa</th><th>Hali ya Sasa</th></tr>
+        <tr><td>Zuwena Mkulia</td><td>Lightness</td><td>15/02/2024</td><td>Anaishi Kitama, Mtwara na bibi/babu yake</td></tr>
+        <tr><td>Saida</td><td>Dayness</td><td>23/07/2024</td><td>Anaishi na mama yake; ubaba haujathibitishwa kwa DNA</td></tr>
+        <tr><td>Mama wa Nancy</td><td>Nancy</td><td>04/12/2025</td><td>Wanaishi pamoja</td></tr>
+      </table>
+
+      <div class="divider-doc"></div>
+
+      <h2 class="section">1. Mwanzo wa Mahusiano na Zuwena Mkulia</h2>
+      <p>Mwezi wa 11, mwaka 2022, nilikutana na mwanamke aitwaye Zuwena Mkulia huko Lindi, Mtaa wa Mtuleni, barabarani. Tulikutana kwa mara ya kwanza siku hiyo, na mahusiano yetu yalianza siku iliyofuata.</p>
+      <p>Mwanzoni mwa mahusiano hayo, hatukuishi pamoja — kila mmoja aliendelea kuishi sehemu yake. Hata hivyo, mara kwa mara Zuwena alikuwa akija nilipokuwa nikiishi, akilala kwangu na pia akipika chakula.</p>
+      <p>Kuanzia mwezi wa 11 mwaka 2022 hadi mwezi wa 5 mwaka 2023, Zuwena hakupata mimba.</p>
+      <p>Mwezi wa 5 mwaka 2023, Zuwena alianza kusoma VETA katika fani ya uchomeleaji. Katika kipindi hicho, wakati mwingine nilipompigia simu, simu yake haikupatikana, jambo lililonifanya nianze kuwa na mashaka kuhusu uhusiano wetu. Hata hivyo, mwaka 2026 nilikuja kugundua kwamba eneo la VETA lilikuwa na tatizo la mtandao wa simu, hivyo kutopatikana kwa simu hakukumaanisha lazima jambo baya.</p>
+
+      <h2 class="section">2. Sababu Yangu ya Kibinafsi ya Kutaka Kupata Mtoto</h2>
+      <p>Nilizaliwa nikiwa na tatizo la korodani moja kupanda juu wakati wa baridi na kuuma. Mwaka 2012, mama yangu alinipeleka hospitalini ambapo nilifanyiwa operesheni ya korodani na nikafanikiwa kutibiwa.</p>
+      <p>Kutokana na hilo, nilikuwa na hamu ya kujua kama, baada ya operesheni hiyo, ningeweza kupata mtoto. Tarehe 17 Mei 2023, Zuwena alipata mimba. Nilifurahi kugundua kuwa nimeweza kupata mtoto, ingawa furaha yangu haikuwa kamili kwa sababu tayari nilikuwa na mashaka kuhusu uhusiano wetu kutokana na mambo niliyokuwa nimeyaona.</p>
+
+      <h2 class="section">3. Zuwena Wakati wa Ujauzito</h2>
+      <p>Mwezi wa 8 mwaka 2023, Zuwena akiwa mjamzito, alikwenda Dar es Salaam kwa baba yake. Mwezi wa 12 mwaka 2023, alirudi kwao Mtwara, Tandahimba, Kitama, ambako aliendelea na ujauzito na hatimaye kujifungulia huko. Mtoto wetu wa kwanza aliitwa Lightness, aliyezaliwa tarehe 15 Februari 2024 akiwa na afya njema.</p>
+
+      <h2 class="section">4. Zuwena Kurudi Lindi Baada ya Kujifungua</h2>
+      <p>Baada ya kujifungua, Zuwena alirudi Lindi tarehe 15 Mei 2024 ili kuishi pamoja nami. Kuanzia tarehe hiyo, tuliishi pamoja hadi tarehe 24 Novemba 2024, tukimlea Lightness pamoja katika kipindi hicho.</p>
+
+      <h2 class="section">5. Matatizo Yaliyojitokeza Katika Maisha ya Pamoja</h2>
+      <p>Katika kipindi tulichoishi pamoja, niliona Zuwena akionyesha tabia zilizosababisha matatizo katika uhusiano, ikiwemo:</p>
+      <ul class="plain">
+        <li>Dharau</li>
+        <li>Kiburi</li>
+        <li>Jeuri</li>
+        <li>Majibu mabaya</li>
+      </ul>
+      <p>Kulikuwa pia na tukio kubwa lililonitisha sana, ambapo Zuwena alitishia kwenda kujinyonga kwenye mti akiwa na mnyororo. Kitendo hicho kiliniogopesha sana, kwa sababu nilihofia kwamba endapo angejidhuru, ningeweza kuhusishwa na tukio hilo na kuwa katika hatari ya kushtakiwa pamoja naye.</p>
+
+      <h2 class="section">6. Jaribio la Kusuluhisha Matatizo</h2>
+      <p>Kabla ya kuachana, tulijaribu kusuluhisha matatizo yaliyokuwa yakijitokeza. Baada ya tukio la kutishia kujinyonga, Zuwena aliomba msamaha kupitia mama yangu mzazi, Sara Benny Chalamila, ambaye aliniambia nimsamehe. Kuna pia ushahidi wa rekodi za sauti (audio recordings) za Zuwena akiwa analia na kuomba msamaha. Nilimsamehe kwa kosa hilo la kutishia kujinyonga. Hata hivyo, baada ya muda, matatizo mengine yalijitokeza tena, hususan dharau, kiburi na jeuri.</p>
+
+      <h2 class="section">7. Kuachana na Zuwena</h2>
+      <p>Tarehe 23 Novemba 2024, nilimpigia simu baba yake mzazi Zuwena na kumweleza kuhusu matatizo yaliyokuwa yakijitokeza mara kwa mara. Baba yake, baada ya kuona kuwa migogoro ilikuwa imekuwa mingi kwa mtoto wake, aliniambia nimrudishe kwake kwanza. Siku iliyofuata, tarehe 24 Novemba 2024, nilimpa Zuwena nauli naye akarudi kwao kwa hiari yake, kufuatia ushauri wa baba yake. Hapo ndipo mahusiano yangu na Zuwena yalipoishia.</p>
+
+      <h2 class="section">8. Lightness Baada ya Kuachana</h2>
+      <p>Wakati tulipoachana tarehe 24 Novemba 2024, Lightness alikuwa bado anaishi pamoja nasi, akilelewa na sisi wawili. Zuwena alipoondoka, alimchukua Lightness pamoja naye kwenda moja kwa moja Kitama, Mtwara, kwa bibi na babu yake, ambako Lightness aliendelea kuishi.</p>
+      <p>Sikuwa nikitembelea Kitama mara kwa mara, lakini niliendelea kuwasiliana na bibi na babu yake kuhusu hali ya mtoto, na kutuma fedha za matumizi pale kulipokuwa na mahitaji, ikiwemo wakati mtoto alipokuwa akiumwa.</p>
+
+      <h2 class="section">9. Bima ya Afya ya Lightness</h2>
+      <p>Niligharamia bima ya afya ya Lightness ili aweze kupata matibabu bila kulipia kila wakati. Baada ya kupata bima hiyo, nilimjulisha Zuwena na kumtumia nakala ya bima kupitia WhatsApp. Hivyo, pamoja na kwamba tulikuwa tumeachana, niliendelea kushiriki katika kugharamia mahitaji ya mtoto na kuhakikisha ana uwezo wa kupata matibabu.</p>
+
+      <h2 class="section">10. Zuwena na Lightness Kwenda Dar es Salaam</h2>
+      <p>Mwaka 2025, Zuwena alisafiri kwenda Dar es Salaam akiwa pamoja na Lightness, kwenda kuishi kwenye nyumba ya baba yao, Zuwena akiwa pamoja na dada yake. Hata hivyo, maisha ya Dar es Salaam yalimpa Zuwena wakati mgumu katika kumlea Lightness huku akiendelea kufanya kazi. Kwa sababu hiyo, Zuwena mwenyewe aliniomba nimtumie nauli ili Lightness arudishwe Kitama kwa bibi na babu yake, ili Zuwena aweze kuendelea kufanya kazi vizuri Dar es Salaam. Nilimtumia nauli hiyo, na Lightness akarudi Kitama kuishi na bibi na babu yake.</p>
+
+      <h2 class="section">11. Mawasiliano Yangu na Zuwena Baada ya Kuachana</h2>
+      <p>Baada ya kuachana, mimi na Zuwena hatukuendelea na mahusiano ya kimapenzi. Mawasiliano yetu yalikuwa machache, na mara nyingi niliwasiliana moja kwa moja na bibi na babu wa Lightness kwa kuwa ndio waliokuwa wanaishi na mtoto. Kwa sasa, Zuwena anaishi Dar es Salaam na Lightness anaishi Kitama na bibi na babu yake. Hakuna mgogoro mkubwa ambao tumewahi kuwa nao kuhusu malezi ya Lightness baada ya kuachana.</p>
+
+      <h2 class="section">12. Sababu za Mashaka Kuhusu Ujauzito wa Zuwena</h2>
+      <p>Wakati Zuwena alipokuwa mjamzito na akiwa Dar es Salaam kwa baba yake, nilikuwa na mashaka kama mimba hiyo ilikuwa yangu, kutokana na baadhi ya mambo niliyokuwa nimeyaona katika uhusiano wetu — hasa kuanza kwake VETA mwezi wa 5 mwaka 2023 na kutopatikana kwa simu yake wakati mwingine. Kama ilivyoelezwa katika Sehemu ya 1, mwaka 2026 niligundua kuwa tatizo hilo la mawasiliano lilitokana na mtandao wa simu eneo la VETA, hivyo mashaka hayo yalitokana na taarifa niliyokuwa nayo wakati huo.</p>
+
+      <h2 class="section">13. Uhusiano na Saida, Mama Yake Dayness</h2>
+      <p>Mwezi wa 10 mwaka 2023, nilikutana na Saida, ambaye ni mama yake Dayness. Tulikutana siku moja tu, na siku hiyo hiyo Saida alipata mimba. Baada ya kukutana, Saida hakutaka kuendelea kuonana nami. Baada ya takribani wiki moja, aliniambia kuwa ana mimba. Nilimwomba aje ili nimuone na kuhakikisha, lakini alikataa mara nyingi. Kwa wakati huo, nilikuwa na imani ndogo kuhusu suala hilo, kwa kuwa hakutaka kuonana nami wala kunipa uthibitisho wowote wa kitabibu wa ujauzito.</p>
+
+      <h2 class="section">14. Tabia za Saida Baada ya Kuniambia Ana Mimba</h2>
+      <p>Saida aliniambia kuwa alikuwa mfanyakazi wa ndani na kuwa aliishi kwa bibi yake, lakini baadaye niligundua kuwa baadhi ya maelezo hayo hayakuwa sahihi — kwa mfano, aliniambia kuwa alikuwa amesafiri, lakini nilipowasiliana na bibi yake nilielezwa kuwa hakusafiri. Nilipokuwa nikimpigia simu, mara nyingi alikuwa akikata simu, au akisema atanipigia baadaye bila kufanya hivyo. Kutokana na hali hiyo, nilimweleza mama yangu mzazi, Sara Benny Chalamila, kuhusu tabia ya Saida. Mama yangu aliniambia kuwa endapo Saida alikuwa akifanya mambo hayo, niache kumfuata, kwa kuwa huenda mimba haikuwa yangu au huenda alikuwa ameolewa.</p>
+
+      <h2 class="section">15. Kuzaliwa kwa Dayness</h2>
+      <p>Saida alijifungua tarehe 23 Julai 2024, mtoto aliyeitwa Dayness. Dayness anaishi na mama yake, Saida. Tangu akiwa mjamzito, Saida alikuwa akinitambua kama baba wa mtoto, na baada ya kuzaliwa, aliendelea kunitambua hivyo. Ndugu na wazazi wa Saida pia wanajua kuwa mimi ndiye baba wa Dayness. Nimewahi kumuona Dayness ana kwa ana.</p>
+
+      <div class="onyo">
+        <p class="label">ONYO/KUMBUKA</p>
+        <p>Mpaka sasa, kipimo cha DNA hakijawahi kufanyika kuthibitisha kisayansi ubaba wa Dayness. Utambuzi wa ubaba unatokana na maelezo ya Saida na familia yake pekee, si uthibitisho wa kitabibu. Jambo hili linahitaji kuzingatiwa kwa uwazi endapo kumbukumbu hii itatumika kwa jambo lolote rasmi.</p>
+      </div>
+
+      <h2 class="section">16. Matumizi ya Dayness</h2>
+      <p>Baada ya Dayness kuzaliwa, nimekuwa nikimsaidia kwa pesa na mahitaji, na mpaka sasa ninaendelea kutoa matumizi yake mara kwa mara. Kwa sasa Dayness anaishi na mama yake, Saida, na mimi na Saida bado tunawasiliana kuhusu mtoto.</p>
+
+      <h2 class="section">17. Zuwena Kujua Kuhusu Saida</h2>
+      <p>Wakati nilipoanza mahusiano na Saida na kumpa mimba, nilijua kuwa Zuwena alikuwa tayari mjamzito. Zuwena naye alijua kuwa nilikuwa nimeanza mahusiano na Saida. Baada ya kujua kuhusu Saida, Zuwena alinisamehe, na tuliendelea kuwa pamoja hadi tarehe 24 Novemba 2024, tulipoachana.</p>
+
+      <h2 class="section">18. Mali Wakati wa Kuachana na Zuwena</h2>
+      <p>Wakati Zuwena alipoondoka tarehe 24 Novemba 2024, hakukuwa na mali tuliyogawana. Katika kipindi tulichoishi pamoja (kuanzia mwezi wa 5 hadi mwezi wa 11 mwaka 2024), tuliishi kwenye nyumba ya kupanga. Vitu vya ndani vya nyumba vilikuwa mali zangu ambazo Zuwena alizikuta tayari zipo. Zuwena aliporudi kwao, aliondoka akiwa na nguo zake pamoja na mtoto Lightness, huku vitu vya ndani vikibaki kwangu. Mpaka sasa, Zuwena hajawahi kudai au kuomba kupewa baadhi ya vitu hivyo.</p>
+
+      <h2 class="section">19. Baada ya Kuachana na Zuwena — Uhusiano wa Sasa</h2>
+      <p>Baada ya kuachana na Zuwena, niliendelea na maisha yangu. Mwaka 2025, nilichumbia mwanamke mwingine, ambaye baadaye nilianza kuishi naye pamoja. Mwanamke huyo ndiye mama wa mtoto wangu Nancy. Kwa sasa tunaishi pamoja na mtoto wetu.</p>
+
+      <h2 class="section">20. Muhtasari wa Tofauti Kati ya Mahusiano Haya Matatu</h2>
+      <p>Katika historia yangu, nilipata Lightness na Zuwena, na baadaye Dayness na Saida. Sababu kuu zilizonifanya nishindwe kuishi pamoja na Zuwena zilihusisha migogoro ya mara kwa mara, dharau, kiburi, jeuri na majibu mabaya, pamoja na tukio la kutishia kujinyonga lililonitisha sana.</p>
+      <p>Kwa upande wa Saida, sikuwahi kuishi naye pamoja, kwa sababu baada ya kunieleza kuwa ana mimba, alikataa kuonana nami mara nyingi, mawasiliano yalikuwa magumu, na baadhi ya taarifa zake zilinifanya kuwa na mashaka kuhusu hali halisi ya ujauzito.</p>
+      <p>Baada ya mahusiano hayo mawili, mwaka 2025 nilipata uhusiano mwingine ambao ulifikia hatua ya kuishi pamoja na kupata mtoto Nancy. Kwa sasa ninaishi pamoja na mama Nancy.</p>
+      <p>Hii ndiyo historia ya mahusiano yangu na wazazi wenzangu wawili wa kwanza — Zuwena Mkulia, mama wa Lightness, na Saida, mama yake Dayness — pamoja na mazingira yaliyopelekea kutokuishi pamoja nao, hadi kufikia maisha yangu ya sasa pamoja na mama Nancy.</p>
+
     </div>
 
-    <div class="contents">
-        <h2>YALIYOMO</h2>
-
-        <a href="#s1">1. Mwanzo wa Mahusiano na Zuwena Mkulia</a>
-        <a href="#s2">2. Sababu Yangu ya Kutaka Kupata Mtoto</a>
-        <a href="#s3">3. Zuwena Wakati wa Ujauzito</a>
-        <a href="#s4">4. Zuwena Kurudi Lindi Baada ya Kujifungua</a>
-        <a href="#s5">5. Matatizo Yaliyoibuka Katika Maisha ya Pamoja</a>
-        <a href="#s6">6. Jaribio la Kusuluhisha Matatizo</a>
-        <a href="#s7">7. Kuachana na Zuwena</a>
-        <a href="#s8">8. Lightness Baada ya Kuachana</a>
-        <a href="#s9">9. Bima ya Afya ya Lightness</a>
-        <a href="#s10">10. Zuwena na Lightness Kwenda Dar es Salaam</a>
-        <a href="#s11">11. Mawasiliano Yangu na Zuwena Baada ya Kuachana</a>
-        <a href="#s12">12. Sababu ya Kuanza Uhusiano na Saida</a>
-        <a href="#s13">13. Uhusiano na Saida, Ambaye ni Mama yake Dayness</a>
-        <a href="#s14">14. Tabia za Saida Baada ya Kuniambia Ana Mimba</a>
-        <a href="#s15">15. Kuzaliwa kwa Dayness</a>
-        <a href="#s16">16. Matumizi ya Dayness</a>
-        <a href="#s17">17. Zuwena Kujua Kuhusu Saida</a>
-        <a href="#s18">18. Mali Wakati wa Kuachana na Zuwena</a>
-        <a href="#s19">19. Kumfahamu Mama Nancy</a>
-        <a href="#s20">20. Kuanza Kuishi Pamoja na Mama Nancy</a>
-        <a href="#s21">21. Mama Nancy Kwenda Katavi Wakati wa Ujauzito</a>
-        <a href="#s22">22. Kwenda Kumchukua Mama Nancy na Mtoto</a>
-        <a href="#s23">23. Maisha Yangu na Mama Nancy kwa Sasa</a>
-        <a href="#s24">24. Hali ya Watoto Wangu na Wazazi Wao kwa Sasa</a>
-        <a href="#s25">25. Muhtasari wa Sababu za Kutokuishi Pamoja na Zuwena na Saida</a>
-    </div>
-
-    <main class="document" id="document">
-
-        <div class="intro">
-            <strong>Lengo la hati hii:</strong><br>
-            Kuweka kwa mpangilio historia ya mahusiano, kuzaliwa kwa watoto,
-            maisha ya pamoja, sababu za kutengana na hali ya sasa ya malezi
-            ya watoto.
-        </div>
-
-        <section class="section" id="s1">
-            <h2>1. MWANZO WA MAHUSIANO NA ZUWENA MKULIA</h2>
-
-            <p>
-                Mwaka 2022, mwezi wa 11, nilikutana na mwanamke aitwaye
-                Zuwena Mkulia huko Lindi, Mtaa wa Mtuleni, barabarani.
-                Tulikutana kwa mara ya kwanza siku hiyo na tulianza mahusiano
-                siku iliyofuata.
-            </p>
-
-            <p>
-                Baada ya kuanza mahusiano, mwanzoni hatukuishi pamoja.
-                Kila mmoja alikuwa akiishi sehemu yake. Hata hivyo, mara moja
-                moja Zuwena alikuwa akija nilipokuwa nikiishi, alilala kwangu
-                na pia alikuwa akipika chakula.
-            </p>
-
-            <p>
-                Kuanzia mwezi wa 11 mwaka 2022 hadi mwezi wa 5 mwaka 2023,
-                Zuwena hakupata mimba.
-            </p>
-
-            <p>
-                Mwezi wa 5 mwaka 2023 alianza kusoma VETA katika fani ya
-                uchomeleaji. Kipindi hicho alikuwa akienda VETA na wakati
-                mwingine nilipokuwa nikimpigia simu simu yake haikupatikana.
-            </p>
-
-            <p>
-                Hali hiyo ilinifanya nianze kuwa na mashaka kuhusu uhusiano
-                wetu. Nilikuwa najiuliza kwa nini alianza kusoma VETA na
-                wakati mwingine nilipompigia simu haikupatikana.
-            </p>
-
-            <p>
-                Baadaye, mwaka 2026, nilikuja kugundua kuwa eneo la VETA
-                mtandao ulikuwa unasumbua, hivyo kutopatikana kwa simu
-                hakukuwa lazima kumaanishe jambo baya.
-            </p>
-        </section>
-
-        <section class="section" id="s2">
-            <h2>2. SABABU YANGU YA KUTAKA KUPATA MTOTO</h2>
-
-            <p>
-                Kulikuwa na sababu binafsi iliyofanya nitake kupata mtoto.
-            </p>
-
-            <p>
-                Nilizaliwa nikiwa na tatizo la korodani moja kupanda juu
-                wakati wa baridi na kuuma. Mwaka 2012 mama yangu mzazi
-                alinipeleka hospitalini, ambapo nilifanyiwa operesheni ya
-                korodani na nikafanikiwa kutibiwa.
-            </p>
-
-            <p>
-                Kwa sababu hiyo, nilitaka kujua kama baada ya kufanyiwa
-                operesheni hiyo ningeweza kupata mtoto.
-            </p>
-
-            <p>
-                Tarehe <strong>17-05-2023</strong>, Zuwena alipata mimba.
-            </p>
-
-            <p>
-                Nilifurahi nilipogundua kuwa nimeweza kupata mtoto, lakini
-                furaha yangu haikuwa kamili kwa sababu nilikuwa tayari nina
-                mashaka kuhusu uhusiano wetu kutokana na mambo niliyokuwa
-                nimeyaona.
-            </p>
-        </section>
-
-        <section class="section" id="s3">
-            <h2>3. ZUWENA WAKATI WA UJAUZITO</h2>
-
-            <p>
-                Wakati Zuwena alipokuwa mjamzito, mwezi wa 8 mwaka 2023
-                alikwenda Dar es Salaam kwa baba yake.
-            </p>
-
-            <p>
-                Baadaye, mwezi wa 12 mwaka 2023, alirudi kwao Mtwara,
-                Tandahimba, Kitama, ambako aliendelea na ujauzito na
-                hatimaye kujifungulia huko.
-            </p>
-
-            <p>
-                Mtoto wetu wa kwanza aliitwa <strong>Lightness</strong>.
-            </p>
-
-            <p>
-                Lightness alizaliwa tarehe <strong>15-02-2024</strong>,
-                akiwa na afya njema.
-            </p>
-        </section>
-
-        <section class="section" id="s4">
-            <h2>4. ZUWENA KURUDI LINDI BAADA YA KUJIFUNGUA</h2>
-
-            <p>
-                Baada ya kujifungua, Zuwena alikuja tena Lindi tarehe
-                <strong>15-05-2024</strong> ili kuishi pamoja nami.
-            </p>
-
-            <p>
-                Kuanzia tarehe hiyo tuliishi pamoja hadi tarehe
-                <strong>24-11-2024</strong>.
-            </p>
-
-            <p>
-                Katika kipindi hicho tuliishi pamoja na tulikuwa tunamlea
-                Lightness.
-            </p>
-        </section>
-
-        <section class="section" id="s5">
-            <h2>5. MATATIZO YALIYOIBUKA KATIKA MAISHA YA PAMOJA</h2>
-
-            <p>
-                Katika kipindi tulichoishi pamoja, niliona Zuwena alikuwa
-                na tabia ambazo zilinipa matatizo katika uhusiano.
-            </p>
-
-            <p>Miongoni mwa tabia hizo zilikuwa:</p>
-
-            <ul>
-                <li>Dharau.</li>
-                <li>Kiburi.</li>
-                <li>Jeuri.</li>
-                <li>Majibu mabaya.</li>
-            </ul>
-
-            <p>
-                Kulikuwa pia na tukio kubwa lililonitisha sana ambapo
-                Zuwena alitishia kwenda kujinyonga kwenye mti akiwa na
-                mnyororo.
-            </p>
-
-            <p>
-                Kitendo hicho kiliniogopesha sana kwa sababu nilihofia kwamba
-                kama angejinyonga au kujidhuru, watu wangeweza kunihusisha
-                na tukio hilo na mimi pia ningekuwa katika hatari ya
-                kushtakiwa pamoja naye.
-            </p>
-        </section>
-
-        <section class="section" id="s6">
-            <h2>6. JARIBIO LA KUSULUHISHA MATATIZO</h2>
-
-            <p>
-                Kabla ya kuachana, tulijaribu kusuluhisha matatizo
-                yaliyokuwa yanatokea.
-            </p>
-
-            <p>
-                Baada ya tukio la kutishia kujinyonga, Zuwena aliomba
-                msamaha kupitia kwa mama yangu mzazi aitwaye
-                <strong>Sara Benny Chalamila</strong>.
-            </p>
-
-            <p>
-                Mama yangu aliniambia nimsamehe.
-            </p>
-
-            <p>
-                Pia kuna ushahidi wa audio recordings za Zuwena akiwa
-                analia na kuomba msamaha.
-            </p>
-
-            <p>
-                Nilimsamehe kwa kosa la kutishia kujinyonga.
-            </p>
-
-            <p>
-                Hata hivyo, baada ya muda, alirudia matatizo mengine,
-                hasa dharau, kiburi na jeuri.
-            </p>
-        </section>
-
-        <section class="section" id="s7">
-            <h2>7. KUACHANA NA ZUWENA</h2>
-
-            <p>
-                Tarehe <strong>23-11-2024</strong>, nilimpigia simu baba
-                yake mzazi Zuwena na kumweleza kuhusu matatizo yaliyokuwa
-                yakitokea mara kwa mara.
-            </p>
-
-            <p>
-                Baba yake, baada ya kuona kuwa kesi na migogoro ilikuwa
-                imekuwa mingi kwa mtoto wake, aliniambia nimrudishe kwake
-                kwanza.
-            </p>
-
-            <p>
-                Siku iliyofuata, tarehe <strong>24-11-2024</strong>,
-                nilimpa Zuwena nauli na akarudi kwao kwa hiari yake,
-                kufuatia ushauri wa baba yake.
-            </p>
-
-            <p>
-                Hapo ndipo mahusiano yangu na Zuwena yaliishia.
-            </p>
-        </section>
-
-        <section class="section" id="s8">
-            <h2>8. LIGHTNESS BAADA YA KUACHANA</h2>
-
-            <p>
-                Wakati tunaachana tarehe 24-11-2024, Lightness alikuwa bado
-                anaishi pamoja nasi na alikuwa akilelewa na sisi.
-            </p>
-
-            <p>
-                Zuwena alipoondoka, alimchukua Lightness pamoja naye na
-                kwenda naye moja kwa moja Kitama, Mtwara, kwa bibi na
-                babu yake.
-            </p>
-
-            <p>
-                Lightness aliendelea kuishi Kitama na bibi na babu yake.
-            </p>
-
-            <p>
-                Mimi sikuwa nikitembelea Kitama mara kwa mara, lakini
-                nilikuwa nawasiliana na bibi na babu yake kuhusu hali ya
-                mtoto.
-            </p>
-
-            <p>
-                Nilikuwa pia natuma fedha za matumizi ya mtoto pale
-                kulipokuwa na mahitaji.
-            </p>
-
-            <p>
-                Mtoto alipokuwa anaumwa, nilikuwa nawasiliana na bibi
-                na babu yake na kutuma fedha kwa ajili ya mahitaji yake.
-            </p>
-        </section>
-
-        <section class="section" id="s9">
-            <h2>9. BIMA YA AFYA YA LIGHTNESS</h2>
-
-            <p>
-                Niligharamia bima ya afya ya Lightness ili aweze kupata
-                matibabu bila kulipia kila wakati.
-            </p>
-
-            <p>
-                Baada ya kupata bima hiyo, nilimjulisha Zuwena kuhusu
-                bima ya mtoto na nilimtumia pia copy ya bima kupitia
-                WhatsApp.
-            </p>
-
-            <p>
-                Kwa hiyo, pamoja na kwamba tulikuwa tumeachana, niliendelea
-                kushiriki katika kugharamia mahitaji ya mtoto na kuhakikisha
-                ana uwezo wa kupata matibabu.
-            </p>
-        </section>
-
-        <section class="section" id="s10">
-            <h2>10. ZUWENA NA LIGHTNESS KWENDA DAR ES SALAAM</h2>
-
-            <p>
-                Mwaka 2025, Zuwena alisafiri kwenda Dar es Salaam akiwa
-                pamoja na Lightness.
-            </p>
-
-            <p>
-                Walikwenda kuishi kwenye nyumba ya baba yake, Zuwena akiwa
-                pamoja na dada yake.
-            </p>
-
-            <p>
-                Hata hivyo, maisha ya Dar es Salaam yalikuwa yanampa
-                wakati mgumu Zuwena katika kumlea Lightness wakati
-                akiendelea kufanya kazi.
-            </p>
-
-            <p>
-                Kwa sababu hiyo, Zuwena mwenyewe aliniomba nimtumie nauli
-                ili Lightness arudishwe Kitama kwa bibi na babu yake.
-            </p>
-
-            <p>
-                Lengo lilikuwa Lightness akae na bibi na babu yake ili
-                Zuwena aweze kuendelea kufanya kazi vizuri Dar es Salaam.
-            </p>
-
-            <p>
-                Nilimtumia nauli hiyo na Lightness akarudi Kitama kuishi
-                na bibi na babu yake.
-            </p>
-        </section>
-
-        <section class="section" id="s11">
-            <h2>11. MAWASILIANO YANGU NA ZUWENA BAADA YA KUACHANA</h2>
-
-            <p>
-                Baada ya kuachana, mimi na Zuwena hatukuendelea na
-                mahusiano ya kimapenzi.
-            </p>
-
-            <p>
-                Mawasiliano yetu yalikuwa machache. Mara nyingi nilikuwa
-                nikiwasiliana moja kwa moja na bibi na babu wa Lightness
-                kwa sababu wao ndio waliokuwa wanaishi na mtoto.
-            </p>
-
-            <p>
-                Kwa sasa Zuwena anaishi Dar es Salaam.
-            </p>
-
-            <p>
-                Lightness anaishi Kitama na bibi na babu yake.
-            </p>
-
-            <p>
-                Mimi na Zuwena kwa sasa tunawasiliana kwa uchache.
-            </p>
-
-            <p>
-                Hakuna mgogoro mkubwa ambao tumewahi kuwa nao kuhusu
-                malezi ya Lightness baada ya kuachana.
-            </p>
-        </section>
-
-        <section class="section" id="s12">
-            <h2>12. SABABU YA KUANZA UHUSIANO NA SAIDA</h2>
-
-            <p>
-                Wakati Zuwena alipokuwa mjamzito na akiwa Dar es Salaam
-                kwa baba yake, nilikuwa na mashaka kuhusu mimba yake.
-            </p>
-
-            <p>
-                Nilikuwa najiuliza kama mimba hiyo ilikuwa yangu kwa sababu
-                ya baadhi ya mambo niliyokuwa nimeyaona katika uhusiano wetu.
-            </p>
-
-            <p>
-                Miongoni mwa mambo yaliyonipa mashaka ni kwamba Zuwena
-                alikuwa ameanza VETA mwezi wa 5 mwaka 2023 na wakati
-                mwingine nilipopiga simu simu yake haikupatikana.
-            </p>
-
-            <p>
-                Hata hivyo, baadaye mwaka 2026 nilikuja kugundua kuwa eneo
-                la VETA mtandao ulikuwa unasumbua, hivyo nikatambua kuwa
-                kutopatikana kwa simu kulikuwa kunaweza kusababishwa na
-                mtandao.
-            </p>
-
-            <p>
-                Lakini wakati huo wa mwaka 2023 nilikuwa tayari nina mashaka.
-            </p>
-        </section>
-
-        <section class="section" id="s13">
-            <h2>13. UHUSIANO NA SAIDA, AMBAYE NI MAMA YAKE DAYNESS</h2>
-
-            <p>
-                Mwezi wa 10 mwaka 2023, nilikutana na Saida, ambaye ni
-                mama yake Dayness.
-            </p>
-
-            <p>
-                Tulikutana siku moja tu. Siku hiyo hiyo tulipokutana,
-                Saida alipata mimba.
-            </p>
-
-            <p>
-                Baada ya hapo, Saida hakutaka kuendelea kuonana nami.
-            </p>
-
-            <p>
-                Baada ya wiki moja, aliniambia kuwa ana mimba.
-            </p>
-
-            <p>
-                Nilimwambia aje ili nimuone na kuhakikisha kama kweli
-                ana mimba, lakini alikataa mara nyingi.
-            </p>
-
-            <p>
-                Kwa wakati huo nilikuwa na imani ndogo kuhusu suala hilo
-                kwa sababu hakutaka kuonana nami na hakunipa uthibitisho
-                wowote wa kitabibu wa ujauzito.
-            </p>
-        </section>
-
-        <section class="section" id="s14">
-            <h2>14. TABIA ZA SAIDA BAADA YA KUNIAMBIA ANA MIMBA</h2>
-
-            <p>
-                Saida alikuwa akiniambia kuwa alikuwa mfanyakazi wa ndani.
-            </p>
-
-            <p>
-                Pia aliniambia kuwa alikuwa akiishi kwa bibi yake, lakini
-                baadaye niligundua kuwa baadhi ya maelezo aliyokuwa akinipa
-                hayakuwa sahihi.
-            </p>
-
-            <p>
-                Aliniambia kuwa alikuwa amesafiri, lakini nilipowasiliana
-                na bibi yake nilielezwa kuwa Saida hakusafiri.
-            </p>
-
-            <p>
-                Nilipokuwa nikimpigia simu, mara nyingi alikuwa akikata simu.
-            </p>
-
-            <p>
-                Wakati mwingine akipokea simu alikuwa akisema atanipigia
-                baadaye, lakini muda ulipita na hakunipigia.
-            </p>
-
-            <p>
-                Kwa sababu ya hali hiyo, nilimweleza mama yangu mzazi,
-                <strong>Sara Benny Chalamila</strong>, kuhusu tabia ya Saida.
-            </p>
-
-            <p>
-                Mama yangu aliniambia kuwa kama Saida alikuwa akifanya
-                mambo hayo, niache kumfuata, kwa sababu huenda mimba
-                haikuwa yangu au huenda alikuwa ameolewa.
-            </p>
-        </section>
-
-        <section class="section" id="s15">
-            <h2>15. KUZALIWA KWA DAYNESS</h2>
-
-            <p>
-                Saida alijifungua tarehe <strong>23-07-2024</strong>.
-            </p>
-
-            <p>
-                Mtoto aliitwa <strong>Dayness</strong>.
-            </p>
-
-            <p>
-                Dayness anaishi na mama yake, Saida.
-            </p>
-
-            <p>
-                Saida tangu akiwa mjamzito alikuwa akinitambua kuwa mimi
-                ndiye baba wa mtoto.
-            </p>
-
-            <p>
-                Baada ya Dayness kuzaliwa, Saida aliendelea kunitambua
-                kama baba yake.
-            </p>
-
-            <p>
-                Ndugu pamoja na wazazi wa Saida pia wanajua kuwa mimi
-                ndiye baba wa Dayness.
-            </p>
-
-            <p>
-                Nimewahi kumuona Dayness ana kwa ana.
-            </p>
-
-            <p>
-                Hata hivyo, mpaka sasa sijawahi kufanya kipimo cha DNA
-                kuthibitisha ubaba wa Dayness.
-            </p>
-
-            <p>
-                Pamoja na hilo, Saida na familia yake wananitambua kama
-                baba wa Dayness.
-            </p>
-        </section>
-
-        <section class="section" id="s16">
-            <h2>16. MATUMIZI YA DAYNESS</h2>
-
-            <p>
-                Baada ya Dayness kuzaliwa, nimekuwa nikimsaidia kwa pesa
-                na mahitaji.
-            </p>
-
-            <p>
-                Mpaka sasa bado ninaendelea kutoa matumizi ya Dayness
-                mara kwa mara.
-            </p>
-
-            <p>
-                Kwa sasa Dayness anaishi na mama yake, Saida.
-            </p>
-
-            <p>
-                Mimi na Saida bado tunawasiliana kuhusu Dayness.
-            </p>
-        </section>
-
-        <section class="section" id="s17">
-            <h2>17. ZUWENA KUJUA KUHUSU SAIDA</h2>
-
-            <p>
-                Wakati nilipoanza mahusiano na Saida na kumpa mimba,
-                nilijua kuwa Zuwena alikuwa tayari mjamzito.
-            </p>
-
-            <p>
-                Zuwena pia alijua kuwa nilikuwa nimeanza mahusiano na Saida.
-            </p>
-
-            <p>
-                Baada ya kujua kuhusu Saida, Zuwena alinisamehe.
-            </p>
-
-            <p>
-                Baada ya kunisamehe, tuliendelea kuwa pamoja hadi tarehe
-                <strong>24-11-2024</strong>, ambapo ndipo tulipoachana.
-            </p>
-        </section>
-
-        <section class="section" id="s18">
-            <h2>18. MALI WAKATI WA KUACHANA NA ZUWENA</h2>
-
-            <p>
-                Wakati Zuwena alipoondoka tarehe 24-11-2024, hakuna mali
-                tuliyogawana.
-            </p>
-
-            <p>
-                Katika kipindi nilichoishi na Zuwena kuanzia mwezi wa 5
-                hadi mwezi wa 11 mwaka 2024, tulikuwa tunaishi kwenye
-                nyumba ya kupanga.
-            </p>
-
-            <p>
-                Kulikuwa na vitu vya ndani ambavyo vilikuwa mali zangu.
-            </p>
-
-            <p>
-                Zuwena aliporudi kwao aliondoka akiwa na nguo zake pamoja
-                na mtoto Lightness.
-            </p>
-
-            <p>
-                Vitu vya ndani vilibaki kwangu kwa sababu vilikuwa mali
-                zangu ambazo Zuwena alizikuta tayari.
-            </p>
-
-            <p>
-                Mpaka sasa Zuwena hajawahi kudai au kuomba apewe baadhi
-                ya vitu hivyo.
-            </p>
-        </section>
-
-        <section class="section" id="s19">
-            <h2>19. KUMFAHAMU MAMA NANCY</h2>
-
-            <p>
-                Kabla ya kuanza mahusiano na mama Nancy, nilikuwa tayari
-                namfahamu kwa muda mrefu.
-            </p>
-
-            <p>
-                Nilimfahamu mwaka <strong>2018</strong>, wakati huo
-                nilikuwa namfahamu kama jirani tu.
-            </p>
-
-            <p>
-                Hatukuwa na mahusiano ya kimapenzi na pia sikuwa na
-                mazoea naye ya karibu.
-            </p>
-
-            <p>
-                Mwaka <strong>2025 mwezi wa 2</strong>, ndipo tulipoanza
-                mahusiano ya kimapenzi.
-            </p>
-
-            <p>
-                Sababu kubwa iliyonifanya nianze mahusiano naye ilikuwa
-                kwamba nilimpenda, nilimwona kuwa ana heshima, na pia
-                nilikuwa tayari namfahamu kwa muda mrefu.
-            </p>
-        </section>
-
-        <section class="section" id="s20">
-            <h2>20. KUANZA KUISHI PAMOJA NA MAMA NANCY</h2>
-
-            <p>
-                Tarehe <strong>13-02-2025</strong>, nilianza kuishi pamoja
-                na mama Nancy.
-            </p>
-
-            <p>
-                Wakati huo hakuwa na mtoto mwingine.
-                Mtoto Nancy tulimpata pamoja baada ya kuanza kuishi pamoja.
-            </p>
-
-            <p>
-                Tarehe <strong>20-02-2025</strong>, mama Nancy alipata mimba.
-            </p>
-
-            <p>
-                Baada ya kupata mimba, tuliendelea kuishi pamoja.
-            </p>
-        </section>
-
-        <section class="section" id="s21">
-            <h2>21. MAMA NANCY KWENDA KATAVI WAKATI WA UJAUZITO</h2>
-
-            <p>
-                Mama Nancy alipofikisha mwezi wa 8 wa ujauzito, alisafiri
-                kurudi nyumbani Katavi.
-            </p>
-
-            <p>
-                Aliendelea kukaa Katavi mpaka alipokwenda kujifungua.
-            </p>
-
-            <p>
-                Alijifungua tarehe <strong>04-12-2025</strong> na mtoto
-                akaitwa <strong>Nancy</strong>.
-            </p>
-
-            <p>
-                Baada ya kujifungua, mama Nancy na mtoto waliendelea
-                kukaa Katavi.
-            </p>
-        </section>
-
-        <section class="section" id="s22">
-            <h2>22. KWENDA KUMCHUKUA MAMA NANCY NA MTOTO</h2>
-
-            <p>
-                Tarehe <strong>07-02-2026</strong>, nilikwenda Katavi
-                kwa ajili ya kumchukua mama Nancy na mtoto ili warudi
-                kuishi pamoja nami.
-            </p>
-
-            <p>
-                Mama Nancy mwenyewe alikubali kurudi pamoja nami, lakini
-                wazazi wake walikataa wakati huo.
-            </p>
-
-            <p>
-                Sikujua sababu iliyowafanya wazazi wake wakatae.
-            </p>
-
-            <p>
-                Baada ya takribani mwezi mmoja tangu siku hiyo, wazazi
-                wake walimruhusu.
-            </p>
-
-            <p>
-                Nilikwenda kumchukua na hatimaye mama Nancy pamoja na
-                mtoto walirudi Lindi na kuanza tena kuishi pamoja nami.
-            </p>
-        </section>
-
-        <section class="section" id="s23">
-            <h2>23. MAISHA YANGU NA MAMA NANCY KWA SASA</h2>
-
-            <p>
-                Tangu mama Nancy aliporudi Lindi, tumeendelea kuishi
-                pamoja bila kuachana.
-            </p>
-
-            <p>
-                Kwa sasa tunaishi pamoja na mtoto wetu Nancy huko Lindi.
-            </p>
-
-            <p>
-                Katika maisha yetu ya pamoja, mama Nancy amekuwa na
-                tabia nzuri.
-            </p>
-
-            <p>Miongoni mwa tabia ninazoziona kwake ni:</p>
-
-            <ul>
-                <li>Heshima.</li>
-                <li>Nidhamu.</li>
-                <li>Tabia nzuri.</li>
-                <li>Uchapa kazi.</li>
-            </ul>
-
-            <p>
-                Hali hiyo imenifanya nione tofauti kati ya uhusiano wangu
-                wa sasa na mahusiano yangu yaliyopita na Zuwena na Saida.
-            </p>
-        </section>
-
-        <section class="section" id="s24">
-            <h2>24. HALI YA WATOTO WANGU NA WAZAZI WAO KWA SASA</h2>
-
-            <p>
-                Nina watoto watatu ambao nimewataja katika historia hii:
-            </p>
-
-            <div class="child">
-                <strong>1. Lightness</strong><br>
-                Mama yake ni Zuwena Mkulia. Lightness kwa sasa anaishi
-                Kitama na bibi na babu yake. Mimi huendelea kushiriki
-                katika matumizi na mahitaji yake na nimewahi pia
-                kugharamia bima yake ya afya.
-            </div>
-
-            <div class="child">
-                <strong>2. Dayness</strong><br>
-                Mama yake ni Saida. Dayness anaishi na mama yake.
-                Mimi huendelea kutoa matumizi na mahitaji yake na bado
-                tunawasiliana na Saida kuhusu mtoto.
-            </div>
-
-            <div class="child">
-                <strong>3. Nancy</strong><br>
-                Mama yake ni mwanamke ninayeishi naye kwa sasa.
-                Tumeendelea kuishi pamoja huko Lindi na kumlea mtoto wetu.
-            </div>
-        </section>
-
-        <section class="section" id="s25">
-            <h2>25. MUHTASARI WA SABABU ZA KUTOKUISHI PAMOJA NA ZUWENA NA SAIDA NA KUISHI NA MAMA NANCY</h2>
-
-            <p>
-                Kwa upande wa <strong>Zuwena Mkulia</strong>, tulianza
-                mahusiano mwaka 2022, tukapata mtoto Lightness, na baadaye
-                tuliishi pamoja kuanzia tarehe 15-05-2024 hadi tarehe
-                24-11-2024.
-            </p>
-
-            <p>
-                Sababu kubwa zilizonifanya nishindwe kuendelea kuishi naye
-                zilihusisha dharau, kiburi, jeuri, majibu mabaya na tukio
-                la kutishia kujinyonga ambalo lilinifanya niogope sana.
-            </p>
-
-            <p>
-                Tulijaribu kusuluhisha matatizo hayo, na aliomba msamaha
-                kupitia kwa mama yangu, lakini baadaye baadhi ya matatizo
-                yalirudia.
-            </p>
-
-            <p>
-                Hatimaye alirudi kwao kwa ushauri wa baba yake.
-            </p>
-
-            <p>
-                Kwa upande wa <strong>Saida</strong>, ambaye ni mama yake
-                Dayness, tulikutana mwezi wa 10 mwaka 2023 wakati Zuwena
-                akiwa tayari mjamzito.
-            </p>
-
-            <p>
-                Tulikutana siku moja tu na baada ya hapo Saida aliniambia
-                kuwa ana mimba.
-            </p>
-
-            <p>
-                Sikuwahi kuishi naye pamoja kwa sababu baada ya kuniambia
-                kuwa ana mimba, alikataa mara nyingi kuonana nami,
-                mawasiliano yalikuwa magumu na hakunipa uthibitisho wa
-                kitabibu wa ujauzito.
-            </p>
-
-            <p>
-                Pamoja na hayo, baada ya Dayness kuzaliwa, Saida pamoja
-                na familia yake waliendelea kunitambua kama baba wa mtoto,
-                na nimeendelea kushiriki katika matumizi yake.
-            </p>
-
-            <p>
-                Kwa upande wa <strong>mama Nancy</strong>, nilimfahamu
-                tangu mwaka 2018 kama jirani.
-            </p>
-
-            <p>
-                Hatukuwa na mahusiano ya kimapenzi wakati huo.
-                Tulianza mahusiano mwezi wa 2 mwaka 2025 na tarehe
-                13-02-2025 tukaanza kuishi pamoja.
-            </p>
-
-            <p>
-                Sababu kubwa ya kumpenda na kuchagua kuishi naye ilikuwa
-                kwamba nilimpenda, nilimfahamu kwa muda mrefu na niliona
-                ana heshima.
-            </p>
-
-            <p>
-                Baadaye tulipata mtoto Nancy.
-            </p>
-
-            <p>
-                Licha ya yeye kwenda Katavi wakati wa ujauzito na wazazi
-                wake kuchelewa kumruhusu kurudi, hatimaye alirudi Lindi
-                na mpaka sasa tunaendelea kuishi pamoja.
-            </p>
-
-            <div class="highlight">
-                <strong>Kwa sasa:</strong><br>
-                Maisha yangu yanaendelea na mama Nancy, huku nikiendelea
-                kuwa na wajibu wa kushiriki katika malezi na matumizi ya
-                watoto wangu Lightness na Dayness kwa kadiri ninavyoweza.
-            </div>
-        </section>
-
-    </main>
-
-    <div class="footer">
-        Hati ya Historia ya Mahusiano • Imeandaliwa kwa mpangilio wa
-        kusomeka kwenye simu na kuchapishwa.
-    </div>
-
-</div>
+    <p class="site-footer">
+      Ukurasa huu ni kumbukumbu binafsi ya HERMAN ONESMO SADE — si tovuti ya Serikali, Mahakama, wala
+      taasisi rasmi yoyote. Namba ya siri iliyowekwa hapa ni kwa ajili ya matumizi ya faragha tu kwenye
+      kifaa binafsi; haina ulinzi wa kweli ukiwekwa kwenye mtandao wa umma. Baadhi ya ukweli ndani yake
+      (kama ubaba wa Dayness) haujathibitishwa kwa vipimo vya kisayansi.
+    </p>
+  </div>
 
 <script>
-function searchText(){
+  (function(){
+    var CODE = "4944";
+    var form = document.getElementById('lock-form');
+    var input = document.getElementById('password-input');
+    var error = document.getElementById('lock-error');
+    var lock = document.getElementById('lock-screen');
+    var content = document.getElementById('content');
 
-    const input = document.getElementById("search");
-    const query = input.value.trim().toLowerCase();
+    if (sessionStorage.getItem('unlocked') === 'yes') {
+      lock.style.display = 'none';
+      content.style.display = 'block';
+    }
 
-    const sections = document.querySelectorAll(".section");
-
-    sections.forEach(section => {
-
-        if(query === ""){
-            section.classList.remove("hidden");
-            section.innerHTML = section.innerHTML.replace(
-                /<mark>(.*?)<\/mark>/gi,
-                "$1"
-            );
-            return;
-        }
-
-        section.classList.remove("hidden");
-
-        section.innerHTML = section.innerHTML.replace(
-            /<mark>(.*?)<\/mark>/gi,
-            "$1"
-        );
-
-        const text = section.innerText.toLowerCase();
-
-        if(text.includes(query)){
-
-            const walker = document.createTreeWalker(
-                section,
-                NodeFilter.SHOW_TEXT
-            );
-
-            const nodes = [];
-
-            while(walker.nextNode()){
-                nodes.push(walker.currentNode);
-            }
-
-            nodes.forEach(node => {
-
-                if(
-                    node.parentElement.tagName === "SCRIPT" ||
-                    node.parentElement.tagName === "STYLE" ||
-                    node.parentElement.tagName === "MARK"
-                ){
-                    return;
-                }
-
-                const value = node.nodeValue;
-
-                if(value.toLowerCase().includes(query)){
-
-                    const regex = new RegExp(
-                        "(" + escapeRegex(query) + ")",
-                        "gi"
-                    );
-
-                    const html = value.replace(
-                        regex,
-                        "<mark>$1</mark>"
-                    );
-
-                    const span = document.createElement("span");
-                    span.innerHTML = html;
-
-                    node.parentNode.replaceChild(span,node);
-                }
-
-            });
-
-        }else{
-            section.classList.add("hidden");
-        }
-
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      var entered = input.value.replace(/\D/g, ''); // digits only, strips any stray characters
+      if (entered === CODE) {
+        sessionStorage.setItem('unlocked', 'yes');
+        lock.style.display = 'none';
+        content.style.display = 'block';
+        window.scrollTo(0,0);
+      } else {
+        error.textContent = 'Namba ya siri si sahihi. Jaribu tena.';
+        input.value = '';
+        input.focus();
+      }
     });
-}
 
-function escapeRegex(text){
-    return text.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
-}
-
-function clearSearch(){
-    document.getElementById("search").value = "";
-
-    const sections = document.querySelectorAll(".section");
-
-    sections.forEach(section => {
-        section.classList.remove("hidden");
-
-        section.innerHTML = section.innerHTML.replace(
-            /<mark>(.*?)<\/mark>/gi,
-            "$1"
-        );
-    });
-}
+    input.focus();
+  })();
 </script>
 
 </body>

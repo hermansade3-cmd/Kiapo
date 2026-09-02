@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="description"
+content="Kumbukumbu ya maisha ya Herman Onesmo Sade — Safari ya Ujasiri, Upendo na Ushindi.">
+
+<title>Kumbukumbu ya Maisha — Herman Onesmo Sade</title>
+
+<style>
+:root{
+    --bg:#f5f7fb;
+    --card:#ffffff;
+    --text:#172033;
+    --muted:#667085;
+    --accent:#2563eb;
+    --line:#dbe2ea;
+    --hero:#0f172a;
+    --shadow:0 12px 35px rgba(15,23,42,.08);
+}
+
+[data-theme="dark"]{
+    --bg:#0b1220;
+    --card:#111827;
+    --text:#edf2f7;
+    --muted:#aab4c3;
+    --accent:#60a5fa;
+    --line:#263449;
+    --hero:#020617;
+    --shadow:0 12px 35px rgba(0,0,0,.28);
+}
+
+*{
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+    line-height:1.75;
+}
+
+/* HERO */
+
+.hero{
+    background:var(--hero);
+    color:white;
+    padding:70px 20px 55px;
+    text-align:center;
+    position:relative;
+    overflow:hidden;
+}
+
+.hero:after{
+    content:"";
+    position:absolute;
+    width:380px;
+    height:380px;
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:50%;
+    right:-120px;
+    top:-180px;
+}
+
+.badge{
+    display:inline-block;
+    border:1px solid rgba(255,255,255,.25);
+    padding:5px 12px;
+    border-radius:999px;
+    font-size:13px;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+}
+
+.hero h1{
+    font-size:clamp(2.2rem,7vw,4.5rem);
+    line-height:1.05;
+    margin:20px auto 12px;
+    max-width:850px;
+}
+
+.hero p{
+    max-width:680px;
+    margin:auto;
+    color:#cbd5e1;
+    font-size:1.05rem;
+}
+
+/* BUTTONS */
+
+.actions{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:25px;
+}
+
+button,
+.btn{
+    border:0;
+    border-radius:12px;
+    padding:11px 16px;
+    background:var(--accent);
+    color:white;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+}
+
+button.secondary,
+.btn.secondary{
+    background:transparent;
+    border:1px solid rgba(255,255,255,.3);
+}
+
+/* CONTAINER */
+
+.wrap{
+    width:min(1050px,92%);
+    margin:0 auto;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    margin:-28px auto 35px;
+    position:relative;
+}
+
+.stat{
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    border-radius:18px;
+    padding:18px;
+    text-align:center;
+}
+
+.stat b{
+    display:block;
+    font-size:1.45rem;
+    color:var(--accent);
+}
+
+.stat span{
+    font-size:.86rem;
+    color:var(--muted);
+}
+
+/* NAVIGATION */
+
+nav{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:var(--card);
+    border-bottom:1px solid var(--line);
+}
+
+.navin{
+    display:flex;
+    gap:8px;
+    align-items:center;
+    overflow:auto;
+    padding:10px 0;
+}
+
+nav a{
+    white-space:nowrap;
+    color:var(--text);
+    text-decoration:none;
+    padding:7px 10px;
+    border-radius:9px;
+    font-size:.9rem;
+}
+
+nav a:hover{
+    background:var(--bg);
+}
+
+/* SECTIONS */
+
+section{
+    padding:25px 0;
+}
+
+.section-title{
+    font-size:1.9rem;
+    margin:0 0 6px;
+}
+
+.sub{
+    color:var(--muted);
+    margin-top:0;
+}
+
+/* CHAPTERS */
+
+.chapter{
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    border-radius:18px;
+    padding:26px;
+    margin:18px 0;
+}
+
+.chapter-no{
+    font-size:.8rem;
+    font-weight:800;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:.12em;
+}
+
+.chapter h2{
+    margin:5px 0 12px;
+    font-size:1.45rem;
+}
+
+.chapter p{
+    margin:0;
+}
+
+/* TIMELINE */
+
+.timeline{
+    position:relative;
+    margin-top:25px;
+}
+
+.timeline:before{
+    content:"";
+    position:absolute;
+    left:29px;
+    top:0;
+    bottom:0;
+    width:2px;
+    background:var(--line);
+}
+
+.event{
+    display:grid;
+    grid-template-columns:80px 1fr;
+    gap:12px;
+
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    border-radius:18px;
+
+    padding:18px;
+    margin:14px 0;
+    position:relative;
+}
+
+.year{
+    font-weight:900;
+    color:var(--accent);
+    font-size:1.05rem;
+    text-align:center;
+}
+
+.event h3{
+    margin:0 0 3px;
+}
+
+.event p{
+    margin:0;
+    color:var(--muted);
+}
+
+/* CARDS */
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:18px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    border-radius:18px;
+    padding:24px;
+}
+
+.card h3{
+    margin-top:0;
+}
+
+/* SEARCH */
+
+.search{
+    width:100%;
+    padding:14px 16px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--text);
+    font-size:1rem;
+    margin:10px 0 18px;
+}
+
+.hide{
+    display:none !important;
+}
+
+/* QUOTE */
+
+.quote{
+    font-size:1.2rem;
+    font-weight:650;
+    border-left:4px solid var(--accent);
+    padding:5px 0 5px 18px;
+}
+
+/* FOOTER */
+
+footer{
+    margin-top:50px;
+    padding:35px 20px;
+    background:var(--hero);
+    color:#cbd5e1;
+    text-align:center;
+}
+
+.small{
+    font-size:.85rem;
+    color:var(--muted);
+}
+
+/* MOBILE */
+
+@media(max-width:760px){
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .hero{
+        padding-top:50px;
+    }
+
+    .event{
+        grid-template-columns:65px 1fr;
+    }
+}
+
+/* PRINT */
+
+@media print{
+
+    nav,
+    .actions,
+    .search,
+    .no-print{
+        display:none !important;
+    }
+
+    body{
+        background:white;
+        color:#111;
+    }
+
+    .hero{
+        background:white;
+        color:#111;
+        padding:20px;
+    }
+
+    .hero p{
+        color:#333;
+    }
+
+    .stat,
+    .card,
+    .chapter,
+    .event{
+        box-shadow:none;
+        break-inside:avoid;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header class="hero">
+
+    <span class="badge">
+        Kumbukumbu ya Maisha
+    </span>
+
+    <h1>
+        Herman Onesmo Sade
+    </h1>
+
+    <p>
+        <strong>
+            Safari ya Ujasiri, Upendo na Ushindi
+        </strong>
+        <br>
+        01 Januari 1999 — 2026
+    </p>
+
+    <div class="actions no-print">
+
+        <a class="btn" href="#historia">
+            📖 Soma Historia
+        </a>
+
+        <button
+            class="secondary"
+            onclick="toggleTheme()">
+            🌙 Mandhari
+        </button>
+
+        <button
+            class="secondary"
+            onclick="window.print()">
+            🖨️ Chapisha / PDF
+        </button>
+
+    </div>
+
+</header>
+
+
+<main class="wrap">
+
+<!-- =========================
+     STATS
+========================= -->
+
+<div class="stats">
+
+    <div class="stat">
+        <b>1999</b>
+        <span>Mwanzo wa safari</span>
+    </div>
+
+    <div class="stat">
+        <b>2022</b>
+        <span>Jeshi la Zimamoto</span>
+    </div>
+
+    <div class="stat">
+        <b>3</b>
+        <span>Watoto</span>
+    </div>
+
+    <div class="stat">
+        <b>2026</b>
+        <span>Safari inaendelea</span>
+    </div>
+
+</div>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav class="no-print">
+
+    <div class="navin">
+
+        <a href="#historia">
+            Historia
+        </a>
+
+        <a href="#timeline">
+            Ratiba
+        </a>
+
+        <a href="#familia">
+            Familia
+        </a>
+
+        <a href="#kazi">
+            Kazi
+        </a>
+
+        <a href="#malengo">
+            Malengo
+        </a>
+
+        <a href="#ujumbe">
+            Ujumbe
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     HISTORIA
+========================= -->
+
+<section id="historia">
+
+    <h2 class="section-title">
+        Historia ya Maisha
+    </h2>
+
+    <p class="sub">
+        Kumbukumbu iliyopangwa upya kutoka kwenye historia ya maisha.
+    </p>
+
+    <input
+        class="search no-print"
+        id="search"
+        placeholder="🔎 Tafuta ndani ya historia..."
+        oninput="searchChapters()">
+
+
+    <!-- SURA YA 1 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 1
+        </div>
+
+        <h2>
+            Mwanzo wa Safari (1999–2006)
+        </h2>
+
+        <p>
+            Tarehe 01 Januari 1999, Herman Onesmo Sade
+            alizaliwa katika Mkoa wa Arusha, Wilaya ya
+            Arusha Mjini, Kata ya Suye.
+        </p>
+
+        <p>
+            Miaka yake ya mwanzo iliambatana na mazingira
+            ya familia iliyokuwa imegawanyika na mabadiliko
+            ya makazi. Utoto wake ulihusisha kucheza,
+            kujifunza, kujenga mahusiano na kuanza kujifunza
+            namna ya kukabiliana na changamoto za maisha.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 2 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 2
+        </div>
+
+        <h2>
+            Safari ya Elimu na Mabadiliko (2006–2012)
+        </h2>
+
+        <p>
+            Mwaka 2006 alianza chekechea na darasa la kwanza
+            huko Iringa akiwa na mama yake.
+        </p>
+
+        <p>
+            Mwaka 2007 alihamia Mafinga kwa muda akiwa chini
+            ya uangalizi wa shangazi yake, kisha akaenda
+            Arusha kuishi na baba yake.
+        </p>
+
+        <p>
+            Alianza darasa la pili katika Shule ya Msingi
+            Kimandolu na kuendelea na masomo hadi darasa la saba.
+        </p>
+
+        <p>
+            Mwaka 2012 alimaliza darasa la saba na baadaye
+            akaenda Katavi kuishi na mama yake Sara pamoja na
+            kaka yake Mohammed.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 3 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 3
+        </div>
+
+        <h2>
+            Masomo ya Sekondari (2013–2016)
+        </h2>
+
+        <p>
+            Mwaka 2013 Herman alianza masomo ya sekondari
+            katika St. Mary's Secondary School, Mpanda,
+            Katavi.
+        </p>
+
+        <p>
+            Alikuwa mwanafunzi mpole na mwenye bidii,
+            akipenda zaidi masomo ya Civics na Kiingereza.
+        </p>
+
+        <p>
+            Baada ya changamoto za matokeo ya Form 3,
+            alihamia Istiqama Secondary School na kuendelea
+            na masomo yake.
+        </p>
+
+        <p>
+            Mwaka 2016 alimaliza Form 4 na kupata CSEE
+            Division IV, alama 26.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 4 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 4
+        </div>
+
+        <h2>
+            Kutafuta Fursa za Elimu na Kazi (2017–2020)
+        </h2>
+
+        <p>
+            Mwaka 2017 alianza kozi fupi ya kompyuta.
+            Baadaye alijiunga na IRDP Dodoma kusoma
+            Certificate in Finance.
+        </p>
+
+        <p>
+            Katika semesta yake ya kwanza alipata GPA 3.5.
+            Pia alifanya field attachment katika Mtaa wa
+            Makanyagio, Mpanda.
+        </p>
+
+        <p>
+            Wakati huo alipopata nafasi ya kujiunga na
+            Jeshi la Kujenga Taifa, alichagua kuanza njia
+            mpya ya maisha.
+        </p>
+
+        <p>
+            Mwezi Desemba 2017 alijiunga rasmi na JKT.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 5 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 5
+        </div>
+
+        <h2>
+            Maisha katika JKT (2018–2020)
+        </h2>
+
+        <p>
+            Tarehe 21 Januari 2018 alianza mafunzo rasmi
+            katika Kikosi cha 841 Mafinga.
+        </p>
+
+        <p>
+            Alipitia mafunzo ya kijeshi, kwata, kilimo,
+            ufugaji, kazi mbalimbali pamoja na doria za
+            mchana na usiku.
+        </p>
+
+        <p>
+            Baadaye alihamia Kikosi cha 847 Milundikwa,
+            Sumbawanga, na mwaka 2019 alihamia Oljoro Arusha.
+        </p>
+
+        <p>
+            Akiwa Oljoro alifanya usaili wa TANAPA lakini
+            hakupata nafasi hiyo.
+        </p>
+
+        <p>
+            Tarehe 30 Desemba 2020 alimaliza rasmi mafunzo
+            yake ya JKT.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 6 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 6
+        </div>
+
+        <h2>
+            Kutafuta Njia Baada ya JKT (2021)
+        </h2>
+
+        <p>
+            Mwaka 2021 alianza kozi ya umeme iliyodumu
+            miezi sita.
+        </p>
+
+        <p>
+            Baada ya hapo alifanya kazi za umeme lakini
+            hakupata kipato cha kutosha.
+        </p>
+
+        <p>
+            Baadaye alipata kazi ya kulinda mlango na
+            kutoza ushuru katika Halmashauri ya Wilaya
+            ya Nsimbo, Katavi.
+        </p>
+
+        <p>
+            Akiendelea kutafuta fursa bora, alisikia kuhusu
+            nafasi za kujiunga na Jeshi la Zimamoto na
+            Uokoaji Tanzania na akaomba.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 7 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 7
+        </div>
+
+        <h2>
+            Jeshi la Zimamoto — Hatua Mpya (2022)
+        </h2>
+
+        <p>
+            Tarehe 09 Januari 2022 maisha ya Herman
+            yalibadilika baada ya kupata nafasi ya kujiunga
+            na mafunzo ya Jeshi la Zimamoto na Uokoaji.
+        </p>
+
+        <p>
+            Alisafiri kwenda Chogo, Handeni, Tanga,
+            ambako alipata mafunzo ya kuzima moto,
+            uokoaji, matumizi ya vifaa na mafunzo ya
+            msingi ya kijeshi.
+        </p>
+
+        <p>
+            Mwezi Agosti 2022 alimaliza mafunzo na kupangiwa
+            kufanya kazi Mkoa wa Lindi.
+        </p>
+
+        <p>
+            Kazi ya zimamoto imekuwa sehemu muhimu ya maisha
+            yake. Anajivunia kazi ya kulinda maisha, mali
+            na kuhudumia jamii.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 8 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 8
+        </div>
+
+        <h2>
+            Upendo, Familia na Watoto (2022–2025)
+        </h2>
+
+        <p>
+            Katika safari yake ya maisha ya familia, Herman
+            alipata watoto watatu: Lightness, Dayness na Nancy.
+        </p>
+
+        <p>
+            Lightness Herman Sade alizaliwa tarehe
+            15 Februari 2024 huko Tandahimba, Mtwara.
+        </p>
+
+        <p>
+            Dayness Herman Sade alizaliwa tarehe
+            27 Julai 2024 huko Lindi.
+        </p>
+
+        <p>
+            Mwaka 2025 Herman alikutana tena na
+            Magreth Desdel Kasagula na wakaanza kujenga
+            maisha pamoja.
+        </p>
+
+        <p>
+            Tarehe 04 Desemba 2025 walipata mtoto wao
+            Nancy Herman Sade.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 9 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 9
+        </div>
+
+        <h2>
+            Historia ya Kuzaliwa kwa Nancy (2025)
+        </h2>
+
+        <p>
+            Nancy Herman Sade alizaliwa tarehe
+            04 Desemba 2025 huko Mpanda, Katavi,
+            kwa njia ya upasuaji wa C-section.
+        </p>
+
+        <p>
+            Katika siku za mwanzo alipata changamoto za
+            tumbo kuvimba na kutokojoa vizuri.
+        </p>
+
+        <p>
+            Alifanyiwa uchunguzi na matibabu mbalimbali
+            na baadaye kuhamishiwa hospitali ya Ruangwa
+            kwa uchunguzi zaidi.
+        </p>
+
+        <p>
+            Baada ya uangalizi na matibabu, hali yake
+            ilianza kuimarika.
+        </p>
+
+        <p>
+            Tarehe 13 Desemba 2025 Nancy na mama yake
+            waliruhusiwa kutoka hospitalini.
+        </p>
+
+        <p>
+            Jina lake la awali lilikuwa Sara, lakini
+            baadaye familia iliamua kubadilisha jina
+            na kumpa Nancy.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 10 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 10
+        </div>
+
+        <h2>
+            Kazi, Familia na Mawasiliano (2025–2026)
+        </h2>
+
+        <p>
+            Herman anaendelea kufanya kazi katika Jeshi
+            la Zimamoto na Uokoaji Mkoa wa Lindi.
+        </p>
+
+        <p>
+            Mwaka 2025 alijiunga na mafunzo ya VETA
+            katika uendeshaji wa gari na kupata leseni
+            ya daraja D.
+        </p>
+
+        <p>
+            Pia alihudhuria mafunzo ya High and Low Rescue
+            yaliyodumu siku 10 katika ofisi ya Zimamoto
+            Temeke, Dar es Salaam.
+        </p>
+
+        <p>
+            Anaendelea kuwasiliana na familia yake katika
+            maeneo mbalimbali ya Tanzania na kujenga
+            maisha yake pamoja na Magreth na Nancy.
+        </p>
+
+    </article>
+
+
+    <!-- SURA YA 11 -->
+
+    <article class="chapter">
+
+        <div class="chapter-no">
+            Sura ya 11
+        </div>
+
+        <h2>
+            Mafanikio, Changamoto na Malengo
+        </h2>
+
+        <p>
+            Safari ya Herman imejengwa na uvumilivu,
+            bidii, nidhamu na uwezo wa kuanza upya.
+        </p>
+
+        <p>
+            Watu muhimu katika safari yake ni wazazi wake
+            Sara Benny Chalamila na Onesmo Gaitani Sade,
+            pamoja na mjomba wake Israel Kutika.
+        </p>
+
+        <p>
+            Malengo yake ni kuimarisha ustawi wa familia,
+            kumiliki gari, kujenga nyumba zaidi, kuwapatia
+            watoto elimu bora na kujenga familia yenye
+            furaha na upendo.
+        </p>
+
+        <p>
+            Pia anataka kuendelea kukua katika taaluma
+            ya Jeshi la Zimamoto na Uokoaji, kuongeza
+            ujuzi na kutoa huduma bora zaidi kwa jamii.
+        </p>
+
+    </article>
+
+</section>
+
+
+<!-- =========================
+     TIMELINE
+========================= -->
+
+<section id="timeline">
+
+    <h2 class="section-title">
+        🗓️ Ratiba ya Safari
+    </h2>
+
+    <p class="sub">
+        Matukio muhimu katika maisha ya Herman.
+    </p>
+
+
+    <div class="timeline">
+
+        <div class="event">
+            <div class="year">1999</div>
+            <div>
+                <h3>Kuzaliwa Arusha</h3>
+                <p>
+                    Herman Onesmo Sade alizaliwa tarehe
+                    01 Januari 1999.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2006</div>
+            <div>
+                <h3>Kuanza Elimu</h3>
+                <p>
+                    Alianza chekechea na darasa la kwanza
+                    huko Iringa.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2007</div>
+            <div>
+                <h3>Kuhamia Arusha</h3>
+                <p>
+                    Alienda Arusha kuishi na baba yake
+                    na kuendelea Kimandolu.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2012</div>
+            <div>
+                <h3>Kumaliza Msingi</h3>
+                <p>
+                    Alimaliza darasa la saba na kwenda Katavi.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2013</div>
+            <div>
+                <h3>Sekondari</h3>
+                <p>
+                    Alianza St. Mary's Secondary School,
+                    Mpanda.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2016</div>
+            <div>
+                <h3>Kumaliza Form 4</h3>
+                <p>
+                    Alimaliza CSEE Division IV, alama 26.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2017</div>
+            <div>
+                <h3>IRDP na JKT</h3>
+                <p>
+                    Alianza Finance IRDP kisha akaamua
+                    kujiunga na JKT.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2018</div>
+            <div>
+                <h3>Mafunzo JKT</h3>
+                <p>
+                    Alianza mafunzo katika Kikosi 841 Mafinga.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2019</div>
+            <div>
+                <h3>Oljoro</h3>
+                <p>
+                    Aliendelea na JKT Oljoro na kufanya
+                    usaili wa TANAPA.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2020</div>
+            <div>
+                <h3>Kumaliza JKT</h3>
+                <p>
+                    Tarehe 30 Desemba alimaliza JKT.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2021</div>
+            <div>
+                <h3>Kutafuta Ajira</h3>
+                <p>
+                    Alisoma umeme na kufanya kazi mbalimbali.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2022</div>
+            <div>
+                <h3>Jeshi la Zimamoto</h3>
+                <p>
+                    Alijiunga na mafunzo ya Zimamoto
+                    na baadaye kupangiwa Lindi.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2024</div>
+            <div>
+                <h3>Watoto Wawili</h3>
+                <p>
+                    Lightness na Dayness walikuwa sehemu
+                    ya safari ya familia.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2025</div>
+            <div>
+                <h3>Nancy na Mafunzo</h3>
+                <p>
+                    Nancy alizaliwa. Herman pia alipata
+                    leseni D na mafunzo ya High and Low Rescue.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="event">
+            <div class="year">2026</div>
+            <div>
+                <h3>Safari Inaendelea</h3>
+                <p>
+                    Kazi, familia, maendeleo na malengo
+                    vinaendelea kujengwa.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FAMILIA
+========================= -->
+
+<section id="familia">
+
+    <h2 class="section-title">
+        👨‍👩‍👧‍👦 Familia
+    </h2>
+
+    <div class="grid">
+
+        <div class="card">
+
+            <h3>
+                Watoto
+            </h3>
+
+            <p>
+                <strong>
+                    Lightness Herman Sade
+                </strong>
+                — mtoto wa kwanza.
+            </p>
+
+            <p>
+                <strong>
+                    Dayness Herman Sade
+                </strong>
+                — mtoto wa pili.
+            </p>
+
+            <p>
+                <strong>
+                    Nancy Herman Sade
+                </strong>
+                — mtoto wa tatu,
+                aliyezaliwa tarehe
+                04 Desemba 2025.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Maisha ya Pamoja
+            </h3>
+
+            <p>
+                Herman na Magreth Desdel Kasagula
+                wamejenga maisha pamoja na kulea
+                Nancy huku wakiendelea kupanga
+                maisha yao ya baadaye.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     KAZI
+========================= -->
+
+<section id="kazi">
+
+    <h2 class="section-title">
+        🚒 Kazi na Ujuzi
+    </h2>
+
+
+    <div class="grid">
+
+        <div class="card">
+
+            <h3>
+                Jeshi la Zimamoto na Uokoaji
+            </h3>
+
+            <p>
+                Kuanzia mwaka 2022, Herman amekuwa
+                akifanya kazi katika Jeshi la Zimamoto
+                na Uokoaji Mkoa wa Lindi.
+            </p>
+
+            <p>
+                Anashiriki katika uzimaji moto,
+                uokoaji na huduma kwa jamii.
+            </p>
+
+        </div>
+
+
+        <div class="card">
+
+            <h3>
+                Maendeleo ya Ujuzi
+            </h3>
+
+            <p>
+                Amejifunza IT Computer, Finance,
+                umeme, uendeshaji gari na
+                High and Low Rescue.
+            </p>
+
+            <p>
+                Anaendelea kuongeza ujuzi ili
+                kuimarisha uwezo wake katika kazi
+                na maisha.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     MALENGO
+========================= -->
+
+<section id="malengo">
+
+    <h2 class="section-title">
+        🎯 Mafanikio na Malengo
+    </h2>
+
+
+    <div class="card">
+
+        <p>
+            Safari yake imejengwa na
+            <strong>
+                uvumilivu, bidii, nidhamu
+                na kutokata tamaa.
+            </strong>
+        </p>
+
+        <p>
+            Malengo yake ni pamoja na:
+        </p>
+
+        <ul>
+
+            <li>
+                Kuimarisha ustawi wa familia.
+            </li>
+
+            <li>
+                Kumiliki gari binafsi.
+            </li>
+
+            <li>
+                Kujenga nyumba zaidi.
+            </li>
+
+            <li>
+                Kuwapatia watoto elimu bora.
+            </li>
+
+            <li>
+                Kujenga familia yenye furaha
+                na upendo.
+            </li>
+
+            <li>
+                Kuendelea kukua katika taaluma
+                ya Zimamoto na Uokoaji.
+            </li>
+
+        </ul>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     UJUMBE
+========================= -->
+
+<section id="ujumbe">
+
+    <h2 class="section-title">
+        💬 Ujumbe wa Maisha
+    </h2>
+
+
+    <div class="card">
+
+        <p class="quote">
+            “Maisha ni safari ngumu, lakini haikai.
+            Hata wakati mambo yanaonekana magumu,
+            endelea kusonga mbele.”
+        </p>
+
+        <p>
+            Ujumbe mkuu wa historia hii ni kwamba
+            changamoto si mwisho wa safari.
+        </p>
+
+        <p>
+            Elimu, kazi, uvumilivu, familia na bidii
+            vinaweza kuwa sehemu ya kujenga maisha bora.
+        </p>
+
+        <p>
+            Safari ya Herman inaendelea, na kila siku
+            ni fursa mpya ya kujifunza, kukua na
+            kufikia malengo.
+        </p>
+
+    </div>
+
+</section>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <strong>
+        Herman Onesmo Sade
+    </strong>
+
+    <br>
+
+    Kumbukumbu ya Maisha
+
+    <br>
+
+    Ujasiri • Upendo • Ushindi
+
+    <div
+        class="small"
+        style="margin-top:8px">
+
+        Toleo la kidijitali la kumbukumbu
+        ya historia ya maisha.
+
+    </div>
+
+</footer>
+
+
+<!-- =========================
+     JAVASCRIPT
+========================= -->
+
+<script>
+
+/* =========================
+   DARK MODE
+========================= */
+
+function toggleTheme(){
+
+    const root = document.documentElement;
+
+    const dark =
+        root.getAttribute("data-theme") === "dark";
+
+    root.setAttribute(
+        "data-theme",
+        dark ? "light" : "dark"
+    );
+
+    localStorage.setItem(
+        "theme",
+        dark ? "light" : "dark"
+    );
+}
+
+
+/* =========================
+   LOAD THEME
+========================= */
+
+(function(){
+
+    const theme =
+        localStorage.getItem("theme");
+
+    if(theme){
+
+        document.documentElement
+            .setAttribute(
+                "data-theme",
+                theme
+            );
+
+    }
+
+})();
+
+
+/* =========================
+   SEARCH HISTORY
+========================= */
+
+function searchChapters(){
+
+    const input =
+        document.getElementById("search");
+
+    const query =
+        input.value
+        .toLowerCase()
+        .trim();
+
+    const chapters =
+        document.querySelectorAll(".chapter");
+
+    chapters.forEach(function(chapter){
+
+        const text =
+            chapter.innerText
+            .toLowerCase();
+
+        if(
+            query === "" ||
+            text.includes(query)
+        ){
+
+            chapter.classList.remove("hide");
+
+        }else{
+
+            chapter.classList.add("hide");
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

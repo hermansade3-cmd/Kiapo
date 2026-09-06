@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ushahidi wa Sauti</title>
+<style>
+  :root{
+    --ink:#1c1a17;
+    --paper:#f7f3ec;
+    --line:#d8cfc0;
+    --clay:#a9603f;
+    --clay-dark:#7e4327;
+    --moss:#4a5a45;
+    --card:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Georgia', 'Iowan Old Style', serif;
+    line-height:1.6;
+  }
+  header{
+    padding:56px 24px 40px;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .eyebrow{
+    font-family:-apple-system, sans-serif;
+    font-size:13px;
+    color:var(--moss);
+    letter-spacing:.02em;
+  }
+  h1{
+    font-size:38px;
+    margin:8px 0 18px;
+    font-weight:600;
+    line-height:1.15;
+  }
+  p.lead{
+    font-size:17px;
+    color:#4a453e;
+    max-width:60ch;
+  }
+  main{
+    max-width:760px;
+    margin:0 auto;
+    padding:0 24px 80px;
+  }
+  section.explain{
+    border-top:1px solid var(--line);
+    padding-top:32px;
+    margin-top:8px;
+  }
+  section.explain h2{
+    font-family:-apple-system, sans-serif;
+    font-size:15px;
+    font-weight:600;
+    color:var(--clay-dark);
+    margin-bottom:6px;
+  }
+  section.explain p{
+    font-size:16px;
+    color:#3a362f;
+    margin:0 0 22px;
+    max-width:62ch;
+  }
+
+  .upload-box{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:24px;
+    margin-top:36px;
+  }
+  .upload-box h3{
+    font-family:-apple-system, sans-serif;
+    font-size:16px;
+    margin:0 0 14px;
+  }
+  .field{
+    margin-bottom:14px;
+  }
+  .field label{
+    display:block;
+    font-family:-apple-system, sans-serif;
+    font-size:13px;
+    color:#6b6355;
+    margin-bottom:5px;
+  }
+  .field input[type=text]{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid var(--line);
+    border-radius:6px;
+    font-family:-apple-system, sans-serif;
+    font-size:15px;
+    background:#fdfcfa;
+  }
+  .file-drop{
+    border:1.5px dashed var(--line);
+    border-radius:8px;
+    padding:20px;
+    text-align:center;
+    font-family:-apple-system, sans-serif;
+    font-size:14px;
+    color:#8a8272;
+    cursor:pointer;
+    transition:border-color .15s;
+  }
+  .file-drop.has-file{
+    border-color:var(--clay);
+    color:var(--clay-dark);
+  }
+  .file-drop input{display:none;}
+  button.submit{
+    margin-top:6px;
+    background:var(--clay);
+    color:#fff;
+    border:none;
+    padding:12px 22px;
+    border-radius:6px;
+    font-family:-apple-system, sans-serif;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+  }
+  button.submit:hover{background:var(--clay-dark);}
+  button.submit:disabled{background:#c9bfae;cursor:not-allowed;}
+
+  .list{
+    margin-top:44px;
+    display:flex;
+    flex-direction:column;
+    gap:16px;
+  }
+  .list h3{
+    font-family:-apple-system, sans-serif;
+    font-size:15px;
+    color:#6b6355;
+    margin-bottom:4px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:18px 20px;
+  }
+  .card .who{
+    font-family:-apple-system, sans-serif;
+    font-weight:600;
+    font-size:15px;
+  }
+  .card .role{
+    font-family:-apple-system, sans-serif;
+    font-size:13px;
+    color:#8a8272;
+    margin-bottom:10px;
+  }
+  audio{
+    width:100%;
+  }
+  .empty{
+    font-family:-apple-system, sans-serif;
+    font-size:14px;
+    color:#a49c8c;
+    padding:20px 0;
+  }
+  .del{
+    float:right;
+    font-family:-apple-system, sans-serif;
+    font-size:12px;
+    color:#b25a3f;
+    background:none;
+    border:none;
+    cursor:pointer;
+    text-decoration:underline;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">SEHEMU YA WEBSITE</div>
+  <h1>Ushahidi wa Sauti</h1>
+  <p class="lead">Wateja wako wanaweza kusema wenyewe. Badala ya kuandika maoni, waache warekodi sauti zao — imani inajengeka zaidi watu wanaposikia sauti halisi ya mtu aliyeridhika na huduma yako.</p>
+</header>
+
+<main>
+  <section class="explain">
+    <h2>NI NINI</h2>
+    <p>Ushahidi wa sauti (audio testimonial) ni rekodi fupi ya mteja akieleza uzoefu wake na bidhaa au huduma yako, badala ya maandishi. Hupachikwa (embed) moja kwa moja kwenye ukurasa wa website ili mtembeleaji aweze kubofya na kusikiliza.</p>
+
+    <h2>KWA NINI ITUMIKE</h2>
+    <p>Sauti ya mtu halisi ni vigumu kughushi — inatoa uzito zaidi kuliko maandishi tu. Inafaa hasa kwa biashara za huduma (nyumba za kupanga, vitabu, ushauri) ambapo watu wanataka kusikia hisia za mzungumzaji, si kusoma tu maneno.</p>
+
+    <h2>JINSI SEHEMU HII INAVYOFANYA KAZI</h2>
+    <p>Chini kuna fomu ya kupakia faili la sauti (mp3, wav, m4a) pamoja na jina la mtoa ushahidi. Faili likishapakiwa, linaonekana papo hapo kwenye orodha na kina kicheza sauti (audio player) kilichojengwa ndani ya ukurasa — hakuna programu ya nje inayohitajika.</p>
+  </section>
+
+  <div class="upload-box">
+    <h3>Pakia Ushahidi Mpya</h3>
+    <div class="field">
+      <label for="jina">Jina la mteja</label>
+      <input type="text" id="jina" placeholder="Mfano: Mama Fatma, Lindi">
+    </div>
+    <div class="field">
+      <label for="cheo">Cheo au maelezo mafupi (si lazima)</label>
+      <input type="text" id="cheo" placeholder="Mfano: Mteja wa SadeBooks">
+    </div>
+    <div class="field">
+      <label>Faili la sauti</label>
+      <label class="file-drop" id="dropLabel" for="audioFile">Bofya kuchagua faili la sauti (mp3, wav, m4a)</label>
+      <input type="file" id="audioFile" accept="audio/*">
+    </div>
+    <button class="submit" id="addBtn" disabled>Ongeza Ushahidi</button>
+  </div>
+
+  <div class="list">
+    <h3>Ushahidi Uliopakiwa (<span id="count">0</span>)</h3>
+    <div id="items">
+      <div class="empty" id="emptyMsg">Bado hakuna ushahidi ulioongezwa. Anza kwa kupakia sauti hapo juu.</div>
+    </div>
+  </div>
+</main>
+
+<script>
+  const jinaEl = document.getElementById('jina');
+  const cheoEl = document.getElementById('cheo');
+  const fileEl = document.getElementById('audioFile');
+  const dropLabel = document.getElementById('dropLabel');
+  const addBtn = document.getElementById('addBtn');
+  const itemsEl = document.getElementById('items');
+  const emptyMsg = document.getElementById('emptyMsg');
+  const countEl = document.getElementById('count');
+
+  let chosenFile = null;
+
+  fileEl.addEventListener('change', () => {
+    chosenFile = fileEl.files[0] || null;
+    if(chosenFile){
+      dropLabel.textContent = chosenFile.name;
+      dropLabel.classList.add('has-file');
+    } else {
+      dropLabel.textContent = 'Bofya kuchagua faili la sauti (mp3, wav, m4a)';
+      dropLabel.classList.remove('has-file');
+    }
+    checkReady();
+  });
+
+  jinaEl.addEventListener('input', checkReady);
+
+  function checkReady(){
+    addBtn.disabled = !(jinaEl.value.trim() && chosenFile);
+  }
+
+  addBtn.addEventListener('click', () => {
+    const jina = jinaEl.value.trim();
+    const cheo = cheoEl.value.trim();
+    const url = URL.createObjectURL(chosenFile);
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <button class="del">Futa</button>
+      <div class="who">${escapeHtml(jina)}</div>
+      ${cheo ? `<div class="role">${escapeHtml(cheo)}</div>` : '<div class="role">&nbsp;</div>'}
+      <audio controls src="${url}"></audio>
+    `;
+    card.querySelector('.del').addEventListener('click', () => {
+      card.remove();
+      updateCount();
+    });
+    itemsEl.prepend(card);
+
+    // reset form
+    jinaEl.value = '';
+    cheoEl.value = '';
+    fileEl.value = '';
+    chosenFile = null;
+    dropLabel.textContent = 'Bofya kuchagua faili la sauti (mp3, wav, m4a)';
+    dropLabel.classList.remove('has-file');
+    addBtn.disabled = true;
+
+    updateCount();
+  });
+
+  function updateCount(){
+    const n = itemsEl.querySelectorAll('.card').length;
+    countEl.textContent = n;
+    emptyMsg.style.display = n === 0 ? 'block' : 'none';
+  }
+
+  function escapeHtml(str){
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+</script>
+
+</body>
+</html>

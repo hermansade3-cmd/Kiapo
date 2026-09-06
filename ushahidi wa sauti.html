@@ -1,636 +1,726 @@
-<!DOCTYPE html>
-<html lang="sw">
+<!DOCTYPE html><html lang="sw">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#a9603f">
-<title>Ushahidi wa Sauti</title>
+<meta name="theme-color" content="#a9603f"><title>Ushahidi wa Sauti</title><style>
 
-<style>
-  :root{
-    --ink:#1c1a17;
-    --paper:#f7f3ec;
-    --line:#d8cfc0;
-    --clay:#a9603f;
-    --clay-dark:#7e4327;
-    --moss:#4a5a45;
-    --card:#ffffff;
-    --danger:#b33a3a;
-    --success:#46734a;
-  }
+:root{
+  --ink:#1c1a17;
+  --paper:#f7f3ec;
+  --line:#d8cfc0;
+  --clay:#a9603f;
+  --clay-dark:#7e4327;
+  --moss:#4a5a45;
+  --card:#ffffff;
+  --danger:#b33a3a;
+  --success:#46734a;
+  --muted:#81796d;
+}
 
-  *{
-    box-sizing:border-box;
-  }
+*{
+  box-sizing:border-box;
+}
 
-  body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:Georgia, "Iowan Old Style", serif;
-    line-height:1.6;
-  }
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:Georgia,"Times New Roman",serif;
+  line-height:1.6;
+}
+
+header{
+  max-width:760px;
+  margin:auto;
+  padding:45px 20px 30px;
+}
+
+.eyebrow{
+  font-family:Arial,sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.08em;
+  color:var(--moss);
+}
+
+h1{
+  font-size:38px;
+  line-height:1.15;
+  margin:8px 0 16px;
+}
+
+.lead{
+  color:#4a453e;
+  font-size:17px;
+  margin:0;
+}
+
+main{
+  max-width:760px;
+  margin:auto;
+  padding:0 20px 70px;
+}
+
+.explain{
+  border-top:1px solid var(--line);
+  padding-top:28px;
+}
+
+.explain h2{
+  font-family:Arial,sans-serif;
+  font-size:14px;
+  color:var(--clay-dark);
+  margin:22px 0 5px;
+}
+
+.explain p{
+  margin:0 0 18px;
+  font-size:15px;
+  color:#403b34;
+}
+
+/* =========================
+   AUTH SECTION
+========================= */
+
+.auth-section{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:22px;
+  margin-top:30px;
+}
+
+.auth-title{
+  font-family:Arial,sans-serif;
+  font-size:17px;
+  font-weight:700;
+  margin:0 0 18px;
+}
+
+.auth-tabs{
+  display:flex;
+  border-bottom:1px solid var(--line);
+  margin-bottom:20px;
+}
+
+.auth-tab{
+  flex:1;
+  border:0;
+  background:none;
+  padding:11px 5px;
+  font-family:Arial,sans-serif;
+  font-weight:600;
+  color:#8a8272;
+  cursor:pointer;
+}
+
+.auth-tab.active{
+  color:var(--clay);
+  border-bottom:2px solid var(--clay);
+}
+
+.auth-form{
+  display:none;
+}
+
+.auth-form.active{
+  display:block;
+}
+
+.field{
+  margin-bottom:15px;
+}
+
+.field label{
+  display:block;
+  font-family:Arial,sans-serif;
+  font-size:12px;
+  color:#6b6355;
+  margin-bottom:6px;
+}
+
+.field input{
+  width:100%;
+  padding:12px;
+  border:1px solid var(--line);
+  border-radius:7px;
+  background:#fdfcfa;
+  font-size:15px;
+  outline:none;
+}
+
+.field input:focus{
+  border-color:var(--clay);
+}
+
+.primary-btn{
+  width:100%;
+  border:0;
+  background:var(--clay);
+  color:#fff;
+  padding:12px;
+  border-radius:7px;
+  font-family:Arial,sans-serif;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.primary-btn:hover{
+  background:var(--clay-dark);
+}
+
+.primary-btn:disabled{
+  background:#c9bfae;
+  cursor:not-allowed;
+}
+
+.auth-message{
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  margin-top:12px;
+  min-height:18px;
+}
+
+.auth-message.error{
+  color:var(--danger);
+}
+
+.auth-message.success{
+  color:var(--success);
+}
+
+/* =========================
+   USER PANEL
+========================= */
+
+.user-panel{
+  display:none;
+  margin-top:20px;
+  padding:14px;
+  background:#f1eee7;
+  border:1px solid var(--line);
+  border-radius:9px;
+}
+
+.user-panel-inner{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.user-email{
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.logout-btn{
+  border:1px solid var(--line);
+  background:#fff;
+  border-radius:6px;
+  padding:7px 12px;
+  font-family:Arial,sans-serif;
+  font-size:12px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+/* =========================
+   UPLOAD SECTION
+========================= */
+
+.upload-section{
+  display:none;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:22px;
+  margin-top:25px;
+}
+
+.upload-title{
+  font-family:Arial,sans-serif;
+  font-size:17px;
+  font-weight:700;
+  margin:0 0 5px;
+}
+
+.upload-description{
+  font-family:Arial,sans-serif;
+  font-size:12px;
+  color:var(--muted);
+  margin:0 0 20px;
+}
+
+.file-drop{
+  border:2px dashed var(--line);
+  border-radius:9px;
+  padding:25px 15px;
+  text-align:center;
+  cursor:pointer;
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  color:#81796d;
+  transition:.2s;
+}
+
+.file-drop:hover{
+  border-color:var(--clay);
+}
+
+.file-drop.selected{
+  border-color:var(--clay);
+  color:var(--clay-dark);
+  background:#fcf8f4;
+}
+
+.file-drop input{
+  display:none;
+}
+
+.file-name{
+  display:block;
+  margin-top:6px;
+  font-size:12px;
+  word-break:break-word;
+}
+
+.upload-btn{
+  width:100%;
+  margin-top:15px;
+  border:0;
+  background:var(--clay);
+  color:#fff;
+  padding:13px;
+  border-radius:7px;
+  font-family:Arial,sans-serif;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.upload-btn:disabled{
+  background:#c9bfae;
+  cursor:not-allowed;
+}
+
+.progress{
+  display:none;
+  margin-top:17px;
+}
+
+.progress-label{
+  font-family:Arial,sans-serif;
+  font-size:12px;
+  color:#6b6355;
+  margin-bottom:6px;
+}
+
+.progress-track{
+  height:8px;
+  background:#e8e2d9;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  width:0%;
+  height:100%;
+  background:var(--clay);
+  transition:width .2s;
+}
+
+.upload-message{
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  margin-top:12px;
+}
+
+/* =========================
+   TESTIMONIAL LIST
+========================= */
+
+.testimonials{
+  margin-top:42px;
+}
+
+.list-heading{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
+}
+
+.list-heading h2{
+  font-family:Arial,sans-serif;
+  font-size:15px;
+  color:#6b6355;
+  margin:0;
+}
+
+.count{
+  background:#e9e2d8;
+  padding:3px 9px;
+  border-radius:20px;
+  font-family:Arial,sans-serif;
+  font-size:11px;
+}
+
+#items{
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+}
+
+.card{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:17px;
+}
+
+.card-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
+}
+
+.who{
+  font-family:Arial,sans-serif;
+  font-size:15px;
+  font-weight:700;
+}
+
+.role{
+  font-family:Arial,sans-serif;
+  font-size:12px;
+  color:#8a8272;
+  margin-top:2px;
+}
+
+.audio-player{
+  width:100%;
+  margin-top:13px;
+}
+
+.card-date{
+  font-family:Arial,sans-serif;
+  font-size:10px;
+  color:#aaa18f;
+  margin-top:7px;
+}
+
+.delete-btn{
+  border:0;
+  background:none;
+  color:var(--danger);
+  font-family:Arial,sans-serif;
+  font-size:11px;
+  text-decoration:underline;
+  cursor:pointer;
+}
+
+.loading,
+.empty{
+  text-align:center;
+  padding:20px;
+  font-family:Arial,sans-serif;
+  font-size:13px;
+  color:#9b9385;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:600px){
 
   header{
-    padding:50px 24px 35px;
-    max-width:760px;
-    margin:0 auto;
-  }
-
-  .eyebrow{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-    color:var(--moss);
-    letter-spacing:.04em;
-    font-weight:600;
-  }
-
-  h1{
-    font-size:38px;
-    margin:8px 0 18px;
-    font-weight:600;
-    line-height:1.15;
-  }
-
-  p.lead{
-    font-size:17px;
-    color:#4a453e;
-    max-width:60ch;
+    padding:35px 17px 25px;
   }
 
   main{
-    max-width:760px;
-    margin:0 auto;
-    padding:0 24px 80px;
+    padding-left:17px;
+    padding-right:17px;
   }
 
-  section.explain{
-    border-top:1px solid var(--line);
-    padding-top:32px;
-    margin-top:8px;
+  h1{
+    font-size:31px;
   }
 
-  section.explain h2{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:15px;
-    font-weight:600;
-    color:var(--clay-dark);
-    margin:0 0 6px;
-  }
-
-  section.explain p{
+  .lead{
     font-size:16px;
-    color:#3a362f;
-    margin:0 0 22px;
-    max-width:62ch;
   }
 
-  /* LOGIN */
-  .login-box{
-    background:#fff;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:22px;
-    margin-top:30px;
+  .auth-section,
+  .upload-section{
+    padding:18px;
   }
 
-  .login-box h3{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:16px;
-    margin:0 0 15px;
+  .user-panel-inner{
+    align-items:flex-start;
   }
 
-  .login-status{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-    margin-top:12px;
-    color:#6b6355;
-  }
-
-  .user-info{
-    display:none;
-    padding:12px 14px;
-    background:#f4f0e8;
-    border-radius:7px;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-  }
-
-  /* FORM */
-  .upload-box{
-    display:none;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:24px;
-    margin-top:36px;
-  }
-
-  .upload-box h3{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:16px;
-    margin:0 0 14px;
-  }
-
-  .field{
-    margin-bottom:14px;
-  }
-
-  .field label{
-    display:block;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-    color:#6b6355;
-    margin-bottom:5px;
-  }
-
-  .field input[type=text],
-  .field input[type=email],
-  .field input[type=password]{
-    width:100%;
-    padding:11px 12px;
-    border:1px solid var(--line);
-    border-radius:6px;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:15px;
-    background:#fdfcfa;
-    outline:none;
-  }
-
-  .field input:focus{
-    border-color:var(--clay);
-  }
-
-  .file-drop{
-    border:1.5px dashed var(--line);
-    border-radius:8px;
-    padding:20px;
-    text-align:center;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:14px;
-    color:#8a8272;
-    cursor:pointer;
-    transition:.15s;
-  }
-
-  .file-drop:hover{
-    border-color:var(--clay);
-  }
-
-  .file-drop.has-file{
-    border-color:var(--clay);
-    color:var(--clay-dark);
-  }
-
-  .file-drop input{
-    display:none;
-  }
-
-  button{
-    cursor:pointer;
-  }
-
-  button.submit,
-  button.login-btn,
-  button.signup-btn{
-    margin-top:6px;
-    background:var(--clay);
-    color:#fff;
-    border:none;
-    padding:12px 22px;
-    border-radius:6px;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:14px;
-    font-weight:600;
-  }
-
-  button.submit:hover,
-  button.login-btn:hover,
-  button.signup-btn:hover{
-    background:var(--clay-dark);
-  }
-
-  button.submit:disabled,
-  button.login-btn:disabled,
-  button.signup-btn:disabled{
-    background:#c9bfae;
-    cursor:not-allowed;
-  }
-
-  button.logout{
-    background:none;
-    border:1px solid var(--line);
-    padding:7px 12px;
-    border-radius:5px;
-    font-size:12px;
-    margin-left:8px;
-  }
-
-  button.logout:hover{
-    background:#eee8de;
-  }
-
-  .login-buttons{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-  }
-
-  /* PROGRESS */
-  .progress-area{
-    display:none;
-    margin-top:18px;
-  }
-
-  .progress-text{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-    color:#6b6355;
-    margin-bottom:7px;
-  }
-
-  .progress-bar{
-    width:100%;
-    height:8px;
-    background:#e7e0d5;
-    border-radius:20px;
-    overflow:hidden;
-  }
-
-  .progress-fill{
-    width:0%;
-    height:100%;
-    background:var(--clay);
-    transition:width .2s;
-  }
-
-  /* MESSAGE */
-  .message{
-    display:none;
-    padding:11px 13px;
-    border-radius:7px;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-    margin-top:14px;
-  }
-
-  .message.success{
-    display:block;
-    background:#edf5ed;
-    color:var(--success);
-  }
-
-  .message.error{
-    display:block;
-    background:#faeeee;
-    color:var(--danger);
-  }
-
-  /* LIST */
-  .list{
-    margin-top:44px;
-    display:flex;
-    flex-direction:column;
-    gap:16px;
-  }
-
-  .list h3{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:15px;
-    color:#6b6355;
-    margin:0 0 4px;
-  }
-
-  .card{
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:18px 20px;
-  }
-
-  .card .who{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-weight:600;
-    font-size:15px;
-  }
-
-  .card .role{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-    color:#8a8272;
-    margin-bottom:10px;
-  }
-
-  .date{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:11px;
-    color:#aaa18f;
-    margin-top:7px;
-  }
-
-  audio{
-    width:100%;
-    margin-top:5px;
-  }
-
-  .empty{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:14px;
-    color:#a49c8c;
-    padding:20px 0;
-  }
-
-  .del{
-    float:right;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:12px;
-    color:var(--danger);
-    background:none;
-    border:none;
-    cursor:pointer;
-    text-decoration:underline;
-  }
-
-  .del:hover{
-    color:#7e2020;
-  }
-
-  .loading{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:13px;
-    color:#8a8272;
-    padding:20px 0;
-    text-align:center;
-  }
-
-  .small-note{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-    font-size:11px;
-    color:#9a9284;
-    margin-top:10px;
-  }
-
-  @media(max-width:600px){
-    header{
-      padding:38px 18px 28px;
-    }
-
-    main{
-      padding:0 18px 60px;
-    }
-
-    h1{
-      font-size:32px;
-    }
-
-    .upload-box,
-    .login-box{
-      padding:18px;
-    }
-  }
-</style>
-</head>
-
-<body>
-
-<header>
-  <div class="eyebrow">SEHEMU YA WEBSITE</div>
-
-  <h1>Ushahidi wa Sauti</h1>
-
-  <p class="lead">
-    Wateja wako wanaweza kusema wenyewe. Badala ya kuandika maoni,
-    waache warekodi sauti zao — imani inajengeka zaidi watu
-    wanaposikia sauti halisi ya mtu aliyeridhika na huduma yako.
-  </p>
-</header>
-
-
-<main>
-
-  <section class="explain">
-
-    <h2>NI NINI</h2>
-
-    <p>
-      Ushahidi wa sauti (audio testimonial) ni rekodi fupi ya mteja
-      akieleza uzoefu wake na bidhaa au huduma yako, badala ya maandishi.
-      Sauti inapakiwa kwenye mfumo na kuhifadhiwa mtandaoni.
-    </p>
-
-
-    <h2>KWA NINI ITUMIKE</h2>
-
-    <p>
-      Sauti ya mtu halisi inatoa uzito zaidi kuliko maandishi tu.
-      Inafaa hasa kwa biashara za huduma, nyumba za kupanga, vitabu,
-      ushauri na huduma nyingine ambapo watu wanataka kusikia uzoefu
-      wa mteja halisi.
-    </p>
-
-
-    <h2>JINSI SEHEMU HII INAVYOFANYA KAZI</h2>
-
-    <p>
-      Chini kuna fomu ya kupakia faili la sauti pamoja na jina la
-      mtoa ushahidi. Faili linahifadhiwa kwenye Firebase Storage,
-      wakati taarifa zake zinahifadhiwa kwenye Firestore.
-      Kwa hiyo ukifunga website na kurudi baadaye, ushahidi bado utaonekana.
-    </p>
-
-  </section>
-
-
-  <!-- LOGIN -->
-  <div class="login-box" id="loginBox">
-
-    <h3>Ingia ili kuongeza ushahidi</h3>
-
-    <div class="field">
-      <label for="email">Barua pepe</label>
-      <input
-        type="email"
-        id="email"
-        placeholder="mfano@email.com"
-        autocomplete="email"
-      >
-    </div>
-
-    <div class="field">
-      <label for="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        placeholder="Password"
-        autocomplete="current-password"
-      >
-    </div>
-
-    <div class="login-buttons">
-
-      <button class="login-btn" id="loginBtn">
-        Ingia
-      </button>
-
-      <button class="signup-btn" id="signupBtn">
-        Jisajili
-      </button>
-
-    </div>
-
-    <div class="login-status" id="loginStatus"></div>
-
-    <div class="small-note">
-      Akaunti hii inatumia Firebase Authentication.
-    </div>
+}
+
+</style></head><body><header>  <div class="eyebrow">
+    SEHEMU YA WEBSITE
+  </div>  <h1>
+    Ushahidi wa Sauti
+  </h1>  <p class="lead">
+    Wateja wako wanaweza kusema wenyewe.
+    Badala ya kuandika maoni, waache warekodi
+    sauti zao na kushirikisha uzoefu wao halisi.
+  </p></header><main><section class="explain">  <h2>NI NINI?</h2>  <p>
+    Ushahidi wa sauti ni rekodi fupi ya mteja
+    akieleza uzoefu wake kuhusu bidhaa au huduma.
+  </p>  <h2>KWA NINI ITUMIKE?</h2>  <p>
+    Sauti ya mtu halisi inaweza kusaidia kujenga
+    uaminifu zaidi kwa watu wanaotembelea website.
+  </p>  <h2>MFUMO HUU UNAFANYA KAZI VIPI?</h2>  <p>
+    Audio inayopakiwa haihifadhiwi kwenye browser.
+    Inatumwa moja kwa moja kwenye Firebase Storage,
+    na taarifa zake zinawekwa kwenye Firestore.
+    Hivyo ukitoka kwenye website na kurudi baadaye,
+    audio bado itaonekana.
+  </p></section><!-- =====================================================
+     AUTHENTICATION
+===================================================== --><section class="auth-section" id="authSection">  <h2 class="auth-title">
+    Akaunti
+  </h2>  <div class="auth-tabs"><button
+  class="auth-tab active"
+  id="loginTab"
+  type="button">
+  Ingia
+</button>
+
+<button
+  class="auth-tab"
+  id="signupTab"
+  type="button">
+  Jisajili
+</button>
+
+  </div>  <!-- LOGIN -->  <form
+    class="auth-form active"
+    id="loginForm"><div class="field">
+
+  <label for="loginEmail">
+    Barua pepe
+  </label>
+
+  <input
+    id="loginEmail"
+    type="email"
+    autocomplete="email"
+    placeholder="mfano@email.com"
+    required>
+
+</div>
+
+
+<div class="field">
+
+  <label for="loginPassword">
+    Password
+  </label>
+
+  <input
+    id="loginPassword"
+    type="password"
+    autocomplete="current-password"
+    placeholder="Password"
+    required>
+
+</div>
+
+
+<button
+  class="primary-btn"
+  id="loginButton"
+  type="submit">
+
+  Ingia
+
+</button>
+
+  </form>  <!-- SIGN UP -->  <form
+    class="auth-form"
+    id="signupForm"><div class="field">
+
+  <label for="signupEmail">
+    Barua pepe
+  </label>
+
+  <input
+    id="signupEmail"
+    type="email"
+    autocomplete="email"
+    placeholder="mfano@email.com"
+    required>
+
+</div>
+
+
+<div class="field">
+
+  <label for="signupPassword">
+    Password
+  </label>
+
+  <input
+    id="signupPassword"
+    type="password"
+    autocomplete="new-password"
+    placeholder="Angalau herufi 6"
+    minlength="6"
+    required>
+
+</div>
 
+
+<button
+  class="primary-btn"
+  id="signupButton"
+  type="submit">
+
+  Jisajili
+
+</button>
+
+  </form>  <div
+    class="auth-message"
+    id="authMessage">
+  </div></section><!-- =====================================================
+     LOGGED IN USER
+===================================================== --><section
+  class="user-panel"
+  id="userPanel">  <div class="user-panel-inner"><div class="user-email">
+
+  Umeingia kama:
+  <strong id="currentEmail">
+  </strong>
+
+</div>
+
+
+<button
+  class="logout-btn"
+  id="logoutButton"
+  type="button">
+
+  Toka
+
+</button>
+
+  </div></section><!-- =====================================================
+     UPLOAD
+===================================================== --><section
+  class="upload-section"
+  id="uploadSection">  <h2 class="upload-title">
+    Pakia Ushahidi Mpya
+  </h2>  <p class="upload-description">
+    Sehemu hii inapatikana baada ya kuingia.
+    Faili la sauti linaweza kuwa MP3, WAV au M4A.
+    Kikomo cha faili ni 25 MB.
+  </p>  <div class="field"><label for="customerName">
+  Jina la mteja
+</label>
+
+<input
+  id="customerName"
+  type="text"
+  placeholder="Mfano: Mama Fatma, Lindi">
+
+  </div>  <div class="field"><label for="customerRole">
+  Cheo au maelezo mafupi
+  (si lazima)
+</label>
+
+<input
+  id="customerRole"
+  type="text"
+  placeholder="Mfano: Mteja wa SadeBooks">
+
+  </div><label
+class="file-drop"
+id="fileDrop"
+for="audioFile">
+
+Bofya hapa kuchagua faili la sauti
+
+<span class="file-name" id="fileName">
+  MP3 • WAV • M4A
+</span>
+
+<input
+  id="audioFile"
+  type="file"
+  accept="audio/mpeg,audio/wav,audio/x-wav,audio/mp4,audio/*,.mp3,.wav,.m4a">
+
+  </label><button
+class="upload-btn"
+id="uploadButton"
+type="button"
+disabled>
+
+Ongeza Ushahidi
+
+  </button>  <div
+    class="progress"
+    id="progress"><div
+  class="progress-label"
+  id="progressLabel">
+
+  Inajiandaa...
+
+</div>
+
+
+<div class="progress-track">
+
+  <div
+    class="progress-bar"
+    id="progressBar">
   </div>
 
+</div>
 
-  <!-- USER INFO -->
-  <div class="user-info" id="userInfo">
-    Umeingia kama:
-    <strong id="userEmail"></strong>
+  </div>  <div
+    class="upload-message"
+    id="uploadMessage">
+  </div></section><!-- =====================================================
+     AUDIO LIST
+===================================================== --><section class="testimonials">  <div class="list-heading"><h2>
+  Ushahidi Uliopakiwa
+</h2>
 
-    <button class="logout" id="logoutBtn">
-      Toka
-    </button>
-  </div>
+<span
+  class="count"
+  id="audioCount">
 
+  0
 
-  <!-- UPLOAD FORM -->
-  <div class="upload-box" id="uploadBox">
+</span>
 
-    <h3>Pakia Ushahidi Mpya</h3>
+  </div>  <div id="items"><div
+  class="loading"
+  id="loading">
 
-    <div class="field">
+  Inatafuta ushahidi...
 
-      <label for="jina">
-        Jina la mteja
-      </label>
+</div>
 
-      <input
-        type="text"
-        id="jina"
-        placeholder="Mfano: Mama Fatma, Lindi"
-      >
+  </div></section></main><script type="module">
 
-    </div>
-
-
-    <div class="field">
-
-      <label for="cheo">
-        Cheo au maelezo mafupi (si lazima)
-      </label>
-
-      <input
-        type="text"
-        id="cheo"
-        placeholder="Mfano: Mteja wa SadeBooks"
-      >
-
-    </div>
-
-
-    <div class="field">
-
-      <label>
-        Faili la sauti
-      </label>
-
-      <label
-        class="file-drop"
-        id="dropLabel"
-        for="audioFile"
-      >
-        Bofya kuchagua faili la sauti
-        (mp3, wav, m4a)
-      </label>
-
-      <input
-        type="file"
-        id="audioFile"
-        accept="audio/*,.mp3,.wav,.m4a"
-      >
-
-    </div>
-
-
-    <button
-      class="submit"
-      id="addBtn"
-      disabled
-    >
-      Ongeza Ushahidi
-    </button>
-
-
-    <!-- PROGRESS -->
-    <div class="progress-area" id="progressArea">
-
-      <div
-        class="progress-text"
-        id="progressText"
-      >
-        Inapakia...
-      </div>
-
-      <div class="progress-bar">
-        <div
-          class="progress-fill"
-          id="progressFill"
-        ></div>
-      </div>
-
-    </div>
-
-
-    <div
-      class="message"
-      id="message"
-    ></div>
-
-  </div>
-
-
-  <!-- LIST -->
-  <div class="list">
-
-    <h3>
-      Ushahidi Uliopakiwa
-      (<span id="count">0</span>)
-    </h3>
-
-    <div id="items">
-
-      <div
-        class="loading"
-        id="loadingMsg"
-      >
-        Inatafuta ushahidi...
-      </div>
-
-      <div
-        class="empty"
-        id="emptyMsg"
-        style="display:none;"
-      >
-        Bado hakuna ushahidi ulioongezwa.
-      </div>
-
-    </div>
-
-  </div>
-
-</main>
-
-
-<script type="module">
-
-/* =========================================================
+/* =====================================================
    FIREBASE IMPORTS
-========================================================= */
+===================================================== */
 
 import {
   initializeApp
@@ -648,15 +738,15 @@ import {
 
 import {
   getFirestore,
-  doc,
-  setDoc,
-  addDoc,
   collection,
+  addDoc,
+  setDoc,
+  doc,
+  deleteDoc,
   serverTimestamp,
-  query,
-  orderBy,
   onSnapshot,
-  deleteDoc
+  query,
+  orderBy
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 
@@ -669,9 +759,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
 
 
-/* =========================================================
-   FIREBASE CONFIGURATION
-========================================================= */
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
 const firebaseConfig = {
 
@@ -695,254 +785,310 @@ const firebaseConfig = {
 
   measurementId:
     "G-E1CLSF4EP3"
+
 };
 
 
-/* =========================================================
-   INITIALIZE FIREBASE
-========================================================= */
+/* =====================================================
+   INITIALIZE
+===================================================== */
 
-const app = initializeApp(firebaseConfig);
+const app =
+  initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth =
+  getAuth(app);
 
-const db = getFirestore(app);
+const db =
+  getFirestore(app);
 
-const storage = getStorage(app);
-
-
-/* =========================================================
-   HTML ELEMENTS
-========================================================= */
-
-const emailEl =
-  document.getElementById("email");
-
-const passwordEl =
-  document.getElementById("password");
-
-const loginBtn =
-  document.getElementById("loginBtn");
-
-const signupBtn =
-  document.getElementById("signupBtn");
-
-const logoutBtn =
-  document.getElementById("logoutBtn");
-
-const loginBox =
-  document.getElementById("loginBox");
-
-const loginStatus =
-  document.getElementById("loginStatus");
-
-const userInfo =
-  document.getElementById("userInfo");
-
-const userEmail =
-  document.getElementById("userEmail");
-
-const uploadBox =
-  document.getElementById("uploadBox");
-
-const jinaEl =
-  document.getElementById("jina");
-
-const cheoEl =
-  document.getElementById("cheo");
-
-const fileEl =
-  document.getElementById("audioFile");
-
-const dropLabel =
-  document.getElementById("dropLabel");
-
-const addBtn =
-  document.getElementById("addBtn");
-
-const itemsEl =
-  document.getElementById("items");
-
-const emptyMsg =
-  document.getElementById("emptyMsg");
-
-const loadingMsg =
-  document.getElementById("loadingMsg");
-
-const countEl =
-  document.getElementById("count");
-
-const progressArea =
-  document.getElementById("progressArea");
-
-const progressText =
-  document.getElementById("progressText");
-
-const progressFill =
-  document.getElementById("progressFill");
-
-const messageEl =
-  document.getElementById("message");
+const storage =
+  getStorage(app);
 
 
-/* =========================================================
-   CURRENT USER
-========================================================= */
+/* =====================================================
+   VARIABLES
+===================================================== */
 
 let currentUser = null;
 
-let chosenFile = null;
+let selectedFile = null;
 
 
-/* =========================================================
-   MESSAGE FUNCTION
-========================================================= */
+/* =====================================================
+   ELEMENTS
+===================================================== */
 
-function showMessage(text, type){
+const loginTab =
+  document.getElementById("loginTab");
 
-  messageEl.textContent = text;
+const signupTab =
+  document.getElementById("signupTab");
 
-  messageEl.className =
-    "message " + type;
+const loginForm =
+  document.getElementById("loginForm");
 
-}
+const signupForm =
+  document.getElementById("signupForm");
+
+const loginEmail =
+  document.getElementById("loginEmail");
+
+const loginPassword =
+  document.getElementById("loginPassword");
+
+const signupEmail =
+  document.getElementById("signupEmail");
+
+const signupPassword =
+  document.getElementById("signupPassword");
+
+const loginButton =
+  document.getElementById("loginButton");
+
+const signupButton =
+  document.getElementById("signupButton");
+
+const authMessage =
+  document.getElementById("authMessage");
+
+const userPanel =
+  document.getElementById("userPanel");
+
+const currentEmail =
+  document.getElementById("currentEmail");
+
+const logoutButton =
+  document.getElementById("logoutButton");
+
+const uploadSection =
+  document.getElementById("uploadSection");
+
+const customerName =
+  document.getElementById("customerName");
+
+const customerRole =
+  document.getElementById("customerRole");
+
+const audioFile =
+  document.getElementById("audioFile");
+
+const fileDrop =
+  document.getElementById("fileDrop");
+
+const fileName =
+  document.getElementById("fileName");
+
+const uploadButton =
+  document.getElementById("uploadButton");
+
+const progress =
+  document.getElementById("progress");
+
+const progressLabel =
+  document.getElementById("progressLabel");
+
+const progressBar =
+  document.getElementById("progressBar");
+
+const uploadMessage =
+  document.getElementById("uploadMessage");
+
+const items =
+  document.getElementById("items");
+
+const loading =
+  document.getElementById("loading");
+
+const audioCount =
+  document.getElementById("audioCount");
 
 
-function clearMessage(){
+/* =====================================================
+   AUTH TABS
+===================================================== */
 
-  messageEl.textContent = "";
+loginTab.addEventListener(
+  "click",
+  () => {
 
-  messageEl.className = "message";
+    loginTab.classList.add("active");
 
-}
+    signupTab.classList.remove("active");
 
+    loginForm.classList.add("active");
 
-/* =========================================================
-   LOGIN STATUS
-========================================================= */
+    signupForm.classList.remove("active");
 
-function loginMessage(text){
-
-  loginStatus.textContent = text;
-
-}
-
-
-/* =========================================================
-   ESCAPE HTML
-========================================================= */
-
-function escapeHtml(str){
-
-  const div =
-    document.createElement("div");
-
-  div.textContent = str || "";
-
-  return div.innerHTML;
-
-}
-
-
-/* =========================================================
-   CHECK FORM
-========================================================= */
-
-function checkReady(){
-
-  addBtn.disabled =
-    !(
-      currentUser &&
-      jinaEl.value.trim() &&
-      chosenFile
-    );
-
-}
-
-
-/* =========================================================
-   SELECT AUDIO
-========================================================= */
-
-fileEl.addEventListener("change", () => {
-
-  chosenFile =
-    fileEl.files[0] || null;
-
-
-  if(chosenFile){
-
-    dropLabel.textContent =
-      "✓ " + chosenFile.name;
-
-    dropLabel.classList.add("has-file");
-
-  }else{
-
-    dropLabel.textContent =
-      "Bofya kuchagua faili la sauti (mp3, wav, m4a)";
-
-    dropLabel.classList.remove("has-file");
+    clearAuthMessage();
 
   }
-
-
-  checkReady();
-
-});
-
-
-jinaEl.addEventListener(
-  "input",
-  checkReady
 );
 
 
-/* =========================================================
-   SIGN UP
-========================================================= */
-
-signupBtn.addEventListener(
+signupTab.addEventListener(
   "click",
-  async () => {
+  () => {
+
+    signupTab.classList.add("active");
+
+    loginTab.classList.remove("active");
+
+    signupForm.classList.add("active");
+
+    loginForm.classList.remove("active");
+
+    clearAuthMessage();
+
+  }
+);
+
+
+/* =====================================================
+   AUTH MESSAGE
+===================================================== */
+
+function showAuthMessage(
+  text,
+  type
+){
+
+  authMessage.textContent =
+    text;
+
+  authMessage.className =
+    "auth-message " + type;
+
+}
+
+
+function clearAuthMessage(){
+
+  authMessage.textContent =
+    "";
+
+  authMessage.className =
+    "auth-message";
+
+}
+
+
+/* =====================================================
+   LOGIN
+===================================================== */
+
+loginForm.addEventListener(
+  "submit",
+  async (event) => {
+
+    event.preventDefault();
 
     const email =
-      emailEl.value.trim();
+      loginEmail.value.trim();
 
     const password =
-      passwordEl.value;
+      loginPassword.value;
 
 
     if(!email || !password){
 
-      loginMessage(
-        "Weka barua pepe na password."
+      showAuthMessage(
+        "Weka barua pepe na password.",
+        "error"
       );
 
       return;
+
     }
 
 
-    if(password.length < 6){
+    loginButton.disabled =
+      true;
 
-      loginMessage(
-        "Password iwe na angalau herufi 6."
-      );
-
-      return;
-    }
-
-
-    signupBtn.disabled = true;
-
-    loginMessage(
-      "Inatengeneza akaunti..."
-    );
+    loginButton.textContent =
+      "Inaingia...";
 
 
     try{
 
-      const cred =
+      await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+
+      showAuthMessage(
+        "✓ Umeingia kikamilifu.",
+        "success"
+      );
+
+
+      loginForm.reset();
+
+
+    }catch(error){
+
+      console.error(error);
+
+      showAuthMessage(
+        getFirebaseError(error),
+        "error"
+      );
+
+    }finally{
+
+      loginButton.disabled =
+        false;
+
+      loginButton.textContent =
+        "Ingia";
+
+    }
+
+  }
+);
+
+
+/* =====================================================
+   SIGN UP
+===================================================== */
+
+signupForm.addEventListener(
+  "submit",
+  async (event) => {
+
+    event.preventDefault();
+
+    const email =
+      signupEmail.value.trim();
+
+    const password =
+      signupPassword.value;
+
+
+    if(password.length < 6){
+
+      showAuthMessage(
+        "Password lazima iwe na angalau herufi 6.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    signupButton.disabled =
+      true;
+
+    signupButton.textContent =
+      "Inatengeneza akaunti...";
+
+
+    try{
+
+      const credential =
         await createUserWithEmailAndPassword(
           auth,
           email,
@@ -954,15 +1100,15 @@ signupBtn.addEventListener(
         doc(
           db,
           "sadehub_users",
-          cred.user.uid
+          credential.user.uid
         ),
         {
 
           uid:
-            cred.user.uid,
+            credential.user.uid,
 
           email:
-            cred.user.email,
+            credential.user.email,
 
           createdAt:
             serverTimestamp(),
@@ -993,10 +1139,10 @@ signupBtn.addEventListener(
         {
 
           uid:
-            cred.user.uid,
+            credential.user.uid,
 
           email:
-            cred.user.email,
+            credential.user.email,
 
           actionType:
             "signup",
@@ -1022,22 +1168,31 @@ signupBtn.addEventListener(
       );
 
 
-      loginMessage(
-        "✓ Akaunti imetengenezwa."
+      showAuthMessage(
+        "✓ Akaunti imetengenezwa.",
+        "success"
       );
+
+
+      signupForm.reset();
 
 
     }catch(error){
 
       console.error(error);
 
-      loginMessage(
-        firebaseError(error)
+      showAuthMessage(
+        getFirebaseError(error),
+        "error"
       );
 
     }finally{
 
-      signupBtn.disabled = false;
+      signupButton.disabled =
+        false;
+
+      signupButton.textContent =
+        "Jisajili";
 
     }
 
@@ -1045,147 +1200,16 @@ signupBtn.addEventListener(
 );
 
 
-/* =========================================================
-   SIGN IN
-========================================================= */
-
-loginBtn.addEventListener(
-  "click",
-  async () => {
-
-    const email =
-      emailEl.value.trim();
-
-    const password =
-      passwordEl.value;
-
-
-    if(!email || !password){
-
-      loginMessage(
-        "Weka barua pepe na password."
-      );
-
-      return;
-    }
-
-
-    loginBtn.disabled = true;
-
-    loginMessage(
-      "Inaingia..."
-    );
-
-
-    try{
-
-      const cred =
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-
-
-      await setDoc(
-        doc(
-          db,
-          "sadehub_users",
-          cred.user.uid
-        ),
-        {
-
-          uid:
-            cred.user.uid,
-
-          email:
-            cred.user.email,
-
-          lastLogin:
-            serverTimestamp(),
-
-          platform:
-            navigator.userAgent.includes("Mobile")
-              ? "Mobile"
-              : "Desktop",
-
-          appVersion:
-            "SadeHub v1.0"
-
-        },
-        {
-          merge:true
-        }
-      );
-
-
-      await addDoc(
-        collection(
-          db,
-          "form_submissions"
-        ),
-        {
-
-          uid:
-            cred.user.uid,
-
-          email:
-            cred.user.email,
-
-          actionType:
-            "signin",
-
-          timestamp:
-            serverTimestamp(),
-
-          platform:
-            navigator.userAgent.includes("Mobile")
-              ? "Mobile"
-              : "Desktop",
-
-          language:
-            navigator.language || "sw",
-
-          screenSize:
-            screen.width + "x" + screen.height,
-
-          appVersion:
-            "SadeHub v1.0"
-
-        }
-      );
-
-
-      loginMessage(
-        "✓ Umeingia kikamilifu."
-      );
-
-
-    }catch(error){
-
-      console.error(error);
-
-      loginMessage(
-        firebaseError(error)
-      );
-
-    }finally{
-
-      loginBtn.disabled = false;
-
-    }
-
-  }
-);
-
-
-/* =========================================================
+/* =====================================================
    LOGOUT
-========================================================= */
+===================================================== */
 
-logoutBtn.addEventListener(
+logoutButton.addEventListener(
   "click",
   async () => {
+
+    logoutButton.disabled =
+      true;
 
     try{
 
@@ -1195,103 +1219,75 @@ logoutBtn.addEventListener(
 
       console.error(error);
 
+    }finally{
+
+      logoutButton.disabled =
+        false;
+
     }
 
   }
 );
 
 
-/* =========================================================
-   FIREBASE ERROR TRANSLATION
-========================================================= */
-
-function firebaseError(error){
-
-  const code =
-    error?.code || "";
-
-
-  if(code.includes("auth/invalid-credential")){
-    return "Barua pepe au password si sahihi.";
-  }
-
-  if(code.includes("auth/user-not-found")){
-    return "Akaunti hiyo haipo.";
-  }
-
-  if(code.includes("auth/wrong-password")){
-    return "Password si sahihi.";
-  }
-
-  if(code.includes("auth/email-already-in-use")){
-    return "Barua pepe hiyo tayari imesajiliwa.";
-  }
-
-  if(code.includes("auth/invalid-email")){
-    return "Barua pepe si sahihi.";
-  }
-
-  if(code.includes("auth/weak-password")){
-    return "Password ni dhaifu. Tumia angalau herufi 6.";
-  }
-
-  if(code.includes("auth/too-many-requests")){
-    return "Majaribio yamekuwa mengi. Jaribu tena baadaye.";
-  }
-
-  if(code.includes("permission-denied")){
-    return "Firebase imezuia ruhusa. Angalia Firestore/Storage Rules.";
-  }
-
-  return "Kuna tatizo: " + (error.message || "Unknown error");
-
-}
-
-
-/* =========================================================
+/* =====================================================
    AUTH STATE
-========================================================= */
+===================================================== */
 
 onAuthStateChanged(
   auth,
   (user) => {
 
-    currentUser = user;
+    currentUser =
+      user;
 
 
     if(user){
 
-      /* USER AMEINGIA */
+      /*
+       * USER AMEINGIA
+       */
 
-      loginBox.style.display =
-        "none";
-
-      userInfo.style.display =
+      userPanel.style.display =
         "block";
 
-      uploadBox.style.display =
+      uploadSection.style.display =
         "block";
 
-      userEmail.textContent =
-        user.email || "Mtumiaji";
+      currentEmail.textContent =
+        user.email || "";
 
 
-      checkReady();
+      updateUploadButton();
 
     }else{
 
-      /* USER HAKUINGIA */
+      /*
+       * USER AMETOKA
+       */
 
-      loginBox.style.display =
-        "block";
-
-      userInfo.style.display =
+      userPanel.style.display =
         "none";
 
-      uploadBox.style.display =
+      uploadSection.style.display =
         "none";
 
-      addBtn.disabled = true;
+      selectedFile =
+        null;
+
+      audioFile.value =
+        "";
+
+      customerName.value =
+        "";
+
+      customerRole.value =
+        "";
+
+      resetFileDisplay();
+
+      uploadButton.disabled =
+        true;
 
     }
 
@@ -1299,108 +1295,207 @@ onAuthStateChanged(
 );
 
 
-/* =========================================================
-   UPLOAD AUDIO
-========================================================= */
+/* =====================================================
+   FILE SELECT
+===================================================== */
 
-addBtn.addEventListener(
+audioFile.addEventListener(
+  "change",
+  () => {
+
+    selectedFile =
+      audioFile.files[0] || null;
+
+
+    if(selectedFile){
+
+      fileDrop.classList.add(
+        "selected"
+      );
+
+      fileName.textContent =
+        selectedFile.name;
+
+    }else{
+
+      resetFileDisplay();
+
+    }
+
+
+    updateUploadButton();
+
+  }
+);
+
+
+/* =====================================================
+   RESET FILE
+===================================================== */
+
+function resetFileDisplay(){
+
+  fileDrop.classList.remove(
+    "selected"
+  );
+
+  fileName.textContent =
+    "MP3 • WAV • M4A";
+
+}
+
+
+/* =====================================================
+   UPLOAD BUTTON STATE
+===================================================== */
+
+function updateUploadButton(){
+
+  uploadButton.disabled =
+    !(
+      currentUser &&
+      customerName.value.trim() &&
+      selectedFile
+    );
+
+}
+
+
+customerName.addEventListener(
+  "input",
+  updateUploadButton
+);
+
+
+/* =====================================================
+   UPLOAD AUDIO
+===================================================== */
+
+uploadButton.addEventListener(
   "click",
   async () => {
 
     if(!currentUser){
 
-      showMessage(
-        "Tafadhali ingia kwanza.",
+      showUploadMessage(
+        "Ingia kwanza ili kupakia ushahidi.",
         "error"
       );
 
       return;
+
     }
 
 
-    const jina =
-      jinaEl.value.trim();
+    const name =
+      customerName.value.trim();
 
-    const cheo =
-      cheoEl.value.trim();
+    const role =
+      customerRole.value.trim();
 
 
-    if(!jina || !chosenFile){
+    if(!name){
 
-      showMessage(
-        "Weka jina na uchague faili la sauti.",
+      showUploadMessage(
+        "Weka jina la mteja.",
         "error"
       );
 
       return;
+
     }
 
 
-    /* CHECK FILE TYPE */
+    if(!selectedFile){
 
-    if(
-      !chosenFile.type.startsWith("audio/")
-    ){
-
-      showMessage(
-        "Tafadhali chagua faili la sauti.",
+      showUploadMessage(
+        "Chagua faili la sauti.",
         "error"
       );
 
       return;
+
     }
 
 
-    /* LIMIT 25 MB */
+    /* =========================
+       SIZE LIMIT
+    ========================= */
 
     const maxSize =
       25 * 1024 * 1024;
 
 
-    if(chosenFile.size > maxSize){
+    if(selectedFile.size > maxSize){
 
-      showMessage(
+      showUploadMessage(
         "Faili ni kubwa sana. Kikomo ni 25 MB.",
         "error"
       );
 
       return;
+
     }
 
 
-    addBtn.disabled = true;
+    /* =========================
+       AUDIO CHECK
+    ========================= */
 
-    clearMessage();
+    if(
+      !selectedFile.type.startsWith(
+        "audio/"
+      )
+    ){
 
-    progressArea.style.display =
+      showUploadMessage(
+        "Faili ulilochagua si audio.",
+        "error"
+      );
+
+      return;
+
+    }
+
+
+    uploadButton.disabled =
+      true;
+
+    progress.style.display =
       "block";
 
-    progressFill.style.width =
+    progressBar.style.width =
       "0%";
 
-    progressText.textContent =
+    progressLabel.textContent =
       "Inaanza kupakia...";
+
+    uploadMessage.textContent =
+      "";
 
 
     try{
 
       /*
-       * UNIQUE FILE NAME
+       * CREATE SAFE FILE NAME
        */
 
-      const safeName =
-        chosenFile.name
-          .replace(/[^a-zA-Z0-9._-]/g, "_");
+      const cleanName =
+        selectedFile.name
+          .replace(
+            /[^a-zA-Z0-9._-]/g,
+            "_"
+          );
 
 
-      const fileName =
+      const uniqueName =
         Date.now() +
         "_" +
         Math.random()
           .toString(36)
           .substring(2,10) +
         "_" +
-        safeName;
+        cleanName;
 
 
       /*
@@ -1411,7 +1506,7 @@ addBtn.addEventListener(
         "ushahidi_sauti/" +
         currentUser.uid +
         "/" +
-        fileName;
+        uniqueName;
 
 
       const storageRef =
@@ -1422,16 +1517,16 @@ addBtn.addEventListener(
 
 
       /*
-       * UPLOAD
+       * START UPLOAD
        */
 
       const uploadTask =
         uploadBytesResumable(
           storageRef,
-          chosenFile,
+          selectedFile,
           {
             contentType:
-              chosenFile.type
+              selectedFile.type
           }
         );
 
@@ -1449,11 +1544,11 @@ addBtn.addEventListener(
             ) * 100;
 
 
-          progressFill.style.width =
+          progressBar.style.width =
             percent.toFixed(0) + "%";
 
 
-          progressText.textContent =
+          progressLabel.textContent =
             "Inapakia... " +
             percent.toFixed(0) +
             "%";
@@ -1464,20 +1559,19 @@ addBtn.addEventListener(
         (error) => {
 
           console.error(
-            "Upload error:",
+            "Upload failed:",
             error
           );
 
-          progressArea.style.display =
+          progress.style.display =
             "none";
 
-          showMessage(
-            "Kushindwa kupakia audio: " +
-            firebaseError(error),
+          showUploadMessage(
+            getFirebaseError(error),
             "error"
           );
 
-          addBtn.disabled = false;
+          updateUploadButton();
 
         },
 
@@ -1486,12 +1580,12 @@ addBtn.addEventListener(
 
           try{
 
-            progressText.textContent =
+            progressLabel.textContent =
               "Inahifadhi taarifa...";
 
 
             /*
-             * DOWNLOAD URL
+             * GET DOWNLOAD URL
              */
 
             const audioURL =
@@ -1501,7 +1595,7 @@ addBtn.addEventListener(
 
 
             /*
-             * FIRESTORE DOCUMENT
+             * SAVE FIRESTORE
              */
 
             await addDoc(
@@ -1512,10 +1606,10 @@ addBtn.addEventListener(
               {
 
                 jina:
-                  jina,
+                  name,
 
                 cheo:
-                  cheo,
+                  role,
 
                 audioURL:
                   audioURL,
@@ -1524,13 +1618,13 @@ addBtn.addEventListener(
                   storagePath,
 
                 fileName:
-                  chosenFile.name,
+                  selectedFile.name,
 
                 fileType:
-                  chosenFile.type,
+                  selectedFile.type,
 
                 fileSize:
-                  chosenFile.size,
+                  selectedFile.size,
 
                 uploadedBy:
                   currentUser.uid,
@@ -1549,61 +1643,62 @@ addBtn.addEventListener(
              * RESET FORM
              */
 
-            jinaEl.value = "";
+            customerName.value =
+              "";
 
-            cheoEl.value = "";
+            customerRole.value =
+              "";
 
-            fileEl.value = "";
+            audioFile.value =
+              "";
 
-            chosenFile = null;
+            selectedFile =
+              null;
 
-
-            dropLabel.textContent =
-              "Bofya kuchagua faili la sauti (mp3, wav, m4a)";
-
-            dropLabel.classList.remove(
-              "has-file"
-            );
+            resetFileDisplay();
 
 
-            progressFill.style.width =
+            progressBar.style.width =
               "100%";
 
-            progressText.textContent =
-              "✓ Imepakiwa kikamilifu";
+            progressLabel.textContent =
+              "✓ Imekamilika";
 
 
-            showMessage(
-              "✓ Ushahidi wa sauti umehifadhiwa kikamilifu.",
+            showUploadMessage(
+              "✓ Ushahidi umehifadhiwa kikamilifu.",
               "success"
             );
 
 
-            setTimeout(() => {
+            setTimeout(
+              () => {
 
-              progressArea.style.display =
-                "none";
+                progress.style.display =
+                  "none";
 
-            }, 1500);
+              },
+              1200
+            );
 
 
-            checkReady();
+            updateUploadButton();
 
 
           }catch(error){
 
             console.error(error);
 
-            progressArea.style.display =
+            progress.style.display =
               "none";
 
-            showMessage(
-              "Audio imepakiwa lakini taarifa haikuweza kuhifadhiwa: " +
-              firebaseError(error),
+            showUploadMessage(
+              "Audio imepakiwa lakini taarifa haikuhifadhiwa: " +
+              getFirebaseError(error),
               "error"
             );
 
-            addBtn.disabled = false;
+            updateUploadButton();
 
           }
 
@@ -1611,20 +1706,19 @@ addBtn.addEventListener(
 
       );
 
-
     }catch(error){
 
       console.error(error);
 
-      progressArea.style.display =
+      progress.style.display =
         "none";
 
-      showMessage(
-        "Kuna tatizo wakati wa kupakia audio.",
+      showUploadMessage(
+        "Kuna tatizo wakati wa kuandaa upload.",
         "error"
       );
 
-      addBtn.disabled = false;
+      updateUploadButton();
 
     }
 
@@ -1632,9 +1726,29 @@ addBtn.addEventListener(
 );
 
 
-/* =========================================================
-   LOAD AUDIO LIST
-========================================================= */
+/* =====================================================
+   UPLOAD MESSAGE
+===================================================== */
+
+function showUploadMessage(
+  text,
+  type
+){
+
+  uploadMessage.textContent =
+    text;
+
+  uploadMessage.style.color =
+    type === "success"
+      ? "var(--success)"
+      : "var(--danger)";
+
+}
+
+
+/* =====================================================
+   FIRESTORE AUDIO LISTENER
+===================================================== */
 
 const audioQuery =
   query(
@@ -1655,51 +1769,39 @@ onSnapshot(
 
   (snapshot) => {
 
-    loadingMsg.style.display =
+    loading.style.display =
       "none";
 
 
-    /*
-     * CLEAR OLD LIST
-     */
-
-    itemsEl.innerHTML = "";
+    items.innerHTML =
+      "";
 
 
-    countEl.textContent =
+    audioCount.textContent =
       snapshot.size;
 
 
     if(snapshot.empty){
 
-      emptyMsg.style.display =
-        "block";
-
-      itemsEl.appendChild(
-        emptyMsg
-      );
+      items.innerHTML = `
+        <div class="empty">
+          Bado hakuna ushahidi uliopakiwa.
+        </div>
+      `;
 
       return;
 
     }
 
 
-    emptyMsg.style.display =
-      "none";
-
-
     snapshot.forEach(
-      (documentSnapshot) => {
+      (docSnapshot) => {
 
         const data =
-          documentSnapshot.data();
-
-        const id =
-          documentSnapshot.id;
-
+          docSnapshot.data();
 
         createAudioCard(
-          id,
+          docSnapshot.id,
           data
         );
 
@@ -1712,32 +1814,31 @@ onSnapshot(
   (error) => {
 
     console.error(
-      "Firestore listener error:",
+      "Firestore error:",
       error
     );
 
-    loadingMsg.style.display =
+    loading.style.display =
       "none";
 
-    itemsEl.innerHTML =
-      `
+    items.innerHTML = `
       <div class="empty">
         Imeshindikana kupata ushahidi.
         Angalia Firestore Rules.
       </div>
-      `;
+    `;
 
   }
 
 );
 
 
-/* =========================================================
+/* =====================================================
    CREATE AUDIO CARD
-========================================================= */
+===================================================== */
 
 function createAudioCard(
-  id,
+  documentId,
   data
 ){
 
@@ -1748,176 +1849,274 @@ function createAudioCard(
     "card";
 
 
-  const canDelete =
+  const isOwner =
     currentUser &&
     data.uploadedBy === currentUser.uid;
 
 
-  card.innerHTML =
-    `
+  const top =
+    document.createElement("div");
 
-    ${
-      canDelete
-      ?
-      `<button class="del">
-         Futa
-       </button>`
-      :
-      ""
-    }
+  top.className =
+    "card-top";
+
+
+  const identity =
+    document.createElement("div");
+
+
+  identity.innerHTML = `
 
     <div class="who">
-      ${escapeHtml(data.jina || "Mteja")}
+      ${escapeHTML(
+        data.jina || "Mteja"
+      )}
     </div>
 
     ${
       data.cheo
       ?
       `<div class="role">
-         ${escapeHtml(data.cheo)}
+        ${escapeHTML(data.cheo)}
        </div>`
       :
-      `<div class="role">&nbsp;</div>`
+      ""
     }
 
-    <audio
-      controls
-      preload="metadata"
-      src="${escapeHtml(data.audioURL || "")}">
-    </audio>
-
-    <div class="date">
-      ${formatDate(data.createdAt)}
-    </div>
-
-    `;
+  `;
 
 
-  /*
-   * DELETE BUTTON
-   */
-
-  const deleteButton =
-    card.querySelector(".del");
+  top.appendChild(
+    identity
+  );
 
 
-  if(deleteButton){
+  if(isOwner){
+
+    const deleteButton =
+      document.createElement("button");
+
+    deleteButton.className =
+      "delete-btn";
+
+    deleteButton.textContent =
+      "Futa";
 
     deleteButton.addEventListener(
       "click",
-      async () => {
+      () => {
 
-        const confirmDelete =
-          confirm(
-            "Una uhakika unataka kufuta ushahidi huu?"
-          );
-
-
-        if(!confirmDelete){
-          return;
-        }
-
-
-        deleteButton.disabled =
-          true;
-
-        deleteButton.textContent =
-          "Inafuta...";
-
-
-        try{
-
-          /*
-           * DELETE STORAGE FILE
-           */
-
-          if(data.storagePath){
-
-            const audioRef =
-              ref(
-                storage,
-                data.storagePath
-              );
-
-            try{
-
-              await deleteObject(
-                audioRef
-              );
-
-            }catch(storageError){
-
-              /*
-               * Ikiwa faili tayari halipo
-               * tunaendelea kufuta Firestore.
-               */
-
-              console.warn(
-                "Storage delete:",
-                storageError
-              );
-
-            }
-
-          }
-
-
-          /*
-           * DELETE FIRESTORE DOCUMENT
-           */
-
-          await deleteDoc(
-            doc(
-              db,
-              "ushahidi_sauti",
-              id
-            )
-          );
-
-
-          showMessage(
-            "✓ Ushahidi umefutwa.",
-            "success"
-          );
-
-
-        }catch(error){
-
-          console.error(error);
-
-          showMessage(
-            "Imeshindikana kufuta ushahidi: " +
-            firebaseError(error),
-            "error"
-          );
-
-          deleteButton.disabled =
-            false;
-
-          deleteButton.textContent =
-            "Futa";
-
-        }
+        deleteAudio(
+          documentId,
+          data,
+          deleteButton
+        );
 
       }
+    );
+
+
+    top.appendChild(
+      deleteButton
     );
 
   }
 
 
-  itemsEl.appendChild(card);
+  card.appendChild(
+    top
+  );
+
+
+  /*
+   * AUDIO PLAYER
+   */
+
+  if(data.audioURL){
+
+    const player =
+      document.createElement("audio");
+
+    player.className =
+      "audio-player";
+
+    player.controls =
+      true;
+
+    player.preload =
+      "metadata";
+
+    player.src =
+      data.audioURL;
+
+
+    card.appendChild(
+      player
+    );
+
+  }
+
+
+  /*
+   * DATE
+   */
+
+  const date =
+    document.createElement("div");
+
+  date.className =
+    "card-date";
+
+  date.textContent =
+    formatDate(data.createdAt);
+
+
+  card.appendChild(
+    date
+  );
+
+
+  items.appendChild(
+    card
+  );
 
 }
 
 
-/* =========================================================
-   FORMAT DATE
-========================================================= */
+/* =====================================================
+   DELETE AUDIO
+===================================================== */
 
-function formatDate(timestamp){
+async function deleteAudio(
+  documentId,
+  data,
+  button
+){
+
+  const confirmed =
+    confirm(
+      "Una uhakika unataka kufuta ushahidi huu?"
+    );
+
+
+  if(!confirmed){
+
+    return;
+
+  }
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "Inafuta...";
+
+
+  try{
+
+    /*
+     * DELETE STORAGE
+     */
+
+    if(data.storagePath){
+
+      try{
+
+        const audioRef =
+          ref(
+            storage,
+            data.storagePath
+          );
+
+        await deleteObject(
+          audioRef
+        );
+
+      }catch(storageError){
+
+        console.warn(
+          "Storage delete:",
+          storageError
+        );
+
+      }
+
+    }
+
+
+    /*
+     * DELETE FIRESTORE
+     */
+
+    await deleteDoc(
+      doc(
+        db,
+        "ushahidi_sauti",
+        documentId
+      )
+    );
+
+
+    showUploadMessage(
+      "✓ Ushahidi umefutwa.",
+      "success"
+    );
+
+
+  }catch(error){
+
+    console.error(error);
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "Futa";
+
+
+    showUploadMessage(
+      "Imeshindikana kufuta: " +
+      getFirebaseError(error),
+      "error"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(
+  value
+){
+
+  const div =
+    document.createElement("div");
+
+  div.textContent =
+    value || "";
+
+  return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   FORMAT DATE
+===================================================== */
+
+function formatDate(
+  timestamp
+){
 
   if(!timestamp){
+
     return "Tarehe haijapatikana";
+
   }
 
 
@@ -1930,11 +2129,17 @@ function formatDate(timestamp){
     return date.toLocaleString(
       "sw-TZ",
       {
+
         day:"2-digit",
+
         month:"2-digit",
+
         year:"numeric",
+
         hour:"2-digit",
+
         minute:"2-digit"
+
       }
     );
 
@@ -1947,38 +2152,125 @@ function formatDate(timestamp){
 }
 
 
-/* =========================================================
-   IMPORTANT:
-   REFRESH CARDS WHEN LOGIN STATE CHANGES
-========================================================= */
+/* =====================================================
+   FIREBASE ERROR
+===================================================== */
 
-onAuthStateChanged(
-  auth,
-  () => {
+function getFirebaseError(
+  error
+){
 
-    /*
-     * Firestore listener already
-     * reloads the page data.
-     *
-     * This small refresh ensures
-     * delete buttons appear/disappear
-     * correctly after login/logout.
-     */
+  const code =
+    error?.code || "";
 
-    location.reload();
+
+  if(
+    code.includes(
+      "auth/invalid-credential"
+    )
+  ){
+
+    return "Barua pepe au password si sahihi.";
 
   }
-);
 
 
-/* =========================================================
-   MAKE FUNCTIONS AVAILABLE GLOBALLY
-========================================================= */
+  if(
+    code.includes(
+      "auth/user-not-found"
+    )
+  ){
 
-window._firebaseSignUp =
-  async function(email,password){
+    return "Akaunti hiyo haipo.";
 
-    return await createUserWithEmailAndPassword(
+  }
+
+
+  if(
+    code.includes(
+      "auth/wrong-password"
+    )
+  ){
+
+    return "Password si sahihi.";
+
+  }
+
+
+  if(
+    code.includes(
+      "auth/email-already-in-use"
+    )
+  ){
+
+    return "Barua pepe hiyo tayari imesajiliwa.";
+
+  }
+
+
+  if(
+    code.includes(
+      "auth/invalid-email"
+    )
+  ){
+
+    return "Barua pepe si sahihi.";
+
+  }
+
+
+  if(
+    code.includes(
+      "auth/weak-password"
+    )
+  ){
+
+    return "Password lazima iwe na angalau herufi 6.";
+
+  }
+
+
+  if(
+    code.includes(
+      "storage/unauthorized"
+    )
+  ){
+
+    return "Huna ruhusa ya kupakia faili hili. Angalia Storage Rules.";
+
+  }
+
+
+  if(
+    code.includes(
+      "permission-denied"
+    )
+  ){
+
+    return "Firebase imezuia ruhusa. Angalia Rules.";
+
+  }
+
+
+  return (
+    error?.message ||
+    "Kuna tatizo lisilojulikana."
+  );
+
+}
+
+
+/* =====================================================
+   GLOBAL FUNCTIONS
+===================================================== */
+
+window._firebaseSignIn =
+  async function(
+    email,
+    password
+  ){
+
+    return await signInWithEmailAndPassword(
       auth,
       email,
       password
@@ -1987,10 +2279,13 @@ window._firebaseSignUp =
   };
 
 
-window._firebaseSignIn =
-  async function(email,password){
+window._firebaseSignUp =
+  async function(
+    email,
+    password
+  ){
 
-    return await signInWithEmailAndPassword(
+    return await createUserWithEmailAndPassword(
       auth,
       email,
       password
@@ -2002,12 +2297,11 @@ window._firebaseSignIn =
 window._firebaseSignOut =
   async function(){
 
-    return await signOut(auth);
+    return await signOut(
+      auth
+    );
 
   };
 
-
-</script>
-
-</body>
+</script></body>
 </html>

@@ -1,303 +1,913 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#0d4128">
 
-  <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#006b3f">
+<title>Ushahidi wa Sauti 🇹🇿</title>
 
-  <title>Ushahidi wa Sauti — Herman Onesmo Sade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,400&display=swap" rel="stylesheet">
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   RESET & VARIABLES
+   ========================================================= */
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  <link rel="stylesheet" href="style.css">
+:root{
+  --green-main: #0c6137;
+  --green-dark: #073820;
+  --green-light: #e8f5ee;
+  
+  --blue-color: #0088cc;
+  --yellow-color: #d4a017;
+  --red-color: #c0392b;
+
+  --bg: #eef2f0;
+  --card-bg: #ffffff;
+  --text-main: #1c2826;
+  --text-muted: #5e6d67;
+  --border-color: #dbe5e0;
+
+  --shadow-sm: 0 4px 15px rgba(0,0,0,0.04);
+  --shadow-md: 0 8px 25px rgba(0,0,0,0.07);
+}
+
+body{
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   PASSWORD SCREEN (MODAL)
+   ========================================================= */
+#passwordScreen{
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(5, 20, 12, 0.6);
+  backdrop-filter: blur(8px);
+  transition: all 0.4s ease;
+}
+
+#passwordScreen.hide{
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.password-box{
+  position: relative;
+  width: min(420px, 100%);
+  padding: 35px 25px 25px;
+  text-align: center;
+  background: linear-gradient(180deg, #0d462a 0%, #062817 100%);
+  color: white;
+  border-radius: 24px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255,255,255,0.15);
+}
+
+.password-box .lock-icon{
+  width: 60px;
+  height: 60px;
+  margin: 0 auto 15px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.password-box .eyebrow{
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #8edec0;
+  text-transform: uppercase;
+}
+
+.password-box h1{
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  margin: 5px 0;
+}
+
+.password-box p{
+  font-size: 13px;
+  opacity: 0.8;
+  margin-bottom: 20px;
+}
+
+.password-input-group{
+  display: flex;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 5px 12px;
+  margin-bottom: 15px;
+}
+
+.password-input-group input{
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px;
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 4px;
+  color: #111;
+}
+
+.password-input-group button{
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.unlock-btn{
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 12px;
+  background: #118a4e;
+  color: white;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background 0.2s;
+}
+
+.unlock-btn:hover{
+  background: #0e7341;
+}
+
+.error-msg{
+  display: none;
+  color: #ff6b6b;
+  font-size: 12px;
+  margin-top: 10px;
+  font-weight: 600;
+}
+
+.error-msg.show{ display: block; }
+
+.tz-note{
+  margin-top: 20px;
+  font-size: 11px;
+  opacity: 0.6;
+  letter-spacing: 1px;
+}
+
+/* =========================================================
+   MAIN LAYOUT & CONTAINER
+   ========================================================= */
+.page{
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 15px 50px;
+}
+
+/* =========================================================
+   HEADER SECTION (BANNER)
+   ========================================================= */
+.header-card{
+  position: relative;
+  background: linear-gradient(135deg, #093c23 0%, #0c5a34 50%, #062b18 100%);
+  border-radius: 20px;
+  padding: 35px 30px;
+  color: white;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(12, 97, 55, 0.25);
+  margin-bottom: 20px;
+}
+
+.header-card::before{
+  content: "";
+  position: absolute;
+  top: 0; right: 0; bottom: 0; left: 0;
+  background: radial-gradient(circle at 80% 20%, rgba(255,255,255,0.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Bendera ya Tanzania kwenye Banner */
+.flag-banner{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 180px;
+  height: 120px;
+  opacity: 0.85;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  background: linear-gradient(135deg, #1eb5e5 0% 33%, #fcd116 33% 40%, #000000 40% 60%, #fcd116 60% 67%, #006b3f 67% 100%);
+}
+
+.header-content{
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.header-subtitle{
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #a3eccd;
+  text-transform: uppercase;
+  margin-bottom: 5px;
+}
+
+.header-title{
+  font-family: "Playfair Display", serif;
+  font-size: clamp(32px, 5vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin-bottom: 8px;
+}
+
+.header-author{
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.private-tag{
+  position: absolute;
+  top: 25px;
+  right: 25px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255,255,255,0.25);
+  padding: 6px 14px;
+  border-radius: 50px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+
+.tanzania-daima-text{
+  position: absolute;
+  bottom: 20px;
+  right: 25px;
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 22px;
+  opacity: 0.7;
+  transform: rotate(-4deg);
+  z-index: 2;
+}
+
+/* Navigation Button */
+.nav-back{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: white;
+  color: var(--green-main);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 18px;
+  border-radius: 50px;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 20px;
+  transition: transform 0.2s;
+}
+
+.nav-back:hover{
+  transform: translateX(-3px);
+}
+
+/* =========================================================
+   INTRO CARDS
+   ========================================================= */
+.intro-box{
+  background: linear-gradient(135deg, #0a4f2d 0%, #06341d 100%);
+  color: white;
+  border-radius: 20px;
+  padding: 25px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 15px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+
+.intro-icon-circle{
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.3);
+  display: grid;
+  place-items: center;
+  font-size: 32px;
+  flex-shrink: 0;
+  background: rgba(255,255,255,0.05);
+}
+
+.intro-text .category{
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: #7de8b8;
+  text-transform: uppercase;
+}
+
+.intro-text h2{
+  font-family: "Playfair Display", serif;
+  font-size: 26px;
+  margin: 2px 0 6px;
+}
+
+.intro-text p{
+  font-size: 13px;
+  opacity: 0.85;
+  line-height: 1.5;
+}
+
+.waveform-bg-graphic{
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.15;
+  height: 60px;
+  pointer-events: none;
+}
+
+/* Notice Box */
+.notice-box{
+  background: #f4f9f6;
+  border: 1px solid #d0e5d9;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.notice-left{
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.notice-icon{
+  width: 40px;
+  height: 40px;
+  background: var(--green-main);
+  color: white;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  flex-shrink: 0;
+}
+
+.notice-content h4{
+  color: var(--green-main);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.notice-content p{
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.notice-right-flag{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.tz-flag-icon{
+  width: 32px;
+  height: 20px;
+  border-radius: 3px;
+  background: linear-gradient(135deg, #1eb5e5 0% 33%, #fcd116 33% 40%, #000000 40% 60%, #fcd116 60% 67%, #006b3f 67% 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+.heshimu-text{
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--green-main);
+  font-weight: 600;
+}
+
+/* =========================================================
+   SECTION TITLE
+   ========================================================= */
+.section-header{
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.section-header .sub{
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  color: var(--green-main);
+  text-transform: uppercase;
+}
+
+.section-header h3{
+  font-family: "Playfair Display", serif;
+  font-size: 28px;
+  color: var(--text-main);
+}
+
+.count-badge{
+  background: var(--green-main);
+  color: white;
+  padding: 6px 16px;
+  border-radius: 50px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* =========================================================
+   AUDIO CARD ITEM
+   ========================================================= */
+.audio-card{
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid #e2ece7;
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.audio-card:hover{
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Circular Badge Colors */
+.card-num{
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  color: white;
+  font-weight: 800;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.audio-card:nth-child(1) .card-num { background: #0c6137; } /* Green */
+.audio-card:nth-child(2) .card-num { background: #0077b6; } /* Blue */
+.audio-card:nth-child(3) .card-num { background: #d48806; } /* Yellow/Orange */
+.audio-card:nth-child(4) .card-num { background: #0284c7; } /* Cyan Blue */
+
+.card-body{
+  flex: 1;
+  min-width: 0;
+}
+
+.card-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.card-tag{
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.audio-card:nth-child(1) .card-tag { color: #0c6137; }
+.audio-card:nth-child(2) .card-tag { color: #0077b6; }
+.audio-card:nth-child(3) .card-tag { color: #d48806; }
+.audio-card:nth-child(4) .card-tag { color: #0284c7; }
+
+.card-date{
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.card-title{
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-main);
+  margin-bottom: 4px;
+}
+
+.card-desc{
+  font-size: 12px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-bottom: 12px;
+}
+
+/* Custom Audio Player Layout */
+.player-container{
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  background: #f4f7f5;
+  padding: 8px 12px;
+  border-radius: 14px;
+}
+
+.wave-icon{
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+audio{
+  width: 100%;
+  height: 36px;
+  outline: none;
+}
+
+.time-box{
+  background: #e4ebe7;
+  padding: 8px 14px;
+  border-radius: 10px;
+  text-align: center;
+  flex-shrink: 0;
+  min-width: 90px;
+}
+
+.time-box .label-sauti{
+  font-size: 10px;
+  color: var(--text-muted);
+  display: block;
+}
+
+.time-box .val-time{
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+footer{
+  text-align: center;
+  margin-top: 40px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-muted);
+  font-size: 12px;
+}
+
+.footer-tz-bar{
+  width: 60px;
+  height: 4px;
+  margin: 0 auto 10px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #006b3f, #fcd116, #1eb5e5);
+}
+
+footer strong{
+  display: block;
+  color: var(--text-main);
+  margin-top: 4px;
+}
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+@media(max-width: 640px){
+  .header-card{ padding: 25px 18px; }
+  .tanzania-daima-text{ display: none; }
+  .private-tag{ top: 15px; right: 15px; }
+  .intro-box{ flex-direction: column; text-align: center; }
+  .notice-box{ flex-direction: column; text-align: center; }
+  .notice-left{ flex-direction: column; }
+  .audio-card{ flex-direction: column; }
+  .player-container{ flex-direction: column; width: 100%; }
+  .time-box{ width: 100%; }
+}
+</style>
 </head>
 
 <body>
 
-  <main class="page">
+<!-- =====================================================
+     PASSWORD MODAL SCREEN
+     ===================================================== -->
+<div id="passwordScreen">
+  <div class="password-box">
+    <div class="lock-icon">🔒</div>
+    <div class="eyebrow">Kumbukumbu Binafsi</div>
+    <h1>Ushahidi wa Sauti</h1>
+    <p>Maudhui haya yamelindwa.<br>Weka password ili kuendelea.</p>
 
-    <!-- 🇹🇿 HEADER -->
-    <header class="private-header">
-
-      <div class="flag-tz" aria-label="Bendera ya Tanzania">
-        <span class="flag-green"></span>
-        <span class="flag-blue"></span>
-        <span class="flag-black"></span>
-        <span class="flag-yellow one"></span>
-        <span class="flag-yellow two"></span>
-      </div>
-
-      <div class="brand">
-        <div class="shield">🎙️</div>
-
-        <div>
-          <p class="eyebrow">KUMBUKUMBU BINAFSI</p>
-          <h1>Ushahidi wa Sauti</h1>
-          <p class="author">Herman Onesmo Sade</p>
-        </div>
-      </div>
-
-      <div class="privacy-badge">
-        🔒 PRIVATE
-      </div>
-
-    </header>
-
-
-    <!-- BACK -->
-    <a class="back-link" href="index.html">
-      ← Rudi Mwanzo
-    </a>
-
-
-    <!-- INTRO -->
-    <section class="intro-card">
-
-      <div class="intro-icon">🎧</div>
-
-      <div>
-        <p class="small-title">KUMBUKUMBU YA SAUTI</p>
-
-        <h2>Rekodi za Sauti</h2>
-
-        <p class="intro-text">
-          Mkusanyiko wa rekodi za sauti zinazohusiana na
-          <strong>Zuwena Mama Lightness</strong>, zikiwemo
-          sauti za hisia, majuto na kuomba msamaha.
-        </p>
-      </div>
-
-    </section>
-
-
-    <!-- NOTICE -->
-    <div class="notice">
-      <span class="notice-icon">ℹ️</span>
-
-      <div>
-        <strong>Maelezo ya kumbukumbu</strong>
-        <p>
-          Rekodi hizi zimehifadhiwa kama kumbukumbu binafsi.
-          Tafadhali zisambazwe au zitumike kwa kuzingatia
-          faragha na heshima ya wahusika.
-        </p>
-      </div>
+    <div class="password-input-group">
+      <input id="passwordInput" type="password" inputmode="numeric" maxlength="4" placeholder="••••" autocomplete="off">
+      <button id="showPassword">👁️</button>
     </div>
 
+    <button class="unlock-btn" id="unlockButton">🔓 FUNGUA KUMBUKUMBU</button>
+    <p id="errorMessage" class="error-msg">❌ Password si sahihi. Jaribu tena.</p>
 
-    <!-- AUDIO SECTION -->
-    <section class="audio-section">
+    <div class="tz-note">🇹🇿 TANZANIA • KUMBUKUMBU YA SAUTI</div>
+  </div>
+</div>
 
-      <div class="section-heading">
-        <div>
-          <p class="small-title">AUDIO ARCHIVE</p>
-          <h2>Orodha ya Rekodi</h2>
-        </div>
 
-        <span class="count">4 Rekodi</span>
+<!-- =====================================================
+     MAIN CONTAINER
+     ===================================================== -->
+<main class="page">
+
+  <!-- HEADER BANNER -->
+  <header class="header-card">
+    <div class="flag-banner"></div>
+    <div class="private-tag">🔒 PRIVATE</div>
+    
+    <div class="header-content">
+      <div class="header-subtitle">KUMBUKUMBU BINAFSI</div>
+      <h1 class="header-title">Ushahidi wa Sauti</h1>
+      <div class="header-author">Herman Onesmo Sade</div>
+    </div>
+
+    <div class="tanzania-daima-text">Tanzania Daima</div>
+  </header>
+
+  <!-- NAVIGATION -->
+  <a href="index.html" class="nav-back">
+    ← Rudi Mwanzo
+  </a>
+
+  <!-- INTRO SECTION -->
+  <section class="intro-box">
+    <div class="intro-icon-circle">🎧</div>
+    <div class="intro-text">
+      <div class="category">KUMBUKUMBU YA SAUTI</div>
+      <h2>Rekodi za Sauti</h2>
+      <p>Mkusanyiko wa rekodi za sauti zinazohusiana na Zuwena Mama Lightness, zikiwemo sauti za hisia, majuto na kuomba msamaha.</p>
+    </div>
+    
+    <!-- SVG Waveform Graphic Background -->
+    <svg class="waveform-bg-graphic" viewBox="0 0 100 40" fill="none" stroke="currentColor">
+      <path d="M5 20 L10 10 L15 30 L20 5 L25 35 L30 15 L35 25 L40 10 L45 30 L50 20 L55 5 L60 35 L65 15 L70 25 L75 10 L80 30 L85 15 L90 25 L95 20" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+  </section>
+
+  <!-- NOTICE BOX -->
+  <div class="notice-box">
+    <div class="notice-left">
+      <div class="notice-icon">🔒</div>
+      <div class="notice-content">
+        <h4>Maelezo ya kumbukumbu</h4>
+        <p>Rekodi hizi zimehifadhiwa kama kumbukumbu binafsi. Tafadhali zisambazwe au zitumike kwa kuzingatia faragha na heshima ya wahusika.</p>
       </div>
+    </div>
+    <div class="notice-right-flag">
+      <div class="tz-flag-icon"></div>
+      <span class="heshimu-text">Heshimu Faragha</span>
+    </div>
+  </div>
 
+  <!-- AUDIO ARCHIVE LIST -->
+  <section>
+    <div class="section-header">
+      <div>
+        <div class="sub">AUDIO ARCHIVE</div>
+        <h3>Orodha ya Rekodi</h3>
+      </div>
+      <div class="count-badge">4 Rekodi</div>
+    </div>
 
-      <!-- AUDIO 1 -->
-      <article class="audio-card">
-
-        <div class="audio-number">01</div>
-
-        <div class="audio-content">
-
-          <div class="audio-top">
-            <div>
-              <span class="audio-label">Rekodi ya 5</span>
-
-              <h3>
-                Ombi la msamaha kwa huzuni
-              </h3>
-
-              <p>
-                Zuwena Mama Lightness akilia na kueleza
-                hisia zake huku akiomba msamaha.
-              </p>
-            </div>
-
-            <span class="audio-date">
-              09 Oktoba 2024
-            </span>
+    <!-- AUDIO CARD 01 -->
+    <article class="audio-card">
+      <div class="card-num">01</div>
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-tag">REKODI YA 5</span>
+          <div class="card-date">
+            <span>📅 09 Oktoba 2024</span>
+            <div class="tz-flag-icon"></div>
           </div>
-
+        </div>
+        <h4 class="card-title">Ombi la msamaha kwa huzuni</h4>
+        <p class="card-desc">Zuwena Mama Lightness akilia na kueleza hisia zake huku akiomba msamaha.</p>
+        
+        <div class="player-container">
+          <svg class="wave-icon" viewBox="0 0 24 24" fill="#0c6137"><path d="M12 3v18M8 6v12M4 9v6M16 6v12M20 9v6" stroke="#0c6137" stroke-width="2" stroke-linecap="round"/></svg>
           <audio controls preload="none">
             <source src="2024-10-09_11.43.51.aac" type="audio/aac">
-            Kivinjari chako hakiwezi kucheza audio hii.
           </audio>
-
-          <div class="audio-info">
-            <span>🎙️ Sauti</span>
-            <span>11:43:51</span>
+          <div class="time-box">
+            <span class="label-sauti">🎙️ Sauti</span>
+            <span class="val-time">11:43:51</span>
           </div>
-
         </div>
+      </div>
+    </article>
 
-      </article>
-
-
-      <!-- AUDIO 2 -->
-      <article class="audio-card">
-
-        <div class="audio-number">02</div>
-
-        <div class="audio-content">
-
-          <div class="audio-top">
-            <div>
-              <span class="audio-label">Rekodi ya 6</span>
-
-              <h3>
-                Maneno ya majuto na kuomba msamaha
-              </h3>
-
-              <p>
-                Kipande cha sauti chenye hisia za majuto
-                na ombi la msamaha.
-              </p>
-            </div>
-
-            <span class="audio-date">
-              09 Oktoba 2024
-            </span>
+    <!-- AUDIO CARD 02 -->
+    <article class="audio-card">
+      <div class="card-num">02</div>
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-tag">REKODI YA 6</span>
+          <div class="card-date">
+            <span>📅 09 Oktoba 2024</span>
+            <div class="tz-flag-icon"></div>
           </div>
-
+        </div>
+        <h4 class="card-title">Maneno ya majuto na kuomba msamaha</h4>
+        <p class="card-desc">Kipande cha sauti chenye hisia za majuto na ombi la msamaha.</p>
+        
+        <div class="player-container">
+          <svg class="wave-icon" viewBox="0 0 24 24" fill="#0077b6"><path d="M12 3v18M8 6v12M4 9v6M16 6v12M20 9v6" stroke="#0077b6" stroke-width="2" stroke-linecap="round"/></svg>
           <audio controls preload="none">
             <source src="2024-10-09_11.49.26.aac" type="audio/aac">
-            Kivinjari chako hakiwezi kucheza audio hii.
           </audio>
-
-          <div class="audio-info">
-            <span>🎙️ Sauti</span>
-            <span>11:49:26</span>
+          <div class="time-box">
+            <span class="label-sauti">🎙️ Sauti</span>
+            <span class="val-time">11:49:26</span>
           </div>
-
         </div>
+      </div>
+    </article>
 
-      </article>
-
-
-      <!-- AUDIO 3 -->
-      <article class="audio-card">
-
-        <div class="audio-number">03</div>
-
-        <div class="audio-content">
-
-          <div class="audio-top">
-            <div>
-              <span class="audio-label">Rekodi ya 7</span>
-
-              <h3>
-                Zuwena akieleza hisia zake
-              </h3>
-
-              <p>
-                Sauti yenye maelezo ya hisia, huzuni na
-                kutafakari kuhusu yaliyotokea.
-              </p>
-            </div>
-
-            <span class="audio-date">
-              09 Oktoba 2024
-            </span>
+    <!-- AUDIO CARD 03 -->
+    <article class="audio-card">
+      <div class="card-num">03</div>
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-tag">REKODI YA 7</span>
+          <div class="card-date">
+            <span>📅 09 Oktoba 2024</span>
+            <div class="tz-flag-icon"></div>
           </div>
-
+        </div>
+        <h4 class="card-title">Zuwena akieleza hisia zake</h4>
+        <p class="card-desc">Sauti yenye maelezo ya hisia, huzuni na kutafakari kuhusu yaliyotokea.</p>
+        
+        <div class="player-container">
+          <svg class="wave-icon" viewBox="0 0 24 24" fill="#d48806"><path d="M12 3v18M8 6v12M4 9v6M16 6v12M20 9v6" stroke="#d48806" stroke-width="2" stroke-linecap="round"/></svg>
           <audio controls preload="none">
             <source src="2024-10-09_12.29.56.aac" type="audio/aac">
-            Kivinjari chako hakiwezi kucheza audio hii.
           </audio>
-
-          <div class="audio-info">
-            <span>🎙️ Sauti</span>
-            <span>12:29:56</span>
+          <div class="time-box">
+            <span class="label-sauti">🎙️ Sauti</span>
+            <span class="val-time">12:29:56</span>
           </div>
-
         </div>
+      </div>
+    </article>
 
-      </article>
-
-
-      <!-- AUDIO 4 -->
-      <article class="audio-card">
-
-        <div class="audio-number">04</div>
-
-        <div class="audio-content">
-
-          <div class="audio-top">
-            <div>
-              <span class="audio-label">Rekodi ya 8</span>
-
-              <h3>
-                Ombi la msamaha kwa machozi
-              </h3>
-
-              <p>
-                Kipande cha sauti kinachoonyesha hisia kali,
-                huzuni na kuomba msamaha.
-              </p>
-            </div>
-
-            <span class="audio-date">
-              09 Oktoba 2024
-            </span>
+    <!-- AUDIO CARD 04 -->
+    <article class="audio-card">
+      <div class="card-num">04</div>
+      <div class="card-body">
+        <div class="card-top">
+          <span class="card-tag">REKODI YA 8</span>
+          <div class="card-date">
+            <span>📅 09 Oktoba 2024</span>
+            <div class="tz-flag-icon"></div>
           </div>
-
+        </div>
+        <h4 class="card-title">Ombi la msamaha kwa machozi</h4>
+        <p class="card-desc">Kipande cha sauti kinachoonyesha hisia kali, huzuni na kuomba msamaha.</p>
+        
+        <div class="player-container">
+          <svg class="wave-icon" viewBox="0 0 24 24" fill="#0284c7"><path d="M12 3v18M8 6v12M4 9v6M16 6v12M20 9v6" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/></svg>
           <audio controls preload="none">
             <source src="2024-10-09_13.17.22.aac" type="audio/aac">
-            Kivinjari chako hakiwezi kucheza audio hii.
           </audio>
-
-          <div class="audio-info">
-            <span>🎙️ Sauti</span>
-            <span>13:17:22</span>
+          <div class="time-box">
+            <span class="label-sauti">🎙️ Sauti</span>
+            <span class="val-time">13:17:22</span>
           </div>
-
         </div>
+      </div>
+    </article>
+  </section>
 
-      </article>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-tz-bar"></div>
+    <div>TANZANIA</div>
+    <strong>Ushahidi wa Sauti • Herman Onesmo Sade</strong>
+  </footer>
 
-    </section>
-
-
-    <!-- FOOTER -->
-    <footer>
-      <div class="footer-line"></div>
-
-      <p>
-        🇹🇿 Tanzania • Kumbukumbu Binafsi
-      </p>
-
-      <small>
-        Herman Onesmo Sade
-      </small>
-    </footer>
-
-  </main>
+</main>
 
 
-  <!-- STOP OTHER AUDIO WHEN ONE STARTS -->
-  <script>
-    const audios = document.querySelectorAll("audio");
+<!-- =====================================================
+     JAVASCRIPT LOGIC
+     ===================================================== -->
+<script>
+const PASSWORD = "1145";
 
-    audios.forEach(audio => {
-      audio.addEventListener("play", () => {
-        audios.forEach(other => {
-          if (other !== audio) {
-            other.pause();
-          }
-        });
-      });
+const passwordScreen = document.getElementById("passwordScreen");
+const passwordInput = document.getElementById("passwordInput");
+const unlockButton = document.getElementById("unlockButton");
+const errorMessage = document.getElementById("errorMessage");
+const showPassword = document.getElementById("showPassword");
+
+function unlockPage(){
+  if(passwordInput.value === PASSWORD){
+    errorMessage.classList.remove("show");
+    passwordScreen.classList.add("hide");
+    passwordInput.value = "";
+  } else {
+    errorMessage.classList.add("show");
+    passwordInput.value = "";
+    passwordInput.focus();
+    if(navigator.vibrate){
+      navigator.vibrate(150);
+    }
+  }
+}
+
+unlockButton.addEventListener("click", unlockPage);
+
+passwordInput.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    unlockPage();
+  }
+});
+
+showPassword.addEventListener("click", function(){
+  if(passwordInput.type === "password"){
+    passwordInput.type = "text";
+    showPassword.textContent = "🙈";
+  } else {
+    passwordInput.type = "password";
+    showPassword.textContent = "👁️";
+  }
+});
+
+passwordInput.addEventListener("input", function(){
+  this.value = this.value.replace(/\D/g,"").slice(0,4);
+});
+
+// Cheza audio moja tu kwa wakati mmoja
+const audios = document.querySelectorAll("audio");
+audios.forEach(function(audio){
+  audio.addEventListener("play", function(){
+    audios.forEach(function(other){
+      if(other !== audio){
+        other.pause();
+      }
     });
-  </script>
+  });
+});
+
+window.addEventListener("load", function(){
+  passwordInput.focus();
+});
+</script>
 
 </body>
 </html>

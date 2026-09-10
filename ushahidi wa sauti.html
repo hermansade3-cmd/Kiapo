@@ -1,83 +1,303 @@
 <!DOCTYPE html>
-<!--
-  Kumbukumbu binafsi — Ushahidi wa Sauti (Herman Onesmo Sade)
-  Ukurasa huu unatumia style.css ile ile inayotumika kwenye index.html
-  ili kufanana na kurasa nyingine zote za tovuti hii.
--->
 <html lang="sw">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="robots" content="noindex, nofollow">
-<title>Ushahidi wa Sauti — Herman Onesmo Sade</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#006b3f">
+
+  <title>Ushahidi wa Sauti — Herman Onesmo Sade</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <div id="content" style="display:block;">
-    <div class="stripe" aria-hidden="true"></div>
+  <main class="page">
 
-    <div class="wrap">
+    <!-- 🇹🇿 HEADER -->
+    <header class="private-header">
 
-      <p style="text-align:center; margin-bottom:1.8rem;">
-        <a class="home-link" href="index.html">&larr; Mwanzoni</a>
+      <div class="flag-tz" aria-label="Bendera ya Tanzania">
+        <span class="flag-green"></span>
+        <span class="flag-blue"></span>
+        <span class="flag-black"></span>
+        <span class="flag-yellow one"></span>
+        <span class="flag-yellow two"></span>
+      </div>
+
+      <div class="brand">
+        <div class="shield">🎙️</div>
+
+        <div>
+          <p class="eyebrow">KUMBUKUMBU BINAFSI</p>
+          <h1>Ushahidi wa Sauti</h1>
+          <p class="author">Herman Onesmo Sade</p>
+        </div>
+      </div>
+
+      <div class="privacy-badge">
+        🔒 PRIVATE
+      </div>
+
+    </header>
+
+
+    <!-- BACK -->
+    <a class="back-link" href="index.html">
+      ← Rudi Mwanzo
+    </a>
+
+
+    <!-- INTRO -->
+    <section class="intro-card">
+
+      <div class="intro-icon">🎧</div>
+
+      <div>
+        <p class="small-title">KUMBUKUMBU YA SAUTI</p>
+
+        <h2>Rekodi za Sauti</h2>
+
+        <p class="intro-text">
+          Mkusanyiko wa rekodi za sauti zinazohusiana na
+          <strong>Zuwena Mama Lightness</strong>, zikiwemo
+          sauti za hisia, majuto na kuomba msamaha.
+        </p>
+      </div>
+
+    </section>
+
+
+    <!-- NOTICE -->
+    <div class="notice">
+      <span class="notice-icon">ℹ️</span>
+
+      <div>
+        <strong>Maelezo ya kumbukumbu</strong>
+        <p>
+          Rekodi hizi zimehifadhiwa kama kumbukumbu binafsi.
+          Tafadhali zisambazwe au zitumike kwa kuzingatia
+          faragha na heshima ya wahusika.
+        </p>
+      </div>
+    </div>
+
+
+    <!-- AUDIO SECTION -->
+    <section class="audio-section">
+
+      <div class="section-heading">
+        <div>
+          <p class="small-title">AUDIO ARCHIVE</p>
+          <h2>Orodha ya Rekodi</h2>
+        </div>
+
+        <span class="count">4 Rekodi</span>
+      </div>
+
+
+      <!-- AUDIO 1 -->
+      <article class="audio-card">
+
+        <div class="audio-number">01</div>
+
+        <div class="audio-content">
+
+          <div class="audio-top">
+            <div>
+              <span class="audio-label">Rekodi ya 5</span>
+
+              <h3>
+                Ombi la msamaha kwa huzuni
+              </h3>
+
+              <p>
+                Zuwena Mama Lightness akilia na kueleza
+                hisia zake huku akiomba msamaha.
+              </p>
+            </div>
+
+            <span class="audio-date">
+              09 Oktoba 2024
+            </span>
+          </div>
+
+          <audio controls preload="none">
+            <source src="2024-10-09_11.43.51.aac" type="audio/aac">
+            Kivinjari chako hakiwezi kucheza audio hii.
+          </audio>
+
+          <div class="audio-info">
+            <span>🎙️ Sauti</span>
+            <span>11:43:51</span>
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- AUDIO 2 -->
+      <article class="audio-card">
+
+        <div class="audio-number">02</div>
+
+        <div class="audio-content">
+
+          <div class="audio-top">
+            <div>
+              <span class="audio-label">Rekodi ya 6</span>
+
+              <h3>
+                Maneno ya majuto na kuomba msamaha
+              </h3>
+
+              <p>
+                Kipande cha sauti chenye hisia za majuto
+                na ombi la msamaha.
+              </p>
+            </div>
+
+            <span class="audio-date">
+              09 Oktoba 2024
+            </span>
+          </div>
+
+          <audio controls preload="none">
+            <source src="2024-10-09_11.49.26.aac" type="audio/aac">
+            Kivinjari chako hakiwezi kucheza audio hii.
+          </audio>
+
+          <div class="audio-info">
+            <span>🎙️ Sauti</span>
+            <span>11:49:26</span>
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- AUDIO 3 -->
+      <article class="audio-card">
+
+        <div class="audio-number">03</div>
+
+        <div class="audio-content">
+
+          <div class="audio-top">
+            <div>
+              <span class="audio-label">Rekodi ya 7</span>
+
+              <h3>
+                Zuwena akieleza hisia zake
+              </h3>
+
+              <p>
+                Sauti yenye maelezo ya hisia, huzuni na
+                kutafakari kuhusu yaliyotokea.
+              </p>
+            </div>
+
+            <span class="audio-date">
+              09 Oktoba 2024
+            </span>
+          </div>
+
+          <audio controls preload="none">
+            <source src="2024-10-09_12.29.56.aac" type="audio/aac">
+            Kivinjari chako hakiwezi kucheza audio hii.
+          </audio>
+
+          <div class="audio-info">
+            <span>🎙️ Sauti</span>
+            <span>12:29:56</span>
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- AUDIO 4 -->
+      <article class="audio-card">
+
+        <div class="audio-number">04</div>
+
+        <div class="audio-content">
+
+          <div class="audio-top">
+            <div>
+              <span class="audio-label">Rekodi ya 8</span>
+
+              <h3>
+                Ombi la msamaha kwa machozi
+              </h3>
+
+              <p>
+                Kipande cha sauti kinachoonyesha hisia kali,
+                huzuni na kuomba msamaha.
+              </p>
+            </div>
+
+            <span class="audio-date">
+              09 Oktoba 2024
+            </span>
+          </div>
+
+          <audio controls preload="none">
+            <source src="2024-10-09_13.17.22.aac" type="audio/aac">
+            Kivinjari chako hakiwezi kucheza audio hii.
+          </audio>
+
+          <div class="audio-info">
+            <span>🎙️ Sauti</span>
+            <span>13:17:22</span>
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-line"></div>
+
+      <p>
+        🇹🇿 Tanzania • Kumbukumbu Binafsi
       </p>
 
-      <div class="doc-top">
-        <div class="flag-mark" aria-hidden="true"></div>
-        <p class="cover-title">Ushahidi wa Sauti</p>
-        <p class="cover-sub">Ushahidi wa sauti ya Mama Lightness akiomba msamaha, ili amuombee msamaha kwangu nimsamehe</p>
-      </div>
+      <small>
+        Herman Onesmo Sade
+      </small>
+    </footer>
 
-      <div class="caution">
-        <p class="label">Kumbuka kabla ya kusikiliza</p>
-        <p>Rekodi hizi ni kumbukumbu binafsi za matukio kadhaa, si ushahidi uliothibitishwa na Mahakama au Kamishna wa Viapo. Endapo zitatumika kama Kielelezo mahakamani, zinahitaji kuambatanishwa na maelezo ya tarehe, muktadha, na uthibitisho wa mazungumzo kutoka kwa Wakili.</p>
-      </div>
+  </main>
 
-      <div class="divider-doc"></div>
 
-      <h2 class="section">Orodha ya Rekodi</h2>
+  <!-- STOP OTHER AUDIO WHEN ONE STARTS -->
+  <script>
+    const audios = document.querySelectorAll("audio");
 
-      <div class="audio-list">
-
-        <div class="audio-item">
-          <div class="audio-meta">
-            <span class="audio-label">Rekodi ya 5</span>
-            <span class="audio-date">9 Oktoba 2024 — Saa 11:43:51</span>
-          </div>
-          <audio controls preload="none" src="2024-10-09_11.43.51.aac"></audio>
-        </div>
-
-        <div class="audio-item">
-          <div class="audio-meta">
-            <span class="audio-label">Rekodi ya 6</span>
-            <span class="audio-date">9 Oktoba 2024 — Saa 11:49:26</span>
-          </div>
-          <audio controls preload="none" src="2024-10-09_11.49.26.aac"></audio>
-        </div>
-
-        <div class="audio-item">
-          <div class="audio-meta">
-            <span class="audio-label">Rekodi ya 7</span>
-            <span class="audio-date">9 Oktoba 2024 — Saa 12:29:56</span>
-          </div>
-          <audio controls preload="none" src="2024-10-09_12.29.56.aac"></audio>
-        </div>
-
-        <div class="audio-item">
-          <div class="audio-meta">
-            <span class="audio-label">Rekodi ya 8</span>
-            <span class="audio-date">9 Oktoba 2024 — Saa 13:17:22</span>
-          </div>
-          <audio controls preload="none" src="2024-10-09_13.17.22.aac"></audio>
-        </div>
-
-      </div>
-
-    </div>
-  </div>
+    audios.forEach(audio => {
+      audio.addEventListener("play", () => {
+        audios.forEach(other => {
+          if (other !== audio) {
+            other.pause();
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>

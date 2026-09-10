@@ -1,96 +1,615 @@
-/* Style.css - Urembo wa Tovuti */
-/* Tanzania na Teknolojia - Tujenge Digital Bora Zaidi */
+/* ==========================================================================
+   Kumbukumbu Binafsi — Mtindo Mmoja kwa Kurasa Zote
+   (index.html, mahusiano.html, ardhi.html, ushahidi wa sauti.html,
+    historia ya maisha ya herman.html — zote zitumie faili hili moja
+    la style.css ili zifanane kikamilifu)
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #0f2027, #1a3b5d);
-    color: #fff;
-    margin: 0;
-    padding: 0;
+   Mwonekano: Tech / Code-Editor giza, rangi za Bendera ya Tanzania
+   (kijani, dhahabu, buluu) zikimulika juu ya navy-nyeusi.
+   ========================================================================== */
+
+:root{
+  /* -- msingi wa giza (badala ya parchment ya awali) -- */
+  --parchment:   #0F1B2B;   /* sasa ni "background" kuu — navy-nyeusi kama pichani */
+  --parchment-2: #142538;   /* uso wa pili, kadi/paneli */
+  --ink:         #E7EDF3;   /* maandishi makuu — karibu na weupe */
+  --ink-soft:    #9FB0C2;   /* maandishi ya pili, ya kijivu-buluu */
+
+  --navy:        #1A8CFF;   /* buluu ya "CSS3 badge" — sasa ndiyo rangi ya vitendo/link */
+  --navy-deep:   #060D17;   /* nyeusi ya kina, kwa hero/lock-screen */
+
+  --green:       #21A15A;   /* kijani cha bendera, kimemulika kidogo */
+  --gold:        #FFCC33;   /* dhahabu/njano ya bendera */
+  --gold-soft:   #F4DE9B;
+
+  --rule:        #24354B;   /* mistari/mipaka juu ya background giza */
+  --warn-bg:     #2A2412;
+  --warn-edge:   #FFCC33;
+  --caution-bg:  #2A1614;
+  --caution-edge:#FF6B52;
+
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --mono:  "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+
+  --measure: 42rem;
+
+  --glow-blue: 0 0 24px rgba(26,140,255,0.35);
+  --glow-gold: 0 0 18px rgba(255,204,51,0.25);
 }
 
-.header {
-    background: #007a33;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 4px solid #fcd116;
+*{ box-sizing:border-box; }
+
+html{ -webkit-text-size-adjust:100%; }
+
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 15% 0%, rgba(26,140,255,0.10), transparent 45%),
+    radial-gradient(circle at 100% 100%, rgba(33,161,90,0.08), transparent 40%),
+    linear-gradient(160deg, #0F2027 0%, #0B1622 55%, #060D17 100%);
+  background-attachment:fixed;
+  color:var(--ink);
+  font-family:var(--sans);
+  font-size:17px;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
 }
 
-.logo {
-    width: 120px;
-    height: auto;
-    border-radius: 50%;
+a{ color:var(--navy); }
+
+::selection{ background:rgba(255,204,51,0.35); color:var(--navy-deep); }
+
+@media (prefers-reduced-motion: reduce){
+  *{ animation-duration:0.001ms !important; transition-duration:0.001ms !important; }
 }
 
-/* Navigation */
-.navbar {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    background: #1a3b5d;
-    padding: 12px 0;
+:focus-visible{
+  outline:2px solid var(--navy);
+  outline-offset:3px;
 }
 
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: 600;
-    transition: color 0.3s ease;
+/* ---------- ribbon strip (rangi za bendera, sasa zenye mng'ao) ---------- */
+.stripe{
+  height:6px;
+  background:
+    linear-gradient(90deg,
+      var(--green) 0 34%,
+      var(--gold) 34% 36%,
+      var(--navy) 36% 64%,
+      var(--gold) 64% 66%,
+      var(--green) 66% 100%);
+  box-shadow:0 0 14px rgba(26,140,255,0.25);
 }
 
-.navbar a:hover {
-    color: #fcd116;
+/* ============================== LANDING ============================== */
+
+#landing{ background:transparent; }
+
+.hero{
+  position:relative;
+  background:var(--navy-deep);
+  color:var(--ink);
+  padding:3.4rem 1.5rem 2.6rem;
+  text-align:center;
+  overflow:hidden;
+  border-bottom:1px solid var(--rule);
 }
 
-/* Hero Section */
-.hero {
-    text-align: center;
-    padding: 60px 20px;
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(135deg, rgba(33,161,90,0.18), transparent 40%),
+    linear-gradient(315deg, rgba(26,140,255,0.18), transparent 45%);
+  pointer-events:none;
 }
 
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+.flag-hero{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  opacity:0.14;
+  object-fit:cover;
 }
 
-.hero p {
-    font-size: 1.1rem;
-    color: #d1d9e0;
+.hero h1{
+  position:relative;
+  margin:0 0 0.5rem;
+  font-family:var(--serif);
+  font-weight:600;
+  font-size:1.5rem;
+  letter-spacing:0.02em;
+  line-height:1.3;
+  color:#fff;
+  text-shadow:var(--glow-blue);
 }
 
-/* Cards / Muundo wa Mafaili style */
-.card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(0, 168, 232, 0.4);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 15px;
+.hero p{
+  position:relative;
+  margin:0;
+  font-size:1rem;
+  color:var(--ink-soft);
 }
 
-/* Footer */
-.footer {
-    background: #0f2027;
-    text-align: center;
-    padding: 20px;
-    border-top: 4px solid #00a8e8;
-    font-size: 0.9rem;
-    color: #a9b6c2;
+.landing-wrap{
+  max-width:38rem;
+  margin:0 auto;
+  padding:2.2rem 1.4rem 1rem;
 }
 
-/* Rangi za Bendera ya Tanzania - accents */
-.badge-green { background-color: #007a33; }
-.badge-yellow { background-color: #fcd116; }
-.badge-blue { background-color: #00a8e8; }
-.badge-black { background-color: #000000; }
+.cards{
+  display:flex;
+  flex-direction:column;
+  gap:1rem;
+}
 
-/* Responsive */
-@media (max-width: 768px) {
-    .navbar {
-        flex-direction: column;
-        gap: 10px;
-    }
+.card{
+  display:block;
+  width:100%;
+  text-align:left;
+  background:linear-gradient(160deg, var(--parchment-2), #0E1826);
+  border:1px solid var(--rule);
+  border-left:4px solid var(--navy);
+  border-radius:6px;
+  padding:1.2rem 1.3rem;
+  text-decoration:none;
+  color:var(--ink);
+  cursor:pointer;
+  font-family:inherit;
+  box-shadow:0 4px 18px rgba(0,0,0,0.35);
+  transition:border-left-color 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
 
-    .hero h1 {
-        font-size: 1.8rem;
-    }
+.card:hover{
+  border-left-color:var(--gold);
+  transform:translateX(2px);
+  box-shadow:0 6px 22px rgba(0,0,0,0.45), var(--glow-gold);
+}
+
+.card .k{
+  margin:0 0 0.35rem;
+  font-size:0.72rem;
+  color:var(--ink-soft);
+  letter-spacing:0.06em;
+  font-family:var(--mono);
+  text-transform:uppercase;
+}
+
+.card h2{
+  margin:0 0 0.4rem;
+  font-size:1.15rem;
+  font-weight:600;
+  color:#fff;
+}
+
+.card p{
+  margin:0;
+  font-size:0.92rem;
+  color:var(--ink-soft);
+}
+
+.card .go{
+  display:inline-block;
+  margin-top:0.6rem;
+  color:var(--gold);
+  font-size:1.05rem;
+}
+
+.landing-note{
+  margin:1.6rem 0 0.5rem;
+  padding:0.9rem 1.1rem;
+  background:var(--parchment-2);
+  border:1px solid var(--rule);
+  border-radius:6px;
+  font-size:0.85rem;
+  color:var(--ink-soft);
+  line-height:1.55;
+}
+
+.landing-note code{
+  background:var(--navy-deep);
+  color:var(--gold-soft);
+  padding:0.05rem 0.3rem;
+  border-radius:3px;
+  font-size:0.82em;
+  font-family:var(--mono);
+}
+
+/* ---------- app download promo ---------- */
+.app-promo{
+  background:linear-gradient(180deg, var(--navy-deep), #0B1622);
+  padding:2.4rem 1.4rem;
+  border-top:1px solid var(--rule);
+}
+
+.app-promo-inner{
+  max-width:30rem;
+  margin:0 auto;
+  text-align:center;
+  color:var(--ink);
+}
+
+.app-icon{
+  font-size:2.1rem;
+  margin-bottom:0.5rem;
+  filter:drop-shadow(var(--glow-blue));
+}
+
+.app-promo-eyebrow{
+  margin:0 0 0.4rem;
+  font-size:0.78rem;
+  color:var(--gold);
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  font-family:var(--mono);
+}
+
+.app-promo-inner h2{
+  margin:0 0 0.7rem;
+  font-size:1.3rem;
+  font-weight:600;
+  color:#fff;
+}
+
+.app-promo-inner > p{
+  font-size:0.92rem;
+  color:var(--ink-soft);
+  line-height:1.6;
+}
+
+.app-features{
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.5rem;
+  justify-content:center;
+  margin:1.1rem 0 1.3rem;
+}
+
+.app-features span{
+  font-size:0.75rem;
+  padding:0.35rem 0.65rem;
+  border:1px solid rgba(26,140,255,0.35);
+  border-radius:4px;
+  color:var(--navy);
+  background:rgba(26,140,255,0.08);
+  font-family:var(--mono);
+}
+
+.app-download-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  background:linear-gradient(135deg, var(--gold), #E8B428);
+  color:var(--navy-deep);
+  text-decoration:none;
+  font-weight:700;
+  font-size:0.95rem;
+  padding:0.75rem 1.5rem;
+  border-radius:6px;
+  box-shadow:var(--glow-gold);
+}
+
+.dl-arrow{ font-size:1rem; }
+
+.app-meta{
+  margin-top:0.7rem;
+  font-size:0.78rem;
+  color:var(--ink-soft);
+}
+
+.app-note{
+  margin-top:1rem;
+  font-size:0.78rem;
+  color:var(--ink-soft);
+  line-height:1.55;
+  text-align:left;
+  background:rgba(26,140,255,0.06);
+  border:1px solid var(--rule);
+  padding:0.8rem 0.9rem;
+  border-radius:6px;
+}
+
+/* ============================== LOCK SCREEN ============================== */
+
+#lock-screen{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:radial-gradient(circle at 50% 20%, rgba(26,140,255,0.10), transparent 55%), var(--navy-deep);
+  padding:1.6rem;
+}
+
+.lock-card{
+  width:100%;
+  max-width:22rem;
+  background:linear-gradient(160deg, var(--parchment-2), #0E1826);
+  border:1px solid var(--rule);
+  border-radius:8px;
+  padding:2.2rem 1.8rem;
+  text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,0.5), var(--glow-blue);
+}
+
+.lock-mark{
+  width:2.6rem;
+  height:2.6rem;
+  margin:0 auto 1rem;
+  border-radius:50%;
+  border:2px solid var(--navy);
+  position:relative;
+  box-shadow:var(--glow-blue);
+}
+
+.lock-mark::after{
+  content:"";
+  position:absolute;
+  left:50%; top:50%;
+  width:0.6rem; height:0.6rem;
+  background:var(--navy);
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+
+.lock-card h1{
+  font-size:1.15rem;
+  margin:0 0 0.4rem;
+  color:#fff;
+}
+
+.lock-card p{
+  margin:0 0 1.3rem;
+  font-size:0.88rem;
+  color:var(--ink-soft);
+}
+
+#lock-form{
+  display:flex;
+  flex-direction:column;
+  gap:0.7rem;
+}
+
+#password-input{
+  font-family:var(--mono);
+  font-size:1.4rem;
+  letter-spacing:0.5rem;
+  text-align:center;
+  padding:0.7rem;
+  border:1px solid var(--rule);
+  border-radius:4px;
+  background:var(--navy-deep);
+  color:var(--ink);
+}
+
+#unlock-btn{
+  font-family:var(--sans);
+  font-weight:600;
+  font-size:0.95rem;
+  padding:0.7rem;
+  background:linear-gradient(135deg, var(--navy), #0E6FDC);
+  color:#fff;
+  border:none;
+  border-radius:4px;
+  cursor:pointer;
+  box-shadow:var(--glow-blue);
+}
+
+#unlock-btn:hover{ background:var(--navy-deep); }
+
+#lock-error{
+  min-height:1.1rem;
+  font-size:0.82rem;
+  color:var(--caution-edge);
+}
+
+.lock-footnote{
+  margin-top:1.4rem;
+  max-width:22rem;
+  text-align:center;
+  font-size:0.78rem;
+  color:var(--ink-soft);
+  line-height:1.6;
+}
+
+.lock-footnote .home-link{ color:var(--gold); }
+
+/* ============================== DOCUMENT CONTENT ============================== */
+
+#content .wrap{
+  max-width:var(--measure);
+  margin:0 auto;
+  padding:2rem 1.3rem 4rem;
+}
+
+.home-link{
+  color:var(--navy);
+  text-decoration:none;
+  font-size:0.88rem;
+  border-bottom:1px solid var(--rule);
+}
+
+.home-link:hover{ border-bottom-color:var(--navy); }
+
+.doc-top{
+  text-align:center;
+  padding:1.4rem 0 1.6rem;
+  border-bottom:1px double var(--rule);
+  margin-bottom:1.8rem;
+}
+
+.cover-title{
+  font-size:1.3rem;
+  font-weight:600;
+  color:#fff;
+  margin:0 0 0.3rem;
+}
+
+.cover-sub{
+  font-size:0.9rem;
+  color:var(--ink-soft);
+  margin:0;
+}
+
+.flag-mark{
+  width:2.4rem;
+  height:2.4rem;
+  margin:0 auto 0.8rem;
+  background:
+    linear-gradient(135deg, var(--green) 0 45%, var(--gold) 45% 55%, var(--navy) 55% 100%);
+  border-radius:50%;
+  border:1px solid var(--rule);
+  box-shadow:var(--glow-blue);
+}
+
+.country-name{
+  font-size:0.88rem;
+  letter-spacing:0.08em;
+  color:var(--gold);
+  font-weight:600;
+  margin:0;
+  font-family:var(--mono);
+}
+
+.rule{
+  border:none;
+  border-top:1px solid var(--rule);
+}
+
+.case-caption{
+  font-size:0.85rem;
+  color:var(--ink-soft);
+  line-height:1.5;
+}
+
+.case-caption p{ margin:0.1rem 0; }
+
+.doc-title{
+  font-size:1.15rem;
+  font-weight:600;
+  color:var(--ink);
+  margin:0.9rem 0 0.2rem;
+  line-height:1.4;
+}
+
+.doc-subtitle{
+  font-size:0.88rem;
+  font-style:italic;
+  color:var(--ink-soft);
+  margin:0;
+}
+
+.section{
+  margin:2.2rem 0 0.9rem;
+  padding-bottom:0.4rem;
+  border-bottom:1px solid var(--rule);
+  font-size:1.05rem;
+  font-weight:600;
+  color:var(--navy);
+  text-shadow:0 0 12px rgba(26,140,255,0.25);
+}
+
+.divider-doc{
+  height:1px;
+  background:var(--rule);
+  margin:2.4rem 0;
+}
+
+#content p{
+  margin:0 0 0.85rem;
+  text-align:left;
+  color:var(--ink);
+}
+
+/* ---------- caution / onyo boxes ---------- */
+.caution, .onyo{
+  border-radius:6px;
+  padding:1rem 1.1rem;
+  margin:1rem 0;
+  font-size:0.92rem;
+  line-height:1.6;
+}
+
+.caution{
+  background:var(--caution-bg);
+  border-left:4px solid var(--caution-edge);
+}
+
+.onyo{
+  background:var(--warn-bg);
+  border-left:4px solid var(--warn-edge);
+}
+
+.caution .label, .onyo .label{
+  display:block;
+  font-weight:600;
+  font-size:0.82rem;
+  letter-spacing:0.02em;
+  margin-bottom:0.35rem;
+  font-family:var(--mono);
+  text-transform:uppercase;
+}
+
+.caution .label{ color:var(--caution-edge); }
+.onyo .label{ color:var(--gold); }
+
+.caution p, .onyo p{ margin:0; color:var(--ink); }
+
+/* ============================== AUDIO EVIDENCE LIST ============================== */
+
+.audio-list{
+  display:flex;
+  flex-direction:column;
+  gap:0.9rem;
+  margin:1.4rem 0 2rem;
+}
+
+.audio-item{
+  background:linear-gradient(160deg, var(--parchment-2), #0E1826);
+  border:1px solid var(--rule);
+  border-left:4px solid var(--green);
+  border-radius:6px;
+  padding:1rem 1.1rem;
+  box-shadow:0 4px 16px rgba(0,0,0,0.3);
+}
+
+.audio-item .audio-meta{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:0.6rem;
+  margin-bottom:0.6rem;
+  flex-wrap:wrap;
+}
+
+.audio-item .audio-label{
+  font-weight:600;
+  color:#fff;
+  font-size:0.95rem;
+}
+
+.audio-item .audio-date{
+  font-size:0.8rem;
+  color:var(--ink-soft);
+  font-family:var(--mono);
+}
+
+.audio-item audio{
+  width:100%;
+  display:block;
+  filter:invert(0.9) hue-rotate(180deg);
+  border-radius:4px;
+}
+
+/* ============================== RESPONSIVE ============================== */
+
+@media (min-width:640px){
+  body{ font-size:18px; }
+  .hero{ padding:4.5rem 2rem 3.2rem; }
+  .hero h1{ font-size:1.9rem; }
+  .cards{ flex-direction:row; }
+  .card{ flex:1; }
 }

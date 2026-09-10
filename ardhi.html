@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Umiliki wa Ardhi na Nyumba Tanzania</title>
+<style>
+  :root{
+    --green:#1EB53A;
+    --green-dark:#0E7A28;
+    --yellow:#FCD116;
+    --black:#0A0A0A;
+    --blue:#00A3DD;
+    --cream:#FBF9F1;
+    --line:#e4ddc4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family: Georgia, 'Times New Roman', serif;
+    background:var(--cream);
+    color:var(--black);
+    line-height:1.65;
+  }
+  /* ===== LOCK SCREEN ===== */
+  #lockScreen{
+    position:fixed; inset:0; z-index:999;
+    display:flex; align-items:center; justify-content:center;
+    background:
+      linear-gradient(135deg, var(--green) 0 30%, var(--yellow) 30% 34%, var(--black) 34% 44%, var(--yellow) 44% 48%, var(--blue) 48% 100%);
+    padding:20px;
+  }
+  .lockCard{
+    background:var(--cream);
+    border:3px solid var(--black);
+    border-radius:6px;
+    max-width:380px; width:100%;
+    padding:36px 30px;
+    text-align:center;
+    box-shadow:0 20px 50px rgba(0,0,0,.35);
+  }
+  .lockCard .badge{
+    width:54px;height:54px;border-radius:50%;
+    background:var(--green); color:var(--yellow);
+    display:flex;align-items:center;justify-content:center;
+    font-size:26px; margin:0 auto 16px;
+    border:3px solid var(--black);
+  }
+  .lockCard h1{
+    font-size:1.35rem; margin-bottom:8px; color:var(--black);
+  }
+  .lockCard p{
+    font-size:.92rem; color:#555; margin-bottom:20px;
+  }
+  #pwInput{
+    width:100%; padding:12px 14px; font-size:1.4rem; letter-spacing:6px;
+    text-align:center; border:2px solid var(--black); border-radius:5px;
+    margin-bottom:14px; font-family:Georgia, serif;
+  }
+  #pwInput:focus{outline:3px solid var(--blue);}
+  #unlockBtn{
+    width:100%; padding:12px; font-size:1rem; font-weight:bold;
+    background:var(--green-dark); color:#fff; border:none; border-radius:5px;
+    cursor:pointer; transition:background .2s;
+  }
+  #unlockBtn:hover{background:var(--black);}
+  #lockError{
+    color:#b3261e; font-size:.85rem; margin-top:12px; min-height:1.2em;
+  }
+
+  /* ===== SITE ===== */
+  #site{display:none;}
+  header.hero{
+    background: linear-gradient(120deg, var(--green) 0%, var(--green-dark) 55%, var(--black) 100%);
+    color:#fff; padding:52px 24px 60px; position:relative; overflow:hidden;
+  }
+  header.hero::after{
+    content:""; position:absolute; right:-60px; bottom:-80px; width:260px; height:260px;
+    background:var(--yellow); border-radius:50%; opacity:.15;
+  }
+  .hero-inner{max-width:820px; margin:0 auto; position:relative;}
+  .flagstrip{display:flex; height:6px; width:90px; margin-bottom:22px; border-radius:3px; overflow:hidden;}
+  .flagstrip span{flex:1;}
+  .flagstrip .g{background:var(--green);} .flagstrip .y{background:var(--yellow);}
+  .flagstrip .b{background:var(--black);} .flagstrip .bl{background:var(--blue);}
+  header.hero h1{font-size:2.1rem; margin-bottom:14px; max-width:16ch;}
+  header.hero p{font-size:1.02rem; max-width:60ch; color:#e9f5ea;}
+
+  nav.toc{
+    background:var(--black); color:var(--cream);
+    padding:14px 24px; overflow-x:auto; white-space:nowrap;
+    position:sticky; top:0; z-index:50; border-bottom:4px solid var(--yellow);
+  }
+  nav.toc a{
+    color:var(--cream); text-decoration:none; margin-right:22px; font-size:.85rem;
+    border-bottom:2px solid transparent; padding-bottom:3px;
+  }
+  nav.toc a:hover{border-bottom-color:var(--yellow); color:var(--yellow);}
+
+  main{max-width:820px; margin:0 auto; padding:46px 24px 90px;}
+  section{margin-bottom:54px; scroll-margin-top:70px;}
+  section h2{
+    font-size:1.5rem; color:var(--green-dark); margin-bottom:16px;
+    border-left:6px solid var(--yellow); padding-left:14px;
+  }
+  section h3{
+    font-size:1.12rem; color:var(--black); margin:22px 0 8px;
+  }
+  section p{margin-bottom:14px; font-size:1.02rem;}
+  section ul, section ol{margin:0 0 16px 22px;}
+  section li{margin-bottom:8px;}
+
+  .callout{
+    background:#fff; border:1px solid var(--line); border-left:5px solid var(--blue);
+    padding:16px 20px; border-radius:4px; margin:18px 0; font-size:.96rem;
+  }
+  .callout.warn{border-left-color:#b3261e; background:#fdf3f2;}
+  .callout.law{border-left-color:var(--green-dark); background:#f2faf3;}
+  .callout strong{display:block; margin-bottom:6px; color:var(--black);}
+
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:.94rem; background:#fff;}
+  th, td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  th{background:var(--green); color:#fff;}
+  tr:nth-child(even) td{background:#faf8ef;}
+
+  .steps{list-style:none; margin-left:0; counter-reset:step;}
+  .steps li{
+    counter-increment:step; position:relative; padding-left:42px; margin-bottom:16px;
+  }
+  .steps li::before{
+    content:counter(step); position:absolute; left:0; top:0;
+    width:28px; height:28px; border-radius:50%; background:var(--yellow); color:var(--black);
+    font-weight:bold; display:flex; align-items:center; justify-content:center; font-size:.9rem;
+    border:2px solid var(--black);
+  }
+
+  .refbox{
+    background:var(--black); color:var(--cream); border-radius:6px; padding:22px 24px; margin-top:16px;
+  }
+  .refbox h3{color:var(--yellow); margin-top:0;}
+  .refbox li{margin-bottom:8px; font-size:.94rem;}
+
+  footer{
+    background:var(--green-dark); color:#eafbea; text-align:center; padding:26px 20px; font-size:.85rem;
+  }
+  footer .flagstrip{margin:0 auto 10px;}
+
+  @media (max-width:600px){
+    header.hero h1{font-size:1.6rem;}
+    section h2{font-size:1.25rem;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOCK SCREEN ===== -->
+<div id="lockScreen">
+  <div class="lockCard">
+    <div class="badge">🔒</div>
+    <h1>Ukurasa Umefungwa</h1>
+    <p>Weka password ili kusoma taarifa za umiliki wa ardhi na nyumba Tanzania.</p>
+    <input type="password" id="pwInput" inputmode="numeric" maxlength="4" placeholder="••••">
+    <button id="unlockBtn">Fungua</button>
+    <div id="lockError"></div>
+  </div>
+</div>
+
+<!-- ===== SITE CONTENT ===== -->
+<div id="site">
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="flagstrip"><span class="g"></span><span class="y"></span><span class="b"></span><span class="bl"></span></div>
+    <h1>Umiliki wa Ardhi na Nyumba Tanzania</h1>
+    <p>Maelezo rahisi kuhusu ardhi iliyopimwa na kuwa na hati, ardhi iliyowasilishwa lakini bado haijakamilika, pamoja na jinsi ya kuweka jina kwenye hati ya nyumba — kwa kuzingatia sheria za ardhi za Tanzania.</p>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#aina">Aina za Ardhi</a>
+  <a href="#pimwa">Ardhi Iliyopimwa</a>
+  <a href="#hajapimwa">Ardhi Isiyopimwa</a>
+  <a href="#tofauti">Tofauti</a>
+  <a href="#nyumba">Umiliki wa Nyumba</a>
+  <a href="#jina">Jina kwenye Hati</a>
+  <a href="#sheria">Vifungu vya Sheria</a>
+  <a href="#tahadhari">Tahadhari</a>
+</nav>
+
+<main>
+
+  <section id="aina">
+    <h2>1. Aina za Ardhi Tanzania</h2>
+    <p>Kwa mujibu wa sheria za ardhi za Tanzania, ardhi yote nchini inashikiliwa na Rais kama mdhamini kwa niaba ya wananchi wote. Ardhi imegawanywa katika makundi matatu makuu:</p>
+    <ul>
+      <li><strong>Ardhi ya Jumla (General Land):</strong> ardhi isiyo ya kijiji wala hifadhi; inasimamiwa moja kwa moja na Kamishna wa Ardhi. Hapa ndipo hati za kiserikali (Granted Right of Occupancy) hutolewa, hasa maeneo ya mjini.</li>
+      <li><strong>Ardhi ya Kijiji (Village Land):</strong> inamilikiwa na kusimamiwa na vijiji vilivyosajiliwa kupitia Halmashauri ya Kijiji na Mkutano Mkuu wa Kijiji. Hapa hutolewa Hati Miliki za Kimila.</li>
+      <li><strong>Ardhi ya Hifadhi (Reserved Land):</strong> ardhi iliyotengwa kwa matumizi maalum kama hifadhi za taifa, misitu, na miundombinu ya umma.</li>
+    </ul>
+    <div class="callout law">
+      <strong>Msingi wa kisheria</strong>
+      Mgawanyo huu unatokana na Sheria ya Ardhi Na. 4 ya mwaka 1999 (Sura ya 113) na Sheria ya Ardhi ya Vijiji Na. 5 ya mwaka 1999 (Sura ya 114).
+    </div>
+  </section>
+
+  <section id="pimwa">
+    <h2>2. Ardhi Iliyopimwa na Kuwa na Taarifa Kamili</h2>
+    <p>Ardhi "iliyopimwa" ni ile ambayo tayari imepitia mchakato rasmi wa upimaji (survey) uliofanywa na Idara ya Upimaji Ardhi, kuandikwa kwenye ramani ya kiwanja (survey plan), na taarifa zake kuingizwa kwenye Daftari la Ardhi (Land Registry). Ardhi ya aina hii ina sifa zifuatazo:</p>
+    <ul>
+      <li>Ina namba ya kiwanja (Plot Number) na namba ya Block/Kitalu.</li>
+      <li>Ina ramani rasmi (survey plan / deed plan) inayoonyesha mipaka na ukubwa halisi.</li>
+      <li>Mmiliki anapewa <strong>Hati Miliki</strong> — Hati ya Kimiliki ya Kiserikali (Granted Right of Occupancy) kwa ardhi ya jumla, au Hati Miliki ya Kimila kwa ardhi ya kijiji.</li>
+      <li>Taarifa zake — jina la mmiliki, ukubwa, mpaka, na muda wa umiliki — zipo rasmi kwenye Ofisi ya Ardhi/Usajili wa Ardhi na zinaweza kuhakikiwa (verify) wakati wowote.</li>
+      <li>Inaweza kuuzwa, kurithishwa, kuwekwa dhamana benki (mortgage), au kuhamishwa kihalali kwa urahisi zaidi.</li>
+    </ul>
+    <h3>Faida za ardhi yenye hati</h3>
+    <ul>
+      <li>Usalama wa umiliki — ni vigumu mtu mwingine kudai ardhi hiyo hiyo.</li>
+      <li>Inaweza kutumika kama dhamana ya mkopo benki.</li>
+      <li>Uuzaji au urithi unafanyika kwa taratibu rahisi zaidi kupitia Ofisi ya Ardhi.</li>
+    </ul>
+  </section>
+
+  <section id="hajapimwa">
+    <h2>3. Ardhi Iliyowasilishwa Lakini Bado Haijapimwa/Kurasimishwa</h2>
+    <p>Hii ni hali ambapo mtu ameshaomba kiwanja au ameshawasilisha maombi/maombi ya kumilikishwa ardhi (mfano kupitia Halmashauri, mradi wa urasimishaji, au ugawaji wa viwanja), lakini mchakato bado haujakamilika. Kwa kawaida, katika hatua hii mhusika anakuwa na moja au zaidi ya haya:</p>
+    <ul>
+      <li><strong>Barua ya Toleo la Kiwanja</strong> (letter of offer) kutoka Halmashauri au Mamlaka ya Ardhi.</li>
+      <li><strong>Risiti za malipo</strong> za ada za kiwanja au michango ya urasimishaji.</li>
+      <li>Uthibitisho wa kijiji/mtaa (kwa maeneo ya vijijini, barua kutoka Halmashauri ya Kijiji) kuonyesha eneo limetambuliwa kimila.</li>
+    </ul>
+    <p>Hati haijawa tayari kwa sababu kiwanja bado hakijapimwa kwa vipimo rasmi vya kitaalamu (survey), au taarifa zake bado hazijaingizwa kwenye Daftari la Ardhi kwa ajili ya kutoa Hati Miliki rasmi.</p>
+
+    <h3>Mchakato unaofuata baada ya kuwasilisha</h3>
+    <ol class="steps">
+      <li>Uwasilishaji wa maombi Halmashauri ya Wilaya/Manispaa au Ofisi ya Ardhi.</li>
+      <li>Ukaguzi wa eneo na uthibitisho kuwa halina mgogoro.</li>
+      <li>Upimaji rasmi (survey) na Idara ya Upimaji, kutoa namba ya kiwanja na ramani.</li>
+      <li>Uandaaji na usajili wa Hati Miliki katika Daftari la Ardhi.</li>
+      <li>Utolewaji wa Hati Miliki rasmi kwa mmiliki.</li>
+    </ol>
+
+    <div class="callout warn">
+      <strong>Tahadhari</strong>
+      Ardhi isiyopimwa/isiyo na hati ina hatari zaidi za migogoro ya mipaka, madai mawili juu ya kiwanja kimoja, au ucheleweshaji wa mchakato wa kupata hati. Kabla ya kununua ardhi ya aina hii, thibitisha hali yake Ofisi ya Ardhi ya Wilaya/Manispaa.
+    </div>
+  </section>
+
+  <section id="tofauti">
+    <h2>4. Tofauti Kati ya Ardhi Iliyopimwa na Isiyopimwa</h2>
+    <table>
+      <tr><th>Kigezo</th><th>Ardhi Iliyopimwa (yenye Hati)</th><th>Ardhi Iliyowasilishwa, Bado Haijapimwa</th></tr>
+      <tr><td>Uthibitisho wa umiliki</td><td>Hati Miliki rasmi</td><td>Barua ya toleo au risiti tu</td></tr>
+      <tr><td>Namba ya kiwanja</td><td>Ipo, imesajiliwa</td><td>Bado haipo rasmi</td></tr>
+      <tr><td>Uwezekano wa kuuza/kurithisha</td><td>Rahisi zaidi, kihalali</td><td>Ngumu zaidi, hatari ya mgogoro</td></tr>
+      <tr><td>Matumizi kama dhamana ya mkopo</td><td>Inawezekana</td><td>Kwa kawaida haiwezekani</td></tr>
+      <tr><td>Hatari ya migogoro ya mipaka</td><td>Ndogo</td><td>Kubwa zaidi</td></tr>
+    </table>
+  </section>
+
+  <section id="nyumba">
+    <h2>5. Maana ya Umiliki wa Nyumba</h2>
+    <p>Umiliki wa nyumba hutambulika kupitia <strong>Hati ya Nyumba</strong> (Certificate of Title/Occupancy inayohusisha jengo lililojengwa juu ya kiwanja chenye hati). Kumiliki nyumba kunamaanisha una haki ya kisheria ya kutumia, kuishi, kukodisha, kuuza, au kurithisha jengo hilo pamoja na kiwanja chake, ndani ya muda wa hati (kawaida miaka 33, 66, au 99 kwa hati za serikali).</p>
+    <p>Nyumba iliyojengwa juu ya ardhi isiyo na hati (mfano ardhi ya kimila isiyorasimishwa) inaweza kutambulika kimila lakini haina ulinzi kamili wa kisheria kama nyumba iliyo kwenye ardhi yenye Hati Miliki rasmi.</p>
+  </section>
+
+  <section id="jina">
+    <h2>6. Kuweka Jina Kwenye Hati ya Nyumba — Jina Lako au la Mtu Mwingine</h2>
+    <p>Wakati wa kuandaa Hati ya Nyumba, mmiliki huchagua jina litakaloandikwa kama "mmiliki aliyesajiliwa" (registered owner). Hili linaweza kuwa jina lako mwenyewe, jina la mwenzi wako, mtoto, ndugu, au jina la kampuni/kikundi.</p>
+
+    <h3>a) Kuandika jina lako mwenyewe</h3>
+    <ul>
+      <li>Wewe pekee unakuwa na haki kamili ya kisheria juu ya nyumba/kiwanja.</li>
+      <li>Maamuzi ya kuuza, kukodisha, au kuweka dhamana yanahitaji ridhaa/saini yako.</li>
+      <li>Ikiwa umeoa/umeolewa, sheria bado inatambua maslahi ya mwenzi wako kwenye nyumba ya ndoa (matrimonial home), hata kama jina la hati ni lako pekee.</li>
+    </ul>
+
+    <h3>b) Kuandika jina la mtu mwingine</h3>
+    <ul>
+      <li>Mtu huyo anakuwa "mmiliki aliyesajiliwa" kisheria, hata kama fedha za ununuzi ulitoa wewe.</li>
+      <li>Kisheria, ni jina lililoko kwenye hati ndilo linalotambuliwa mahakamani na kwenye Ofisi ya Ardhi kama mmiliki — si mtu aliyelipia tu.</li>
+      <li>Hii ina hatari: mtu huyo anaweza kuuza, kukodisha, au kuweka dhamana bila ridhaa yako, isipokuwa kama kuna makubaliano rasmi ya maandishi (mfano mkataba wa uaminifu/trust, au hati ya makubaliano iliyosajiliwa).</li>
+      <li>Katika masuala ya ndoa au urithi, jina lililoko kwenye hati ndilo linalozingatiwa kwanza wakati wa mgawanyo wa mali, isipokuwa ithibitishwe vinginevyo mahakamani.</li>
+    </ul>
+
+    <div class="callout law">
+      <strong>Kumbuka kuhusu ndoa</strong>
+      Kwa mujibu wa Sheria ya Ndoa ya mwaka 1971 (Sura ya 29), nyumba ya ndoa (matrimonial home) inalindwa kisheria — mwenzi mmoja hawezi kuuza au kuweka dhamana nyumba ya ndoa bila ridhaa ya mwenzi mwingine, hata kama jina la hati ni la mmoja wao pekee.
+    </div>
+
+    <div class="callout warn">
+      <strong>Ushauri</strong>
+      Kama unataka kuweka jina la mtu mwingine kwenye hati kwa sababu maalum (mfano mtoto, ndugu, au mwekezaji mwenzako), ni vyema kuandaa mkataba wa maandishi unaoeleza wazi haki na wajibu wa kila upande, na kama ikiwezekana, kuusajili rasmi kwa msaada wa wakili au Ofisi ya Ardhi.
+    </div>
+  </section>
+
+  <section id="sheria">
+    <h2>7. Vifungu vya Sheria Vinavyohusika</h2>
+    <div class="refbox">
+      <h3>Marejeo makuu ya kisheria (Tanzania Bara)</h3>
+      <ul>
+        <li><strong>Sheria ya Ardhi Na. 4 ya 1999</strong> (Sura ya 113) — msingi wa umiliki wa ardhi ya jumla na hati za kiserikali.</li>
+        <li><strong>Sheria ya Ardhi ya Vijiji Na. 5 ya 1999</strong> (Sura ya 114) — inasimamia ardhi ya kijiji na Hati Miliki za Kimila; kifungu cha 22 kinaeleza wanaostahili kuomba hati ya kimila.</li>
+        <li><strong>Sheria ya Usajili wa Ardhi</strong> (Sura ya 334) — inasimamia usajili wa hati na Daftari la Ardhi.</li>
+        <li><strong>Sheria ya Mahakama za Utatuzi wa Migogoro ya Ardhi Na. 2 ya 2002</strong> (Sura ya 216) — inaunda Baraza la Ardhi la Kijiji, Baraza la Kata, Baraza la Ardhi na Nyumba la Wilaya, hadi Mahakama Kuu Kitengo cha Ardhi kwa utatuzi wa migogoro.</li>
+        <li><strong>Sheria ya Ndoa ya 1971</strong> (Sura ya 29) — inalinda maslahi ya wanandoa kwenye nyumba ya ndoa.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="tahadhari">
+    <h2>8. Tahadhari za Mwisho</h2>
+    <ul>
+      <li>Kabla ya kununua ardhi au nyumba, thibitisha hali ya hati Ofisi ya Ardhi ya Wilaya/Manispaa husika.</li>
+      <li>Epuka kununua ardhi kwa "kitongoji tu" bila risiti/hati zenye uthibitisho wa Halmashauri.</li>
+      <li>Kwa masuala magumu ya kisheria (mirathi, ndoa, migogoro ya mipaka), wasiliana na wakili au Baraza la Ardhi na Nyumba la Wilaya.</li>
+      <li>Taarifa hii ni ya elimu ya jumla tu; si ushauri rasmi wa kisheria kwa hali yako maalum.</li>
+    </ul>
+  </section>
+
+</main>
+
+<footer>
+  <div class="flagstrip"><span class="g"></span><span class="y"></span><span class="b"></span><span class="bl"></span></div>
+  Elimu ya Umiliki wa Ardhi na Nyumba Tanzania — kwa madhumuni ya elimu tu.
+</footer>
+
+</div>
+
+<script>
+  const CORRECT_PW = "4944";
+  const input = document.getElementById('pwInput');
+  const btn = document.getElementById('unlockBtn');
+  const err = document.getElementById('lockError');
+  const lock = document.getElementById('lockScreen');
+  const site = document.getElementById('site');
+
+  function tryUnlock(){
+    if(input.value.trim() === CORRECT_PW){
+      lock.style.display = 'none';
+      site.style.display = 'block';
+    } else {
+      err.textContent = "Password si sahihi. Jaribu tena.";
+      input.value = '';
+      input.focus();
+    }
+  }
+
+  btn.addEventListener('click', tryUnlock);
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter') tryUnlock();
+  });
+  window.addEventListener('load', () => input.focus());
+</script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<!--
+  Kumbukumbu binafsi — Kiapo na Kielelezo "D" (Herman Onesmo Sade)
+
+  MUHIMU: Ukurasa huu SI tovuti ya Serikali wala Mahakama. Ni faili la HTML la
+  matumizi binafsi tu. "Password" iliyowekwa hapa chini inaonekana wazi kwa
+  yeyote atakayefungua "View Page Source" ya ukurasa huu — HAINA ulinzi wa
+  kweli. Usiiweke kwenye seva ya umma/mtandaoni ukitegemea itakuwa faragha.
+  Itumike kwenye kifaa chako binafsi tu.
+
+  MTINDO: Kurasa ZOTE (index.html, kiapo.html, mahusiano.html, ardhi.html,
+  "ushahidi wa sauti.html", "historia ya maisha ya herman.html") zinatumia
+  faili MOJA la style.css lililoambatanishwa hapa, ili zifanane kabisa.
+  Weka style.css kwenye folda ile ile na kurasa hizi.
+
+  Faili hii (kiapo.html) ni hati ya Kiapo na Kielelezo D peke yake,
+  imetenganishwa na index.html. Bonye "Rudi Mwanzoni" ili kurudi index.html.
+-->
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Kiapo na Kielelezo D — Herman Onesmo Sade</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ===================== LOCK SCREEN ===================== -->
+  <div id="lock-screen">
+    <div class="lock-card">
+      <div class="lock-mark" aria-hidden="true"></div>
+      <h1>Kumbukumbu ya faragha</h1>
+      <p>Ingiza namba ya siri ili kuendelea.</p>
+      <form id="lock-form" autocomplete="off">
+        <input
+          type="password"
+          id="password-input"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          maxlength="4"
+          placeholder="••••"
+          aria-label="Namba ya siri"
+        >
+        <button type="submit" id="unlock-btn">Fungua</button>
+        <div id="lock-error" role="alert"></div>
+      </form>
+    </div>
+    <div class="lock-footnote">
+      Ukurasa huu ni wa matumizi binafsi tu — si tovuti ya Serikali wala Mahakama.<br>
+      <a class="home-link" href="index.html">&larr; Rudi Mwanzoni</a>
+    </div>
+  </div>
+
+  <!-- ===================== DOCUMENT CONTENT ===================== -->
+  <div id="content" style="display:none;">
+    <div class="stripe" aria-hidden="true"></div>
+
+    <div class="wrap">
+
+      <p style="text-align:center; margin-bottom:1.8rem;">
+        <a class="home-link" href="index.html">&larr; Mwanzoni</a>
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        <a class="home-link" href="mahusiano.html">Historia ya Mahusiano na Watoto &rarr;</a>
+      </p>
+
+      <!-- ---- Ukurasa wa tahadhari ---- -->
+      <div class="doc-top">
+        <p class="cover-title">Ukurasa wa Tahadhari</p>
+        <p class="cover-sub">Kabla ya kusoma au kutumia hati zilizoambatanishwa</p>
+      </div>
+
+      <div class="caution">
+        <p class="label">1. Hii si hati iliyotolewa na Mahakama au Serikali</p>
+        <p>Muundo huu (nembo, kichwa cha Mahakama) unafuata mtindo wa kawaida wa hati za kiapo zinazoandaliwa na mhusika au Wakili wake kabla ya kuwasilishwa Mahakamani. Hati hii bado haijathibitishwa na Mahakama, Kamishna wa Viapo, wala ofisi yoyote ya Serikali.</p>
+      </div>
+      <div class="caution">
+        <p class="label">2. Kiapo cha uongo ni kosa la jinai</p>
+        <p>Baadhi ya tarehe, majina ya mashahidi, na maneno yaliyonukuliwa (hasa ya Janeth Charles) yametajwa ndani ya hati hii kuwa hayajathibitishwa kikamilifu au ni ya kukumbukwa/kuelezwa tu, si nakala halisi. Kutoa taarifa isiyo sahihi chini ya kiapo mbele ya Kamishna wa Viapo ni kosa la jinai (perjury) chini ya Sheria ya Viapo, Sura ya 34. Thibitisha kila ukweli, tarehe, na jina kwa hati halisi kabla ya kusaini mahali popote.</p>
+      </div>
+      <div class="caution">
+        <p class="label">3. Shauri hili linahusu mtoto mchanga</p>
+        <p>Kwa kuwa jambo hili linahusisha ulezi wa mtoto (Nancy Herman Sade), maslahi ya mtoto yatapewa uzito mkubwa na Mahakama. Ni muhimu sana kupata ushauri wa Wakili aliyesajiliwa Tanzania, hasa kuhusu masuala ya ulezi, kabla ya kuchukua hatua yoyote ya kisheria.</p>
+      </div>
+      <div class="caution">
+        <p class="label">4. Uwezo wa kuthibitisha ukweli wa taarifa ni mdogo</p>
+        <p>Hati hizi zimeunganishwa kama zilivyowasilishwa, bila kuongeza au kupunguza ukweli wowote. Usahihi wa tarehe, majina, vifungu vya sheria, na matukio uliyoelezwa haujathibitishwa. Hayo ni jukumu la mhusika na Wakili wake kuyathibitisha kabla ya kuwasilisha Mahakamani au kwa Kamishna wa Viapo.</p>
+      </div>
+
+      <div class="divider-doc"></div>
+
+      <!-- ---- Maelezo ya awali (Kiapo) ---- -->
+      <h2 class="section">Maelezo Yaliyoambatanishwa na Rasimu ya Kiapo</h2>
+      <p style="font-style:italic; color:var(--ink-soft); font-size:0.9rem;">(Maelezo haya yalikuwa yameambatanishwa na rasimu ya awali ya Kiapo. Yamehifadhiwa hapa bila kubadilishwa, kwa madhumuni ya kumbukumbu.)</p>
+
+      <div class="onyo">
+        <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+        <p>
+          Kabla ya kusaini na kuwasilisha kiapo hiki mahakamani au kwa Kamishna wa Viapo, tafadhali soma kwa makini vitu vifuatavyo vilivyobainika wakati wa kulinganisha kiapo cha awali na hati za mauziano zilizowasilishwa:<br><br>
+          &bull; <strong>Tarehe:</strong> imethibitishwa kuwa matukio yote — kwenda kumchukua Magreth na ununuzi wa nyumba ya Nsemulwa/Migazini — yalitokea mwezi wa Februari 2026, si Januari kama ilivyokuwa kwenye kiapo cha awali. Tarehe zimesahihishwa kuwa Februari (siku 5, 7, na 9 Februari 2026), zinazoendana na Mkataba wa Mauziano wenye tarehe 09/02/2026.<br><br>
+          &bull; <strong>Chanzo cha fedha za nyumba ya Nsemulwa/Migazini:</strong> mkopo wa benki ulichukuliwa kama fedha taslimu kupitia ATM, kisha kumlipa muuzaji Ramadhan Adam Said fedha taslimu moja kwa moja. Jambo hilo limewekwa kama aya ya 20 kwenye kiapo. Endapo kuna Mkataba wa Mkopo au taarifa ya akaunti (bank statement), inashauriwa kuongezwa kama Kielelezo B.<br><br>
+          &bull; Imeongezwa Sehemu ya Nane yenye vifungu vya sheria za Tanzania (Sheria ya Ndoa Sura 29, Sheria ya Ardhi Sura 113, Sheria ya Mikataba Sura 345, Sheria ya Mtoto Sura 13, Sheria ya Ushahidi Sura 6, Sheria ya Viapo Sura 34, Sheria ya Mahakama za Mahakimu Sura 11). Bado ni muhimu Wakili avipitie kabla ya kuwasilisha.<br><br>
+          &bull; <strong>Mashahidi:</strong> majina yamebadilishwa kulingana na mikataba halisi (Kagusa Refi Kauzeni na Sara Beny Charamila — Nsemulwa; Christopher Tadeo na Sara B. Chalamila — Kigamboni). Yanahitaji kusomwa tena kwa uangalifu.<br><br>
+          &bull; Umri (miaka 27) na tarehe za mahusiano (13 na 22 Februari 2025) hazijabadilishwa kwa kuwa hakuna hati inayothibitisha au kupingana nazo — zinahitaji kuthibitishwa binafsi kabla ya kusaini.<br><br>
+          &bull; Hii ni rasimu tu iliyoandaliwa kwa msaada wa AI, si na Wakili. Ni vyema ithibitishwe na Wakili aliyesajiliwa Tanzania kabla ya kuwasilisha.
+        </p>
+      </div>
+
+      <div class="divider-doc"></div>
+
+      <!-- ---- KIAPO ---- -->
+      <div class="doc-top">
+        <div class="flag-mark" aria-hidden="true"></div>
+        <p class="country-name">JAMHURI YA MUUNGANO WA TANZANIA</p>
+        <hr class="rule" style="width:55%; margin:0.9rem auto 1.1rem;">
+        <div class="case-caption">
+          <p>KATIKA MAHAKAMA YA MWANZO</p>
+          <p>WILAYA YA MPANDA</p>
+          <p>MKOA WA KATAVI</p>
+        </div>
+        <p class="doc-title">KIAPO CHA UTETEZI NA UTHIBITISHO WA UMILIKI WA MALI</p>
+        <p class="doc-subtitle">(Precautionary Affidavit of Ownership)</p>
+      </div>
+
+      <p>MIMI, HERMAN ONESMO SADE, mwanaume mzima, raia wa Jamhuri ya Muungano wa Tanzania, mwenye umri wa miaka 27, askari wa Jeshi la Zimamoto na Uokoaji kwa taaluma na kazi, nikiwa na makazi ya kudumu Mkoa wa Lindi, NINATOA KIAPO kifuatacho:</p>
+
+      <p>1. Kwamba maelezo yote yaliyomo katika kiapo hiki ni ya kweli, sahihi, na kamili kadri ninavyojua na kuamini.</p>
+      <p>2. Kwamba nina uwezo wa kisheria wa kutoa kiapo hiki, na ninafanya hivyo kwa hiari yangu kamili bila kulazimishwa au kudanganywa na mtu yeyote.</p>
+
+      <h2 class="section">Sehemu ya Kwanza: Historia ya Mahusiano</h2>
+      <p>3. Kwamba mnamo mwaka 2025, niliingia katika mahusiano ya kimapenzi na mwanamke aitwaye MAGRETH DESDEL KASAGULA, ambaye alikuwa na makazi yake Mpanda, Mkoa wa Katavi.</p>
+      <p>4. Kwamba katika mahusiano hayo, nilifuata taratibu za kimila kwa kutoa posa na sehemu ya mahari kwa wazazi wake kama ilivyokuwa desturi ya jamii yetu.</p>
+      <p>5. Kwamba hata hivyo, hakukuwa na ndoa ya kisheria wala ndoa ya kimila iliyosajiliwa katika ofisi yoyote ya serikali kati yangu na MAGRETH DESDEL KASAGULA.</p>
+      <p>6. Kwamba mnamo tarehe 13 Februari 2025, nilimchukua mwanamke huyo kutoka kwa wazazi wake Mpanda kwa idhini na ridhaa yao, na mnamo tarehe 22 Februari 2025 tukaanza kuishi pamoja Mjini Lindi kama mume na mke.</p>
+
+      <div class="onyo">
+        <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+        <p>Thibitisha tarehe hizi mbili (13 na 22 Februari 2025) ni sahihi kabla ya kusaini — hakuna hati ya kuzithibitisha.</p>
+      </div>
+
+      <h2 class="section">Sehemu ya Pili: Ujauzito na Kuzaliwa kwa Mtoto</h2>
+      <p>7. Kwamba mnamo mwezi Septemba 2025, MAGRETH DESDEL KASAGULA akiwa na ujauzito wa takribani miezi saba, alisafiri kurudi nyumbani kwa wazazi wake Mpanda, Mkoa wa Katavi, kwa makubaliano ya kifamilia.</p>
+      <p>8. Kwamba mnamo tarehe 4 Desemba 2025, MAGRETH DESDEL KASAGULA alijifungua mtoto wa kike katika Hospitali ya Mkoa wa Mpanda, Katavi.</p>
+      <p>9. Kwamba mtoto huyo amepewa jina la NANCY HERMAN SADE, na jina langu linaonekana wazi kwenye cheti chake cha kuzaliwa kama baba wake wa kisheria.</p>
+      <p>10. Kwamba nakiri na kusisitiza kuwa NANCY HERMAN SADE ni mtoto wangu wa kisheria, na nina wajibu wa kimsingi wa kumlea, kumlinda na kumhudumia.</p>
+
+      <h2 class="section">Sehemu ya Tatu: Tukio la Kufukuzwa na Kunyimwa Mtoto</h2>
+      <p>11. Kwamba mnamo tarehe 5 Februari 2026, nilipata likizo kutoka kazini na kusafiri kutoka Lindi kwenda Mpanda, Katavi.</p>
+      <p>12. Kwamba mnamo tarehe 7 Februari 2026, nilienda nyumbani kwa wazazi wa MAGRETH DESDEL KASAGULA kwa madhumuni mawili: (a) Kuwasalimu na kuwaonyesha heshima; (b) Kumchukua MAGRETH DESDEL KASAGULA pamoja na mtoto wetu NANCY HERMAN SADE warudi kuishi nami Lindi.</p>
+      <p>13. Kwamba hata hivyo, wazazi wa MAGRETH DESDEL KASAGULA walikataa kabisa kuniruhusu kumchukua, na mama wa MAGRETH alinifokea kwa maneno ya dharau akiniambia niondoke mara moja.</p>
+      <p>14. Kwamba nilifukuzwa nyumbani hapo kwa nguvu na bila heshima, na nilinyimwa haki yangu ya kisheria ya kumuona na kumchukua mtoto wangu NANCY HERMAN SADE.</p>
+      <p>15. Kwamba MAGRETH DESDEL KASAGULA mwenyewe alitaka kuondoka nami, lakini baba wake wa kambo aliingilia kati na kumzuia, na hivyo mimi nilizuiliwa kwa nguvu.</p>
+      <p>16. Kwamba tukio hilo lilitokea mbele ya mashahidi, na linaweza kuthibitishwa.</p>
+
+      <h2 class="section">Sehemu ya Nne: Ununuzi wa Nyumba ya Kwanza — Eneo la Migazini, Kata ya Nsemulwa, Mpanda</h2>
+      <p>17. Kwamba baada ya kufukuzwa na kunyimwa mtoto wangu, siku mbili tu baadaye, mnamo tarehe 09 Februari 2026, nilifanya uamuzi wa kibinafsi wa kununua nyumba pamoja na kiwanja vilivyopo eneo la Migazini, Kata ya Nsemulwa, Wilaya ya Mpanda, Mkoa wa Katavi.</p>
+      <p>18. Kwamba nyumba na kiwanja hivyo vilinunuliwa kutoka kwa muuzaji RAMADHAN ADAM SAID, mkazi wa Migazini, Kata ya Nsemulwa, Wilaya ya Mpanda, Mkoa wa Katavi, kwa ushirikiano na ridhaa ya mke wake ZAINABU OMARI JUMA.</p>
+      <p>19. Kwamba thamani ya mauziano ya nyumba na kiwanja hicho ilikuwa Shilingi za Kitanzania Milioni Saba tu (Tshs. 7,000,000/=), zilizolipwa kwa awamu tatu (3) kama zilivyoainishwa kwenye Mkataba wa Mauziano wa tarehe 09/02/2026.</p>
+      <p>20. Kwamba fedha nilizotumia kununulia nyumba hiyo zilitokana na mkopo (loan) nilioukopa katika benki, ambao niliupokea na kuutoa kwa fedha taslimu (cash) kupitia ATM, kisha nikatumia fedha hizo taslimu kumlipa muuzaji RAMADHAN ADAM SAID moja kwa moja kwa awamu tatu kama zilivyoainishwa kwenye Mkataba wa Mauziano. Kwamba kwa sababu hiyo, mkopo huo haukuwa umefungamanishwa moja kwa moja na nyumba hii kama dhamana (mortgage/security) kwa benki, bali ulikuwa ni chanzo cha fedha za kibinafsi nilizotumia kwa manunuzi ya kawaida ya fedha taslimu, jambo linaloendana na Mkataba wa Mauziano niliouingia na muuzaji.</p>
+
+      <div class="onyo">
+        <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+        <p>Mkopo wa benki ulichukuliwa kama fedha taslimu kupitia ATM, kisha kumlipa muuzaji fedha taslimu — si mkopo uliofungamanishwa moja kwa moja na nyumba kama dhamana (mortgage). Hii inaimarisha zaidi hoja ya umiliki wa pekee, kwa kuwa hakuna benki yenye dhamana iliyosajiliwa juu ya nyumba hii mahususi. Endapo kuna Mkataba wa Mkopo kutoka benki, inashauriwa kuongezwa kama Kielelezo B.</p>
+      </div>
+
+      <p>21. Kwamba kiwanja na nyumba hiyo inapakana na maeneo yafuatayo: Kaskazini - kiwanja cha Rajabu; Kusini - eneo la Ashura Athumani; Mashariki - eneo la Jumanne Rashidi; na maeneo mengine kama yalivyoainishwa kwenye Mkataba wa Mauziano.</p>
+      <p>22. Kwamba Mkataba wa Mauziano wa nyumba hii ulishuhudiwa na mashahidi wafuatao: Kwa upande wa Muuzaji – mashahidi walioorodheshwa kwenye mkataba; Kwa upande wa Mnunuzi (mimi) – KAGUSA REFI KAUZENI na SARA BENY CHARAMILA.</p>
+      <p>23. Kwamba Mkataba huo ulithibitishwa na Wakili/Kamishna wa Viapo MONICA MARCO LUGONDA, S.L.P 1571, Dar es Salaam, na kupigwa muhuri rasmi.</p>
+      <p>24. Kwamba MAGRETH DESDEL KASAGULA: (a) Hakusaini Mkataba wa Mauziano wa nyumba hii; (b) Hakushiriki katika maamuzi yoyote ya kuinunua; (c) Hakutoa hata shilingi moja kwa ajili ya malipo ya awamu yoyote; (d) Hakuwahi kuishi kwenye nyumba hiyo hata kwa siku moja tangu ilinunuliwa; na kwamba wakati wa ununuzi, MAGRETH DESDEL KASAGULA alikuwa bado anaishi nyumbani kwa wazazi wake Mpanda, Katavi, hivyo hakuwa na uwezo wala nia ya kuchangia chochote.</p>
+
+      <h2 class="section">Sehemu ya Tano: Ununuzi wa Nyumba ya Pili — Mtaa wa Kigamboni, Kata ya Shanwe, Manispaa ya Mpanda</h2>
+      <p>25. Kwamba mnamo tarehe 16 Februari 2026, nilifanya uamuzi mwingine wa kibinafsi wa kununua kiwanja pamoja na nyumba iliyopo Mtaa wa Kigamboni, Kata ya Shanwe, Manispaa ya Mpanda, Mkoa wa Katavi, kutoka kwa muuzaji PIUS EMMANUEL MTEPA, mkazi wa Mpanda, Mkoa wa Katavi.</p>
+      <p>26. Kwamba thamani ya mauziano ya kiwanja na nyumba hiyo ilikuwa Shilingi za Kitanzania Milioni Nne na Laki Tano tu (Tshs. 4,500,000/=), zilizolipwa kwa mkupuo wakati wa kusaini mkataba, kama ilivyoainishwa kwenye Mkataba wa Kuuziana Kiwanja na Nyumba wa tarehe 16 Februari 2026.</p>
+      <p>27. Kwamba kabla ya mauziano, muuzaji PIUS EMMANUEL MTEPA alitoa Kiapo cha Umiliki mbele ya Kamishna wa Viapo tarehe 16 Februari 2026, akithibitisha chini ya kiapo kuwa: (a) yeye ndiye mmiliki halali wa kiwanja pamoja na nyumba hiyo; (b) aliipata kwa jasho na juhudi zake binafsi na siyo mali ya ndoa; (c) mali hiyo haihusishi haki, madai, au maslahi ya mke wake wa sasa, mke wa zamani, au mtu mwingine yeyote.</p>
+      <p>28. Kwamba mauziano hayo pia yalithibitishwa rasmi na Ofisi ya Serikali ya Mtaa wa Kigamboni, Halmashauri ya Mji wa Mpanda, kupitia Hati ya Uthibitisho wa Kuuziana Mali, iliyosainiwa na Mwenyekiti wa Serikali ya Mtaa na kupigwa muhuri, tarehe 16 Februari 2026.</p>
+      <p>29. Kwamba Mkataba wa Kuuziana Kiwanja na Nyumba (Kigamboni) ulishuhudiwa na: Shahidi wa Muuzaji – CHRISTOPHER TADEO; Shahidi wa Mnunuzi – SARA B. CHALAMILA, na ulithibitishwa na Wakili/Kamishna wa Viapo HAMAD SAID AMOUR, S.L. Posta 119, Mpanda-Katavi.</p>
+      <p>30. Kwamba kiwanja na nyumba hiyo ya Kigamboni inapakana na maeneo yafuatayo: Kaskazini – eneo la Baba Abdallah; Kusini – eneo la Mama Kalunde; Mashariki – eneo la Mama Kuku; Magharibi – eneo la Baba Joy.</p>
+      <p>31. Kwamba MAGRETH DESDEL KASAGULA hakushiriki kwa namna yoyote katika ununuzi wa nyumba hii ya Kigamboni…</p>
+
+      <div class="onyo">
+        <p class="label">KUMBUKA</p>
+        <p>Maandishi ya awali uliyoyatuma yalikatika hapa (aya ya 31). Nitunge sehemu iliyobaki (Sehemu ya Sita na kuendelea, pamoja na Sehemu ya Nane ya vifungu vya sheria na sehemu ya viapo/sahihi) nikitumia mtindo huu huu — nitumie maandishi yaliyobaki ili nikamilishe ukurasa bila kubadilisha maneno yako.</p>
+      </div>
+
+    </div>
+  </div>
+
+<script>
+(function(){
+  // FUNGUO YA SIRI — badilisha namba hii kabla ya kutumia ukurasa.
+  var SIRI = "1145";
+
+  var lockScreen = document.getElementById('lock-screen');
+  var content = document.getElementById('content');
+  var lockForm = document.getElementById('lock-form');
+  var passwordInput = document.getElementById('password-input');
+  var lockError = document.getElementById('lock-error');
+
+  lockForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(passwordInput.value === SIRI){
+      lockScreen.style.display = 'none';
+      content.style.display = 'block';
+      window.scrollTo(0,0);
+    } else {
+      lockError.textContent = 'Namba ya siri si sahihi. Jaribu tena.';
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

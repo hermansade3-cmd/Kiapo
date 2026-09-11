@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Kumbukumbu ya Nancy | Family Digital Memory Book</title>
+<meta name="description" content="Kumbukumbu binafsi ya maisha, ukuaji na maendeleo ya Nancy tangu kuzaliwa.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root{
+  --green-deep:#0E3B23;
+  --green:#1D7A42;
+  --green-soft:#E7F3EA;
+  --gold:#D9A62E;
+  --gold-soft:#F7E9C4;
+  --blue:#1C6FA0;
+  --blue-soft:#E4F0F6;
+  --ink:#161C18;
+  --ink-soft:#54615A;
+  --bg:#FBF9F4;
+  --surface:#FFFFFF;
+  --surface-2:#F3F0E6;
+  --line:#E3DFD1;
+  --shadow: 0 10px 30px -14px rgba(14,59,35,.25);
+  --radius-lg:26px;
+  --radius-md:16px;
+  --radius-sm:10px;
+  --font-display:'Fraunces', serif;
+  --font-body:'Work Sans', sans-serif;
+}
+[data-theme="dark"]{
+  --green-deep:#0A2417;
+  --green:#3FA968;
+  --green-soft:#123322;
+  --gold:#E3BB52;
+  --gold-soft:#2A2211;
+  --blue:#5FA8D3;
+  --blue-soft:#122733;
+  --ink:#F1EFE6;
+  --ink-soft:#B7C0B8;
+  --bg:#0C110D;
+  --surface:#131A15;
+  --surface-2:#161D17;
+  --line:#26301F;
+  --shadow: 0 10px 30px -14px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:var(--font-body);
+  line-height:1.55;
+  -webkit-font-smoothing:antialiased;
+  transition:background .3s ease, color .3s ease;
+}
+h1,h2,h3,h4{
+  font-family:var(--font-display);
+  color:var(--ink);
+  margin:0 0 .4em;
+  font-weight:600;
+  letter-spacing:-.01em;
+}
+p{margin:0 0 1em;color:var(--ink-soft);}
+img{max-width:100%;display:block;}
+button{font-family:inherit;}
+::selection{background:var(--gold-soft);}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; scroll-behavior:auto !important;}
+}
+a{color:var(--green);}
+:focus-visible{outline:3px solid var(--gold); outline-offset:2px;}
+
+.wrap{max-width:760px;margin:0 auto;padding:0 20px;}
+
+/* ============================================================
+   PASSWORD SCREEN
+   ============================================================ */
+#lock-screen{
+  position:fixed;inset:0;z-index:200;
+  display:flex;align-items:center;justify-content:center;
+  background:
+    linear-gradient(135deg, var(--green-deep) 0%, var(--green-deep) 42%, var(--black,#101410) 42%, #14181A 58%, var(--blue) 58%, var(--blue) 100%);
+  padding:24px;
+  transition:opacity .5s ease, visibility .5s ease;
+}
+#lock-screen.hidden{opacity:0;visibility:hidden;pointer-events:none;}
+.lock-card{
+  width:100%;max-width:380px;
+  background:rgba(251,249,244,.97);
+  border-radius:var(--radius-lg);
+  padding:38px 30px 32px;
+  text-align:center;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.5);
+  animation:cardIn .6s cubic-bezier(.2,.9,.25,1) both;
+}
+[data-theme="dark"] .lock-card{background:rgba(19,26,21,.97);}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.98);}to{opacity:1;transform:none;}}
+.lock-icon{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--gold-soft);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 18px;
+  font-size:26px;color:var(--gold);
+}
+.lock-card h1{font-size:1.4rem;margin-bottom:.3em;}
+.lock-sub{font-size:.92rem;color:var(--ink-soft);margin-bottom:22px;}
+.pw-field{
+  position:relative;margin-bottom:14px;
+}
+.pw-field input{
+  width:100%;padding:14px 46px 14px 16px;
+  border-radius:var(--radius-sm);
+  border:1.5px solid var(--line);
+  background:var(--surface);
+  color:var(--ink);
+  font-size:1rem;letter-spacing:.08em;
+  transition:border-color .2s ease;
+}
+.pw-field input:focus{border-color:var(--green);}
+.pw-toggle{
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--ink-soft);
+  width:36px;height:36px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+}
+.pw-toggle:hover{background:var(--surface-2);}
+.shake{animation:shake .45s ease;}
+@keyframes shake{
+  10%,90%{transform:translateX(-2px);}
+  20%,80%{transform:translateX(4px);}
+  30%,50%,70%{transform:translateX(-8px);}
+  40%,60%{transform:translateX(8px);}
+}
+.lock-error{
+  color:#C1462C;font-size:.85rem;min-height:1.2em;margin-bottom:10px;
+  opacity:0;transition:opacity .2s ease;
+}
+.lock-error.show{opacity:1;}
+.btn{
+  border:none;border-radius:999px;padding:14px 22px;
+  font-size:.98rem;font-weight:600;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:transform .15s ease, box-shadow .15s ease, background .2s ease;
+}
+.btn:active{transform:scale(.97);}
+.btn-primary{
+  background:var(--green-deep);color:#fff;width:100%;
+  box-shadow:0 12px 24px -10px rgba(14,59,35,.5);
+}
+.btn-primary:hover{background:var(--green);}
+.lock-flag{
+  display:flex;gap:5px;justify-content:center;margin-top:22px;
+}
+.lock-flag span{width:20px;height:5px;border-radius:3px;}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+#topbar{
+  position:sticky;top:0;z-index:60;
+  background:color-mix(in srgb, var(--bg) 88%, transparent);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.topbar-inner{
+  max-width:760px;margin:0 auto;padding:12px 20px;
+  display:flex;align-items:center;gap:10px;
+}
+.brand{
+  display:flex;align-items:center;gap:9px;font-weight:600;
+  font-family:var(--font-display);font-size:1.02rem;
+  margin-right:auto;
+}
+.brand .flag-dot{
+  width:11px;height:11px;border-radius:50%;
+  background:conic-gradient(var(--green) 0 25%, var(--gold) 25% 50%, var(--ink) 50% 75%, var(--blue) 75% 100%);
+}
+.icon-btn{
+  width:38px;height:38px;border-radius:50%;
+  border:1px solid var(--line);background:var(--surface);
+  color:var(--ink);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.9rem;transition:background .2s ease, transform .15s ease;
+}
+.icon-btn:hover{background:var(--surface-2);}
+.icon-btn:active{transform:scale(.94);}
+#search-panel{
+  max-width:760px;margin:0 auto;padding:0 20px;
+  max-height:0;overflow:hidden;transition:max-height .3s ease, padding .3s ease;
+}
+#search-panel.open{max-height:70px;padding-bottom:12px;}
+#search-input{
+  width:100%;padding:11px 14px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-size:.95rem;
+}
+#search-count{font-size:.78rem;color:var(--ink-soft);padding:6px 6px 0;}
+mark{background:var(--gold-soft);color:var(--ink);border-radius:3px;padding:0 2px;}
+.hit-hidden{display:none !important;}
+
+/* ============================================================
+   HEADER / HERO
+   ============================================================ */
+header.hero{
+  position:relative;overflow:hidden;
+  padding:52px 0 64px;
+  background:linear-gradient(160deg, var(--green-deep) 0%, var(--green-deep) 55%, var(--blue) 55%, var(--blue) 100%);
+  color:#fff;
+}
+header.hero::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(160deg, transparent 0%, transparent 53%, var(--ink) 53%, var(--ink) 54.2%, transparent 54.2%);
+  opacity:.5;
+}
+header.hero::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(160deg, transparent 0%, transparent 56%, var(--gold) 56%, var(--gold) 57.2%, transparent 57.2%);
+}
+.hero-inner{position:relative;z-index:2;}
+.hero-flag{font-size:1.6rem;margin-bottom:14px;display:block;}
+header.hero h1{color:#fff;font-size:clamp(1.7rem,6vw,2.5rem);max-width:11ch;}
+.hero-sub{color:rgba(255,255,255,.82);font-size:1rem;max-width:34ch;margin-bottom:0;}
+.hero-meta{
+  margin-top:26px;display:flex;gap:10px;align-items:center;
+  color:rgba(255,255,255,.85);font-size:.88rem;
+}
+.hero-meta .dot{width:5px;height:5px;border-radius:50%;background:rgba(255,255,255,.5);}
+
+/* ============================================================
+   SECTIONS
+   ============================================================ */
+main{padding-top:6px;}
+section{padding:44px 0;border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+.eyebrow{
+  display:flex;align-items:center;gap:10px;
+  color:var(--green);font-weight:600;font-size:.8rem;
+  margin-bottom:14px;
+}
+.eyebrow i{font-size:.85rem;}
+.section-title{font-size:clamp(1.3rem,4vw,1.65rem);}
+.section-intro{max-width:60ch;}
+
+/* Dashboard */
+.dash-grid{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px;
+}
+.dash-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-md);padding:18px 16px;
+  box-shadow:var(--shadow);
+}
+.dash-card .di{
+  width:34px;height:34px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.95rem;margin-bottom:12px;
+}
+.dash-card h3{font-size:.78rem;text-transform:none;color:var(--ink-soft);font-family:var(--font-body);font-weight:600;margin-bottom:4px;}
+.dash-card p{margin:0;font-size:.95rem;color:var(--ink);font-weight:500;}
+.di.c-green{background:var(--green-soft);color:var(--green);}
+.di.c-gold{background:var(--gold-soft);color:var(--gold);}
+.di.c-blue{background:var(--blue-soft);color:var(--blue);}
+.di.c-ink{background:var(--surface-2);color:var(--ink);}
+
+/* Info cards */
+.info-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;
+}
+.info-card{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-sm);padding:14px;
+}
+.info-card .lbl{font-size:.72rem;color:var(--ink-soft);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.info-card .val{font-weight:600;font-size:.95rem;color:var(--ink);}
+.info-card.full{grid-column:1/-1;}
+
+/* Story block */
+.story-block{
+  background:var(--surface);border-left:3px solid var(--gold);
+  border-radius:0 var(--radius-md) var(--radius-md) 0;
+  padding:22px 22px;margin-top:18px;
+}
+.story-block p:last-child{margin-bottom:0;}
+
+/* Timeline */
+.tl{position:relative;margin-top:24px;padding-left:26px;}
+.tl::before{
+  content:"";position:absolute;left:7px;top:6px;bottom:6px;width:2px;
+  background:linear-gradient(var(--green), var(--gold));
+}
+.tl-item{position:relative;padding-bottom:26px;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-dot{
+  position:absolute;left:-26px;top:2px;width:16px;height:16px;border-radius:50%;
+  background:var(--surface);border:3px solid var(--green);
+}
+.tl-date{font-weight:700;font-size:.85rem;color:var(--green);margin-bottom:6px;font-family:var(--font-display);}
+.tl-body{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-sm);padding:14px 16px;}
+.tl-body ul{margin:0;padding-left:18px;color:var(--ink-soft);font-size:.92rem;}
+.tl-body li{margin-bottom:4px;}
+.tl-body li:last-child{margin-bottom:0;}
+
+/* Weight chart */
+.chart-wrap{
+  background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius-md);padding:18px 14px;margin-top:18px;
+  box-shadow:var(--shadow);
+}
+#weightChart{width:100%;height:220px;display:block;}
+.weight-cards{
+  display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:14px;
+}
+.wcard{
+  border:1px solid var(--line);border-radius:var(--radius-sm);padding:12px 14px;
+  background:var(--surface-2);
+}
+.wcard .wd{font-size:.72rem;color:var(--ink-soft);}
+.wcard .wv{font-family:var(--font-display);font-size:1.25rem;color:var(--green-deep);font-weight:600;}
+[data-theme="dark"] .wcard .wv{color:var(--green);}
+.wcard .ws{font-size:.72rem;color:var(--blue);}
+
+/* Milestone pill row */
+.milestone-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px;}
+.milestone-tags span{
+  background:var(--green-soft);color:var(--green);
+  padding:6px 13px;border-radius:999px;font-size:.8rem;font-weight:600;
+}
+
+/* Quote / speech */
+.speech-bubbles{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;}
+.bubble{
+  background:var(--gold-soft);color:var(--ink);
+  padding:10px 18px;border-radius:20px 20px 20px 4px;
+  font-family:var(--font-display);font-size:1.1rem;font-weight:600;
+}
+
+/* Mama section */
+.mama-card{
+  display:flex;gap:16px;align-items:flex-start;margin-top:18px;
+  background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-md);padding:20px;
+}
+.mama-avatar{
+  width:52px;height:52px;border-radius:50%;flex:none;
+  background:linear-gradient(135deg,var(--blue),var(--green));
+  display:flex;align-items:center;justify-content:center;color:#fff;font-size:1.3rem;
+}
+
+/* Master timeline (compact) */
+.master-tl{margin-top:20px;}
+.master-tl .tl-item .tl-body{font-size:.88rem;}
+
+/* Filters */
+.filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.filter-chip{
+  border:1px solid var(--line);background:var(--surface);color:var(--ink-soft);
+  padding:7px 14px;border-radius:999px;font-size:.8rem;cursor:pointer;
+  transition:all .15s ease;
+}
+.filter-chip.active{background:var(--green-deep);border-color:var(--green-deep);color:#fff;}
+
+/* Footer */
+footer{
+  background:var(--green-deep);color:rgba(255,255,255,.85);
+  padding:40px 0 30px;text-align:center;
+}
+footer h2{color:#fff;font-size:1.2rem;}
+footer p{color:rgba(255,255,255,.7);font-size:.85rem;}
+.footer-flag{display:flex;gap:6px;justify-content:center;margin:16px 0;}
+.footer-flag span{width:22px;height:6px;border-radius:3px;}
+.footer-copy{font-size:.75rem;color:rgba(255,255,255,.5);margin-top:14px;}
+
+/* Floating buttons */
+.fab-stack{
+  position:fixed;right:18px;bottom:18px;z-index:50;
+  display:flex;flex-direction:column;gap:10px;
+}
+.fab{
+  width:46px;height:46px;border-radius:50%;border:none;
+  background:var(--surface);color:var(--ink);box-shadow:var(--shadow);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  opacity:0;transform:translateY(10px);pointer-events:none;
+  transition:opacity .25s ease, transform .25s ease, background .2s ease;
+  border:1px solid var(--line);
+}
+.fab.show{opacity:1;transform:none;pointer-events:auto;}
+.fab:hover{background:var(--surface-2);}
+.fab.primary{background:var(--green-deep);color:#fff;border-color:var(--green-deep);}
+.fab.primary:hover{background:var(--green);}
+
+/* Toast */
+#toast{
+  position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);
+  background:var(--ink);color:var(--bg);padding:11px 20px;border-radius:999px;
+  font-size:.85rem;opacity:0;transition:opacity .25s ease, transform .25s ease;
+  z-index:90;pointer-events:none;
+}
+#toast.show{opacity:1;transform:translate(-50%,0);}
+
+@media (min-width:600px){
+  .dash-grid{grid-template-columns:repeat(4,1fr);}
+  .info-grid{grid-template-columns:repeat(3,1fr);}
+}
+
+@media print{
+  #lock-screen,#topbar,.fab-stack,#toast{display:none !important;}
+  section{break-inside:avoid;border-bottom:none;padding:14px 0;}
+  header.hero{background:none !important;color:var(--ink) !important;}
+  header.hero *::before,header.hero::after{display:none;}
+  body{background:#fff;}
+}
+</style>
+</head>
+<body data-theme="light">
+
+<!-- ============================================================
+     PASSWORD / LOCK SCREEN
+     ============================================================ -->
+<div id="lock-screen">
+  <div class="lock-card">
+    <div class="lock-icon"><i class="fa-solid fa-lock" id="lock-icon-i"></i></div>
+    <h1>Kumbukumbu ya Nancy</h1>
+    <p class="lock-sub">Historia hii ni kumbukumbu binafsi ya maisha, ukuaji na maendeleo ya Nancy.</p>
+    <div class="pw-field">
+      <input type="password" id="pw-input" placeholder="Ingiza Password" inputmode="numeric" autocomplete="off">
+      <button class="pw-toggle" id="pw-toggle" type="button" aria-label="Onyesha password">
+        <i class="fa-solid fa-eye"></i>
+      </button>
+    </div>
+    <div class="lock-error" id="lock-error">Password si sahihi. Tafadhali jaribu tena.</div>
+    <button class="btn btn-primary" id="unlock-btn">
+      <i class="fa-solid fa-book-open"></i> Fungua Historia
+    </button>
+    <div class="lock-flag">
+      <span style="background:var(--green)"></span>
+      <span style="background:var(--gold)"></span>
+      <span style="background:var(--ink)"></span>
+      <span style="background:var(--blue)"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     TOP BAR
+     ============================================================ -->
+<div id="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="flag-dot"></span> Kumbukumbu ya Nancy</div>
+    <button class="icon-btn" id="search-toggle" aria-label="Tafuta"><i class="fa-solid fa-magnifying-glass"></i></button>
+    <button class="icon-btn" id="theme-toggle" aria-label="Badilisha mwonekano"><i class="fa-solid fa-moon"></i></button>
+  </div>
+  <div id="search-panel">
+    <input type="text" id="search-input" placeholder="Tafuta ndani ya historia... (mf. uzito, tumbo, tabasamu)">
+    <div id="search-count"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MAIN CONTENT
+     ============================================================ -->
+<div id="app">
+
+<header class="hero">
+  <div class="wrap hero-inner">
+    <span class="hero-flag">🇹🇿</span>
+    <h1>Kumbukumbu ya Maisha ya Nancy</h1>
+    <p class="hero-sub">Safari yake tangu kuzaliwa hadi sasa</p>
+    <div class="hero-meta">
+      <span><i class="fa-regular fa-calendar"></i> 04 Desemba 2025</span>
+      <span class="dot"></span>
+      <span>Mpanda, Katavi</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-house"></i> Muhtasari</div>
+    <h2 class="section-title">👶 Nancy — tangu 04 Dec 2025</h2>
+    <div class="dash-grid">
+      <div class="dash-card"><div class="di c-green"><i class="fa-solid fa-heart"></i></div><h3>Afya</h3><p>Kwa ujumla anaendelea vizuri</p></div>
+      <div class="dash-card"><div class="di c-gold"><i class="fa-solid fa-weight-scale"></i></div><h3>Uzito wa mwisho</h3><p>10.7 kg</p></div>
+      <div class="dash-card"><div class="di c-blue"><i class="fa-solid fa-shoe-prints"></i></div><h3>Movement</h3><p>Anatambaa na kusimama kwa kushikilia</p></div>
+      <div class="dash-card"><div class="di c-ink"><i class="fa-solid fa-comment"></i></div><h3>Lugha</h3><p>Ameanza kusema "tatata"</p></div>
+    </div>
+  </section>
+
+  <!-- TAARIFA ZA MSINGI -->
+  <section id="taarifa" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-id-card"></i> Taarifa za Msingi</div>
+    <h2 class="section-title">Taarifa za Nancy</h2>
+    <div class="info-grid">
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-child"></i> Jina</div><div class="val">Nancy</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-venus"></i> Jinsia</div><div class="val">Kike</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-regular fa-calendar"></i> Tarehe ya kuzaliwa</div><div class="val">04 Desemba 2025</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-location-dot"></i> Mahali pa kuzaliwa</div><div class="val">Mpanda, Katavi</div></div>
+      <div class="info-card full"><div class="lbl"><i class="fa-solid fa-hospital"></i> Hospitali</div><div class="val">Hospitali ya Mkoa (Hospitali ya Mkoani), Mpanda</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-stethoscope"></i> Njia ya kuzaliwa</div><div class="val">Caesarean Section (C-Section)</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-regular fa-clock"></i> Muda wa kuzaliwa</div><div class="val">Saa sita usiku</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-person"></i> Baba</div><div class="val">Herman</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-person-dress"></i> Mama</div><div class="val">Magreth</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-people-roof"></i> Bibi (upande wa mama)</div><div class="val">Janeth</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-people-roof"></i> Bibi (upande wa baba)</div><div class="val">Sara</div></div>
+      <div class="info-card"><div class="lbl"><i class="fa-solid fa-people-roof"></i> Babu (upande wa baba)</div><div class="val">Onesmo</div></div>
+    </div>
+  </section>
+
+  <!-- HISTORIA YA KUZALIWA -->
+  <section id="kuzaliwa" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-baby"></i> Historia ya Kuzaliwa</div>
+    <h2 class="section-title">👶 Siku aliyozaliwa</h2>
+    <div class="story-block">
+      <p>Nancy alizaliwa tarehe 04 Desemba 2025 katika Hospitali ya Mkoa (Hospitali ya Mkoani), Mpanda, Mkoa wa Katavi, Tanzania.</p>
+      <p>Alizaliwa kwa njia ya upasuaji wa tumbo (Caesarean Section – C/S). Alizaliwa akiwa hai na alilia baada ya kuzaliwa.</p>
+      <p>Baada ya kujifungua, mama yake Magreth aliendelea kupona kutokana na C-section, hivyo Nancy alianza kunyonyeshwa maziwa ya mama akiwa anashikwa na mtu mwingine.</p>
+      <p>Awali mtoto aliitwa Sara, lakini baadaye jina lake lilibadilishwa rasmi kuwa Nancy.</p>
+    </div>
+  </section>
+
+  <!-- CHANGAMOTO ZA MWANZO -->
+  <section id="changamoto" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-notes-medical"></i> Wiki za Kwanza</div>
+    <h2 class="section-title">📅 Changamoto za Mwanzo Hospitalini</h2>
+    <p class="section-intro">Siku za kwanza baada ya kuzaliwa, hadi Nancy na mama yake walipopewa ruhusa ya kutoka hospitali.</p>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">05 Desemba 2025</div>
+        <div class="tl-body"><ul>
+          <li>Nancy alianza kuonyesha changamoto za kukojoa.</li>
+          <li>Alikojoa kiasi kidogo, na alikuwa anajisaidia kinyesi mara kwa mara.</li>
+          <li>Tumbo lilianza kuvimba; madaktari walimchunguza na kumpa sindano.</li>
+          <li>Baada ya sindano alikojoa kidogo lakini tumbo liliendelea kuwa kubwa.</li>
+        </ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">06–09 Desemba 2025</div>
+        <div class="tl-body"><ul>
+          <li>Tumbo liliendelea kuvimba; madaktari walichunguza uwezekano wa gesi tumboni.</li>
+          <li>Walifuatilia pia uwezekano wa tatizo la kibofu/mkojo.</li>
+          <li>Alipewa matibabu na ufuatiliaji, na familia ilielekezwa kumbeba begani baada ya kunyonya.</li>
+        </ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">10 Desemba 2025</div>
+        <div class="tl-body"><ul>
+          <li>Nancy alipewa rufaa kwenda Hospitali ya Mkoa iliyopo Ruangwa.</li>
+          <li>Aliwekwa kwenye chumba cha watoto; mama yake aliwekwa chumba kingine.</li>
+        </ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">10–11 Desemba 2025</div>
+        <div class="tl-body"><ul>
+          <li>Aliwekewa mrija wa puani (NG tube) na mrija wa kusaidia kutoa gesi tumboni.</li>
+          <li>Baada ya hatua hizo tumbo lilipungua, lakini baada ya kupewa maziwa usiku liliongezeka tena.</li>
+        </ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">11–12 Desemba 2025</div>
+        <div class="tl-body"><ul>
+          <li>Alifanyiwa X-ray na madaktari waliendelea kumfuatilia.</li>
+          <li>Chakula/maziwa yalidhibitiwa na feeding tube kwa muda, na aliwekewa drip.</li>
+          <li>Hali yake ilianza kuimarika.</li>
+        </ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--gold)"></div>
+        <div class="tl-date" style="color:var(--gold)">13 Desemba 2025</div>
+        <div class="tl-body"><ul>
+          <li>Nancy aliruhusiwa hospitalini — alikuwa ananyonya vizuri na amelala vizuri.</li>
+          <li>Tumbo lilikuwa limetulia, na mama yake Magreth pia aliruhusiwa.</li>
+        </ul></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AFYA -->
+  <section id="afya" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-heart-pulse"></i> Afya</div>
+    <h2 class="section-title">❤️ Afya ya Nancy Baada ya Kuruhusiwa</h2>
+    <div class="story-block" style="border-left-color:var(--blue)">
+      <p>Nancy aliendelea kukua vizuri baada ya kuruhusiwa hospitalini.</p>
+      <p>Mwezi wa Aprili 2026 alipata mafua, akatumia dawa na akapona. Mwezi wa Mei 2026 alipata tena mafua pamoja na kikohozi, akatumia dawa na akapona.</p>
+      <p>Kwa ujumla, afya yake iliendelea kuwa nzuri.</p>
+    </div>
+  </section>
+
+  <!-- UZITO -->
+  <section id="uzito" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-weight-scale"></i> Ukuaji</div>
+    <h2 class="section-title">⚖️ Historia ya Uzito</h2>
+    <div class="chart-wrap">
+      <canvas id="weightChart" width="600" height="220"></canvas>
+      <div class="weight-cards">
+        <div class="wcard"><div class="wd">23 Aprili 2026</div><div class="wv">9.0 kg</div></div>
+        <div class="wcard"><div class="wd">23 Juni 2026</div><div class="wv">10.5 kg</div></div>
+        <div class="wcard"><div class="wd">22 Julai 2026</div><div class="wv">10.0 kg</div><div class="ws">Hali: Well</div></div>
+        <div class="wcard"><div class="wd">26 Agosti 2026</div><div class="wv">10.7 kg</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAENDELEO YA MWILI -->
+  <section id="mwili" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-person-walking"></i> Maendeleo ya Mwili</div>
+    <h2 class="section-title">🧒 Hatua za Ukuaji</h2>
+    <div class="tl">
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Karibu miezi 4</div>
+        <div class="tl-body"><ul>
+          <li>Alianza kujifunza kukaa, ingawa hakukaa vizuri sana na wakati mwingine alianguka.</li>
+        </ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">20 Mei 2026</div>
+        <div class="tl-body"><ul>
+          <li>Alianza kukaa vizuri zaidi, ingawa wakati mwingine alianguka na kugonga kichwa.</li>
+        </ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="border-color:var(--gold)"></div>
+        <div class="tl-date" style="color:var(--gold)">06 Julai 2026</div>
+        <div class="tl-body"><ul><li><strong>Alianza kutambaa.</strong></li></ul></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-date">Karibu miezi 8</div>
+        <div class="tl-body"><ul>
+          <li>Anaweza kukaa mwenyewe na anatambaa kwa haraka.</li>
+          <li>Anaweza kujivuta na kusimama kwa kushikilia kitu, na kusogea kidogo akiwa amesimama.</li>
+          <li>Anaanza kuimarisha miguu na mwili.</li>
+        </ul></div>
+      </div>
+    </div>
+    <div class="milestone-tags">
+      <span>Anakaa mwenyewe</span><span>Anatambaa</span><span>Anasimama kwa kushikilia</span>
+    </div>
+  </section>
+
+  <!-- MAENDELEO YA LUGHA -->
+  <section id="lugha" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-comment-dots"></i> Maendeleo ya Lugha</div>
+    <h2 class="section-title">🗣️ Sauti za Kwanza</h2>
+    <p class="section-intro">Karibu miezi 8, Nancy alianza kutoa sauti za kwanza za kubwabwaja, akijaribu silabi mbalimbali. Bado hajaanza kutamka neno lenye maana maalum kama "mama" au "baba".</p>
+    <div class="speech-bubbles">
+      <div class="bubble">Tatata</div>
+      <div class="bubble">Tatatata</div>
+    </div>
+  </section>
+
+  <!-- CHAKULA NA MAJI -->
+  <section id="chakula" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-bowl-rice"></i> Lishe</div>
+    <h2 class="section-title">🍲 Chakula na Maji</h2>
+    <div class="info-grid">
+      <div class="info-card full"><div class="lbl"><i class="fa-solid fa-droplet"></i> Maziwa ya mama</div><div class="val">Anaendelea kunyonyeshwa</div></div>
+      <div class="info-card full"><div class="lbl"><i class="fa-solid fa-utensils"></i> Uji</div><div class="val">Uji wa unga wa ugali, mara moja au mbili kwa siku</div></div>
+      <div class="info-card full"><div class="lbl"><i class="fa-solid fa-glass-water"></i> Maji</div><div class="val">Katika kipindi cha awali, familia ilikuwa bado haijaanza kumpa maji</div></div>
+    </div>
+    <p style="margin-top:14px;font-size:.85rem;">Mfumo wa chakula unaendelea kubadilika kadiri anavyokua.</p>
+  </section>
+
+  <!-- MAMA -->
+  <section id="mama" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-person-breastfeeding"></i> Familia</div>
+    <h2 class="section-title">👩 Magreth — Mama ya Nancy</h2>
+    <div class="mama-card">
+      <div class="mama-avatar"><i class="fa-solid fa-user"></i></div>
+      <div>
+        <p>Magreth alijifungua Nancy kwa C-section tarehe 04/12/2025. Baada ya upasuaji alihitaji kupumzika na uangalizi.</p>
+        <p>Katika kipindi cha matibabu ya Nancy, Magreth pia alipata changamoto za kiafya na aliendelea kupata matibabu. Tarehe 13/12/2025, mama na mtoto waliruhusiwa.</p>
+        <p style="margin-bottom:0;">Baada ya kujifungua mwili wa Magreth ulipungua, lakini baadaye ulianza kurudi kuelekea hali yake ya awali.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE KUU -->
+  <section id="timeline-kuu" data-section>
+    <div class="eyebrow"><i class="fa-solid fa-timeline"></i> Safari Yote</div>
+    <h2 class="section-title">🕰️ Timeline Kuu</h2>
+    <div class="filter-row" id="tl-filters">
+      <button class="filter-chip active" data-filter="all">Zote</button>
+      <button class="filter-chip" data-filter="hospitali">Hospitalini</button>
+      <button class="filter-chip" data-filter="ukuaji">Ukuaji</button>
+    </div>
+    <div class="tl master-tl" id="master-timeline">
+      <div class="tl-item" data-cat="hospitali"><div class="tl-dot"></div><div class="tl-date">04 Des 2025</div><div class="tl-body">Nancy anazaliwa, Mpanda, Katavi.</div></div>
+      <div class="tl-item" data-cat="hospitali"><div class="tl-dot"></div><div class="tl-date">05 Des 2025</div><div class="tl-body">Changamoto za kukojoa na tumbo kuvimba.</div></div>
+      <div class="tl-item" data-cat="hospitali"><div class="tl-dot"></div><div class="tl-date">06–09 Des 2025</div><div class="tl-body">Uchunguzi wa gesi tumboni na kibofu.</div></div>
+      <div class="tl-item" data-cat="hospitali"><div class="tl-dot"></div><div class="tl-date">10 Des 2025</div><div class="tl-body">Rufaa kwenda Hospitali ya Mkoa, Ruangwa.</div></div>
+      <div class="tl-item" data-cat="hospitali"><div class="tl-dot"></div><div class="tl-date">11–12 Des 2025</div><div class="tl-body">X-ray na matibabu ya kina.</div></div>
+      <div class="tl-item" data-cat="hospitali"><div class="tl-dot" style="border-color:var(--gold)"></div><div class="tl-date" style="color:var(--gold)">13 Des 2025</div><div class="tl-body">Nancy na Magreth waruhusiwa hospitalini.</div></div>
+      <div class="tl-item" data-cat="ukuaji"><div class="tl-dot"></div><div class="tl-date">23 Apr 2026</div><div class="tl-body">Uzito: 9.0 kg.</div></div>
+      <div class="tl-item" data-cat="ukuaji"><div class="tl-dot"></div><div class="tl-date">20 Mei 2026</div><div class="tl-body">Anakaa vizuri zaidi.</div></div>
+      <div class="tl-item" data-cat="ukuaji"><div class="tl-dot"></div><div class="tl-date">23 Jun 2026</div><div class="tl-body">Uzito: 10.5 kg.</div></div>
+      <div class="tl-item" data-cat="ukuaji"><div class="tl-dot" style="border-color:var(--gold)"></div><div class="tl-date" style="color:var(--gold)">06 Jul 2026</div><div class="tl-body">Anaanza kutambaa.</div></div>
+      <div class="tl-item" data-cat="ukuaji"><div class="tl-dot"></div><div class="tl-date">22 Jul 2026</div><div class="tl-body">Uzito: 10.0 kg (Well).</div></div>
+      <div class="tl-item" data-cat="ukuaji"><div class="tl-dot"></div><div class="tl-date">26 Ago 2026</div><div class="tl-body">Uzito: 10.7 kg.</div></div>
+      <div class="tl-item" data-cat="ukuaji"><div class="tl-dot" style="border-color:var(--blue)"></div><div class="tl-date" style="color:var(--blue)">Sasa</div><div class="tl-body">Anaendelea kukua na kujifunza kila siku.</div></div>
+    </div>
+  </section>
+
+</main>
+</div>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer>
+  <div class="wrap">
+    <span style="font-size:1.4rem;">🇹🇿</span>
+    <h2>Kumbukumbu ya Nancy</h2>
+    <p>Safari ya maisha yake tangu 04 Desemba 2025</p>
+    <p>Family Digital Memory Record</p>
+    <div class="footer-flag">
+      <span style="background:var(--green)"></span>
+      <span style="background:var(--gold)"></span>
+      <span style="background:#fff"></span>
+      <span style="background:var(--blue)"></span>
+    </div>
+    <div class="footer-copy">© 2025–2026</div>
+  </div>
+</footer>
+
+<!-- FLOATING BUTTONS -->
+<div class="fab-stack">
+  <button class="fab" id="print-fab" title="Print / PDF" aria-label="Print"><i class="fa-solid fa-print"></i></button>
+  <button class="fab" id="top-fab" title="Rudi Juu" aria-label="Rudi juu"><i class="fa-solid fa-arrow-up"></i></button>
+  <button class="fab primary" id="lock-fab" title="Funga Tena" aria-label="Funga tena"><i class="fa-solid fa-lock"></i></button>
+</div>
+
+<div id="toast"></div>
+
+<script>
+(function(){
+  "use strict";
+  var CORRECT_PASSWORD = "1145";
+
+  var lockScreen = document.getElementById('lock-screen');
+  var pwInput = document.getElementById('pw-input');
+  var pwToggle = document.getElementById('pw-toggle');
+  var unlockBtn = document.getElementById('unlock-btn');
+  var lockError = document.getElementById('lock-error');
+  var lockCard = document.querySelector('.lock-card');
+  var lockFab = document.getElementById('lock-fab');
+  var topFab = document.getElementById('top-fab');
+  var printFab = document.getElementById('print-fab');
+  var themeToggle = document.getElementById('theme-toggle');
+  var searchToggle = document.getElementById('search-toggle');
+  var searchPanel = document.getElementById('search-panel');
+  var searchInput = document.getElementById('search-input');
+  var searchCount = document.getElementById('search-count');
+  var toast = document.getElementById('toast');
+  var body = document.body;
+
+  /* ---------- PASSWORD LOCK ---------- */
+  function tryUnlock(){
+    if(pwInput.value.trim() === CORRECT_PASSWORD){
+      lockError.classList.remove('show');
+      lockScreen.classList.add('hidden');
+      pwInput.value = '';
+      document.body.style.overflow = '';
+      showToast('Karibu — historia ya Nancy imefunguliwa');
+    } else {
+      lockError.classList.add('show');
+      lockCard.classList.remove('shake');
+      void lockCard.offsetWidth;
+      lockCard.classList.add('shake');
+    }
+  }
+  unlockBtn.addEventListener('click', tryUnlock);
+  pwInput.addEventListener('keydown', function(e){ if(e.key === 'Enter') tryUnlock(); });
+  pwToggle.addEventListener('click', function(){
+    var isPw = pwInput.type === 'password';
+    pwInput.type = isPw ? 'text' : 'password';
+    pwToggle.innerHTML = isPw ? '<i class="fa-solid fa-eye-slash"></i>' : '<i class="fa-solid fa-eye"></i>';
+  });
+  lockFab.addEventListener('click', function(){
+    lockScreen.classList.remove('hidden');
+    pwInput.focus();
+  });
+  document.body.style.overflow = 'hidden';
+  lockScreen.addEventListener('transitionend', function(){
+    if(lockScreen.classList.contains('hidden')) document.body.style.overflow = '';
+    else document.body.style.overflow = 'hidden';
+  });
+
+  /* ---------- THEME ---------- */
+  var savedTheme = null;
+  try { savedTheme = window.localStorage ? null : null; } catch(e) {}
+  var currentTheme = 'light';
+  function applyTheme(t){
+    currentTheme = t;
+    body.setAttribute('data-theme', t);
+    themeToggle.innerHTML = t === 'dark' ? '<i class="fa-solid fa-sun"></i>' : '<i class="fa-solid fa-moon"></i>';
+    drawChart();
+  }
+  themeToggle.addEventListener('click', function(){
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  });
+  if(window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches){
+    applyTheme('dark');
+  }
+
+  /* ---------- SEARCH ---------- */
+  var searchOpen = false;
+  searchToggle.addEventListener('click', function(){
+    searchOpen = !searchOpen;
+    searchPanel.classList.toggle('open', searchOpen);
+    if(searchOpen) setTimeout(function(){ searchInput.focus(); }, 150);
+    else clearSearch();
+  });
+
+  var originalHTML = {};
+  function clearSearch(){
+    document.querySelectorAll('[data-section]').forEach(function(sec){
+      sec.classList.remove('hit-hidden');
+      if(originalHTML[sec.id]){ sec.innerHTML = originalHTML[sec.id]; }
+    });
+    searchCount.textContent = '';
+  }
+
+  searchInput.addEventListener('input', function(){
+    var q = searchInput.value.trim().toLowerCase();
+    var sections = document.querySelectorAll('[data-section]');
+    if(!q){ clearSearch(); return; }
+    var totalHits = 0;
+    sections.forEach(function(sec){
+      if(!originalHTML[sec.id]) originalHTML[sec.id] = sec.innerHTML;
+      var text = sec.textContent.toLowerCase();
+      var has = text.indexOf(q) !== -1;
+      sec.classList.toggle('hit-hidden', !has);
+      if(has){
+        totalHits++;
+        sec.innerHTML = highlight(originalHTML[sec.id], q);
+      } else {
+        sec.innerHTML = originalHTML[sec.id];
+      }
+    });
+    searchCount.textContent = totalHits ? ('Sehemu zilizopatikana: ' + totalHits) : 'Hakuna kilichopatikana';
+  });
+
+  function escapeRegExp(s){ return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+  function highlight(html, q){
+    var re = new RegExp('(' + escapeRegExp(q) + ')', 'gi');
+    var container = document.createElement('div');
+    container.innerHTML = html;
+    (function walk(node){
+      node.childNodes.forEach(function(child){
+        if(child.nodeType === 3){
+          if(re.test(child.textContent)){
+            var span = document.createElement('span');
+            span.innerHTML = child.textContent.replace(re, '<mark>$1</mark>');
+            child.replaceWith(span);
+          }
+        } else if(child.nodeType === 1 && child.tagName !== 'MARK'){
+          walk(child);
+        }
+      });
+    })(container);
+    return container.innerHTML;
+  }
+
+  /* ---------- BACK TO TOP + FAB VISIBILITY ---------- */
+  window.addEventListener('scroll', function(){
+    var show = window.scrollY > 400;
+    topFab.classList.toggle('show', show);
+    printFab.classList.toggle('show', show);
+    lockFab.classList.toggle('show', true);
+  });
+  topFab.classList.add('show'); // keep lock always reachable; top/print appear after scroll via listener
+  lockFab.classList.add('show');
+  topFab.addEventListener('click', function(){ window.scrollTo({top:0, behavior:'smooth'}); });
+  printFab.addEventListener('click', function(){ window.print(); });
+
+  /* ---------- MASTER TIMELINE FILTER ---------- */
+  var filterChips = document.querySelectorAll('#tl-filters .filter-chip');
+  var masterItems = document.querySelectorAll('#master-timeline .tl-item');
+  filterChips.forEach(function(chip){
+    chip.addEventListener('click', function(){
+      filterChips.forEach(function(c){ c.classList.remove('active'); });
+      chip.classList.add('active');
+      var f = chip.getAttribute('data-filter');
+      masterItems.forEach(function(item){
+        var show = f === 'all' || item.getAttribute('data-cat') === f;
+        item.style.display = show ? '' : 'none';
+      });
+    });
+  });
+
+  /* ---------- TOAST ---------- */
+  var toastTimer;
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function(){ toast.classList.remove('show'); }, 2600);
+  }
+
+  /* ---------- WEIGHT CHART (canvas, no libraries) ---------- */
+  var weightData = [
+    {label:'23 Apr', value:9.0},
+    {label:'23 Jun', value:10.5},
+    {label:'22 Jul', value:10.0},
+    {label:'26 Ago', value:10.7}
+  ];
+  var canvas = document.getElementById('weightChart');
+  var ctx = canvas.getContext('2d');
+
+  function cssVar(name){
+    return getComputedStyle(document.body).getPropertyValue(name).trim();
+  }
+
+  function drawChart(){
+    var dpr = window.devicePixelRatio || 1;
+    var rect = canvas.getBoundingClientRect();
+    var w = rect.width || 560;
+    var h = 220;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+
+    var pad = {top:22, right:18, bottom:32, left:38};
+    var plotW = w - pad.left - pad.right;
+    var plotH = h - pad.top - pad.bottom;
+
+    var vals = weightData.map(function(d){ return d.value; });
+    var min = Math.min.apply(null, vals) - 0.6;
+    var max = Math.max.apply(null, vals) + 0.6;
+
+    var lineColor = cssVar('--green') || '#1D7A42';
+    var gridColor = cssVar('--line') || '#E3DFD1';
+    var textColor = cssVar('--ink-soft') || '#54615A';
+    var goldColor = cssVar('--gold') || '#D9A62E';
+
+    // grid lines
+    ctx.strokeStyle = gridColor;
+    ctx.lineWidth = 1;
+    ctx.font = '11px "Work Sans", sans-serif';
+    ctx.fillStyle = textColor;
+    var steps = 4;
+    for(var i=0;i<=steps;i++){
+      var y = pad.top + plotH * (i/steps);
+      ctx.beginPath();
+      ctx.moveTo(pad.left, y);
+      ctx.lineTo(w - pad.right, y);
+      ctx.stroke();
+      var val = max - (max-min) * (i/steps);
+      ctx.fillText(val.toFixed(1)+'kg', 2, y+4);
+    }
+
+    // points
+    var pts = weightData.map(function(d,i){
+      var x = pad.left + (plotW * (i/(weightData.length-1)));
+      var y = pad.top + plotH * (1 - (d.value - min)/(max-min));
+      return {x:x, y:y, d:d};
+    });
+
+    // area fill
+    ctx.beginPath();
+    ctx.moveTo(pts[0].x, pad.top+plotH);
+    pts.forEach(function(p){ ctx.lineTo(p.x,p.y); });
+    ctx.lineTo(pts[pts.length-1].x, pad.top+plotH);
+    ctx.closePath();
+    var grad = ctx.createLinearGradient(0,pad.top,0,pad.top+plotH);
+    grad.addColorStop(0, lineColor + '33');
+    grad.addColorStop(1, lineColor + '00');
+    ctx.fillStyle = grad;
+    ctx.fill();
+
+    // line
+    ctx.beginPath();
+    pts.forEach(function(p,i){ i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y); });
+    ctx.strokeStyle = lineColor;
+    ctx.lineWidth = 2.5;
+    ctx.lineJoin = 'round';
+    ctx.stroke();
+
+    // points + labels
+    pts.forEach(function(p,i){
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,5,0,Math.PI*2);
+      ctx.fillStyle = i === pts.length-1 ? goldColor : lineColor;
+      ctx.fill();
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = cssVar('--surface') || '#fff';
+      ctx.stroke();
+
+      ctx.fillStyle = textColor;
+      ctx.font = '11px "Work Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(p.d.label, p.x, h - 8);
+    });
+    ctx.textAlign = 'left';
+  }
+
+  window.addEventListener('resize', function(){ drawChart(); });
+  setTimeout(drawChart, 60);
+
+})();
+</script>
+</body>
+</html>

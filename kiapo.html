@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <!--
-  Kumbukumbu binafsi — Kiapo na Kielelezo "D" (Herman Onesmo Sade)
+  =========================================================
+  KIAPO.HTML — Kumbukumbu binafsi ya Herman Onesmo Sade
+  =========================================================
 
-  MUHIMU: Ukurasa huu SI tovuti ya Serikali wala Mahakama. Ni faili la HTML la
-  matumizi binafsi tu. "Password" iliyowekwa hapa chini inaonekana wazi kwa
-  yeyote atakayefungua "View Page Source" ya ukurasa huu — HAINA ulinzi wa
-  kweli. Usiiweke kwenye seva ya umma/mtandaoni ukitegemea itakuwa faragha.
-  Itumike kwenye kifaa chako binafsi tu.
+  MUHIMU: Faili hii ni ya matumizi binafsi tu. SI tovuti ya Serikali
+  wala Mahakama. "Password" iliyowekwa hapa chini inaonekana wazi
+  kwa yeyote atakayefungua "View Page Source" — HAINA ulinzi wa
+  kweli. Usiiweke kwenye seva ya umma ukitegemea itakuwa faragha.
 
-  MTINDO: Kurasa ZOTE (index.html, kiapo.html, mahusiano.html, ardhi.html,
-  "ushahidi wa sauti.html", "historia ya maisha ya herman.html") zinatumia
-  faili MOJA la style.css lililoambatanishwa hapa, ili zifanane kabisa.
-  Weka style.css kwenye folda ile ile na kurasa hizi.
+  TOLEO LILILOTUMIKA: Februari 2026 pekee (nyumba mbili — Migazini/
+  Nsemulwa na Kigamboni, vifungu 49). Toleo mbadala la Januari 2026
+  (Nsemulwa peke yake kupitia mkopo wa NMB) halijawekwa humu kwa
+  maombi ya Herman.
 
-  Faili hii (kiapo.html) ni hati ya Kiapo na Kielelezo D peke yake,
-  imetenganishwa na index.html. Bonye "Rudi Mwanzoni" ili kurudi index.html.
+  MUUNDO WA FAILI (sura tano, zote chanzo chake ni hati za Februari
+  2026 alizopakia Herman):
+    Sura 1 — Ukurasa wa Tahadhari
+    Sura 2 — Maelezo Kabla ya Kuwasilisha Mahakamani
+    Sura 3 — Kiapo Kikuu cha Utetezi na Uthibitisho wa Umiliki wa Mali
+    Sura 4 — Maelezo Kuhusu Kielelezo "D"
+    Sura 5 — Kielelezo "D": Taarifa ya Tukio la Kufukuzwa
+
+  Ukurasa huu unatumia style.css ya tovuti (background la #content,
+  .onyo, .caution, .doc-title n.k.) kisha unaongeza <style> yake
+  binafsi hapa chini kwa ajili ya mfumo wa "kusoma kitabu" (jedwali
+  la yaliyomo, upau wa maendeleo, dark mode, scroll-reveal) — hivi
+  havihitajiki kwenye kurasa nyingine za tovuti, hivyo havijawekwa
+  kwenye style.css ya pamoja.
 -->
 <html lang="sw">
 <head>
@@ -25,6 +38,351 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<style>
+/* =========================================================
+   KIAPO READER — mfumo wa "kusoma kitabu" kwa ukurasa huu tu
+   Sehemu:
+     1. VARIABLES ZA ZIADA (mode ya usiku)
+     2. TOPBAR (juu — back, jina, dark toggle, toc toggle)
+     3. PROGRESS BAR
+     4. LAYOUT: TOC + MAIN
+     5. TOC (jedwali la yaliyomo)
+     6. CHAPTERS (sura na scroll-reveal)
+     7. EXHIBIT / QUOTE HELPERS
+     8. BACK-TO-TOP
+     9. DARK READING MODE (overrides)
+     10. RESPONSIVE
+     11. REDUCED MOTION
+   ========================================================= */
+
+/* ---- 1. Variables za ziada (zinatumia zile za style.css) ---- */
+:root {
+  --reader-topbar-h: 58px;
+  --reader-progress-h: 3px;
+  --dark-bg:    #14120f;
+  --dark-bg-2:  #1b1812;
+  --dark-ink:   #e9e2d2;
+  --dark-ink-soft: #a89f8c;
+  --dark-line:  #3a352b;
+  --dark-gold:  #e7bb53;
+}
+
+/* ---- 2. Topbar ---- */
+.reader-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  height: var(--reader-topbar-h);
+  background: rgba(10, 24, 40, 0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line);
+  color: var(--paper);
+}
+.tb-btn {
+  appearance: none;
+  border: 1px solid rgba(244, 217, 152, 0.28);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--paper);
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.tb-btn:hover {
+  background: rgba(231, 187, 83, 0.16);
+  border-color: var(--gold);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.tb-btn:active { transform: translateY(0) scale(0.95); }
+.tb-title {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  font-family: var(--serif);
+  font-weight: 700;
+  font-size: 0.92rem;
+  letter-spacing: 0.02em;
+  color: var(--gold-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#dark-icon { display: inline-block; transition: transform 0.4s ease; }
+body.dark-reading #dark-icon { transform: rotate(180deg); }
+
+/* ---- 3. Progress bar ---- */
+.reader-progress {
+  position: sticky;
+  top: var(--reader-topbar-h);
+  z-index: 59;
+  height: var(--reader-progress-h);
+  background: rgba(255, 255, 255, 0.08);
+}
+.reader-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--tz-green), var(--tz-gold), var(--tz-blue));
+  transition: width 0.12s linear;
+}
+
+.toc-scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 65;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+body.toc-open .toc-scrim { opacity: 1; pointer-events: auto; }
+
+/* ---- 4. Layout: TOC + Main ---- */
+.reader-body {
+  display: flex;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.reader-main {
+  flex: 1;
+  min-width: 0;
+}
+
+/* ---- 5. TOC ---- */
+.reader-toc {
+  width: 268px;
+  flex: 0 0 268px;
+  position: sticky;
+  top: calc(var(--reader-topbar-h) + var(--reader-progress-h));
+  max-height: calc(100vh - var(--reader-topbar-h) - var(--reader-progress-h));
+  overflow-y: auto;
+  padding: 22px 16px 40px;
+  background: var(--paper-edge);
+  border-right: 1px solid var(--line-doc);
+}
+.reader-toc h3 {
+  font-family: var(--serif);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-soft);
+  margin: 0 0 14px;
+}
+.toc-link {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  font-size: 0.86rem;
+  line-height: 1.35;
+  color: var(--ink);
+  text-decoration: none;
+  margin-bottom: 3px;
+  border-left: 3px solid transparent;
+  transition: background 0.2s ease, border-color 0.2s ease, padding-left 0.2s ease;
+}
+.toc-link:hover {
+  background: rgba(10, 123, 196, 0.08);
+  text-decoration: none;
+}
+.toc-link.active {
+  border-left-color: var(--tz-gold);
+  background: rgba(252, 209, 22, 0.14);
+  font-weight: 700;
+  padding-left: 13px;
+}
+.toc-num {
+  flex: 0 0 auto;
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+.toc-note {
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line-doc);
+  font-size: 0.76rem;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+
+/* ---- 6. Chapters + scroll-reveal ---- */
+.chapter {
+  padding-top: 6px;
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.chapter.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+.chapter + .chapter {
+  margin-top: 3.2rem;
+  border-top: 1px dashed var(--line-doc);
+  padding-top: 2.8rem;
+}
+.chapter-kicker {
+  display: inline-block;
+  font-size: 0.74rem;
+  letter-spacing: 0.1em;
+  color: var(--tz-blue);
+  font-weight: 700;
+  margin: 0 0 10px;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border: 1px solid rgba(10, 123, 196, 0.3);
+  border-radius: 999px;
+  background: rgba(10, 123, 196, 0.06);
+}
+.witness-list {
+  margin: 1.2rem 0;
+  padding-left: 1.3rem;
+  line-height: 1.85;
+}
+.witness-list li { margin-bottom: 6px; }
+
+/* ---- 7. Exhibit / quote helpers ---- */
+blockquote.court-quote {
+  margin: 1.4rem 0;
+  padding: 14px 20px;
+  border-left: 3px solid var(--ink-soft);
+  font-style: italic;
+  color: var(--ink-soft);
+  background: rgba(32, 28, 20, 0.03);
+}
+
+/* ---- 8. Back-to-top ---- */
+.back-to-top {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, var(--gold-soft), var(--gold));
+  color: var(--navy-deep);
+  border: none;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px) scale(0.9);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 55;
+}
+.back-to-top.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+.back-to-top:hover { transform: translateY(-3px) scale(1.04); }
+.back-to-top:active { transform: translateY(0) scale(0.96); }
+
+/* ---- 9. Dark reading mode ---- */
+body.dark-reading #content { background: var(--dark-bg); color: var(--dark-ink); }
+body.dark-reading #content p { color: var(--dark-ink); }
+body.dark-reading #content .wrap > p { color: var(--dark-ink); }
+body.dark-reading .cover-title,
+body.dark-reading .doc-title,
+body.dark-reading .country-name,
+body.dark-reading h2.section {
+  color: var(--dark-gold);
+}
+body.dark-reading h2.section { border-bottom-color: var(--dark-gold); }
+body.dark-reading .cover-sub,
+body.dark-reading .doc-subtitle,
+body.dark-reading .case-caption p,
+body.dark-reading .ink-soft-text {
+  color: var(--dark-ink-soft);
+}
+body.dark-reading .caution {
+  background: #241512;
+  border-color: rgba(224, 122, 106, 0.35);
+}
+body.dark-reading .caution .label { color: #e6857a; }
+body.dark-reading .caution p:last-child { color: var(--dark-ink); }
+body.dark-reading .onyo {
+  background: #241d10;
+  border-color: #6b5218;
+}
+body.dark-reading .onyo .label { color: var(--dark-gold); }
+body.dark-reading .onyo p:last-child,
+body.dark-reading .onyo li { color: var(--dark-ink); }
+body.dark-reading .reader-toc {
+  background: var(--dark-bg-2);
+  border-right-color: var(--dark-line);
+}
+body.dark-reading .reader-toc h3 { color: var(--dark-ink-soft); }
+body.dark-reading .toc-link { color: var(--dark-ink); }
+body.dark-reading .toc-link:hover { background: rgba(231, 187, 83, 0.08); }
+body.dark-reading .toc-link.active { background: rgba(231, 187, 83, 0.16); }
+body.dark-reading .toc-num,
+body.dark-reading .toc-note { color: var(--dark-ink-soft); }
+body.dark-reading .chapter + .chapter { border-top-color: var(--dark-line); }
+body.dark-reading .divider-doc { background: var(--dark-line); }
+body.dark-reading hr.rule { border-top-color: var(--dark-line); }
+body.dark-reading #content .home-link { color: #8ec9ef; }
+body.dark-reading blockquote.court-quote {
+  color: var(--dark-ink-soft);
+  border-left-color: var(--dark-line);
+  background: rgba(255, 255, 255, 0.02);
+}
+body.dark-reading .chapter-kicker {
+  color: #8ec9ef;
+  border-color: rgba(142, 201, 239, 0.3);
+  background: rgba(142, 201, 239, 0.06);
+}
+
+/* ---- 10. Responsive ---- */
+@media (max-width: 900px) {
+  .reader-toc {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 82%;
+    max-width: 320px;
+    transform: translateX(-100%);
+    transition: transform 0.28s ease;
+    z-index: 66;
+    padding-top: calc(var(--reader-topbar-h) + 20px);
+  }
+  body.toc-open .reader-toc { transform: translateX(0); }
+  .reader-body { display: block; }
+  .tb-title { font-size: 0.82rem; }
+}
+
+/* ---- 11. Reduced motion ---- */
+@media (prefers-reduced-motion: reduce) {
+  .chapter {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .back-to-top, .tb-btn, .toc-link, #dark-icon {
+    transition: none !important;
+  }
+}
+</style>
 </head>
 <body>
 
@@ -54,144 +412,345 @@
     </div>
   </div>
 
-  <!-- ===================== DOCUMENT CONTENT ===================== -->
+  <!-- ===================== READER (DOCUMENT CONTENT) ===================== -->
   <div id="content" style="display:none;">
+
+    <!-- Topbar -->
+    <div class="reader-topbar">
+      <a class="tb-btn" href="index.html" aria-label="Rudi Mwanzoni" title="Rudi Mwanzoni">&larr;</a>
+      <button class="tb-btn" id="toc-toggle" aria-label="Fungua Yaliyomo" title="Yaliyomo">&#9776;</button>
+      <div class="tb-title">KIAPO NA KIELELEZO &quot;D&quot; &mdash; TOLEO LA FEBRUARI 2026</div>
+      <button class="tb-btn" id="dark-toggle" aria-label="Badilisha Mwonekano wa Kusoma" title="Dark Mode">
+        <span id="dark-icon">&#9789;</span>
+      </button>
+    </div>
+
+    <!-- Progress -->
+    <div class="reader-progress"><div class="reader-progress-bar" id="progress-bar"></div></div>
     <div class="stripe" aria-hidden="true"></div>
 
-    <div class="wrap">
+    <!-- Mobile TOC scrim -->
+    <div class="toc-scrim" id="toc-scrim"></div>
 
-      <p style="text-align:center; margin-bottom:1.8rem;">
-        <a class="home-link" href="index.html">&larr; Mwanzoni</a>
-        &nbsp;&nbsp;|&nbsp;&nbsp;
-        <a class="home-link" href="mahusiano.html">Historia ya Mahusiano na Watoto &rarr;</a>
-      </p>
+    <div class="reader-body">
 
-      <!-- ---- Ukurasa wa tahadhari ---- -->
-      <div class="doc-top">
-        <p class="cover-title">Ukurasa wa Tahadhari</p>
-        <p class="cover-sub">Kabla ya kusoma au kutumia hati zilizoambatanishwa</p>
-      </div>
-
-      <div class="caution">
-        <p class="label">1. Hii si hati iliyotolewa na Mahakama au Serikali</p>
-        <p>Muundo huu (nembo, kichwa cha Mahakama) unafuata mtindo wa kawaida wa hati za kiapo zinazoandaliwa na mhusika au Wakili wake kabla ya kuwasilishwa Mahakamani. Hati hii bado haijathibitishwa na Mahakama, Kamishna wa Viapo, wala ofisi yoyote ya Serikali.</p>
-      </div>
-      <div class="caution">
-        <p class="label">2. Kiapo cha uongo ni kosa la jinai</p>
-        <p>Baadhi ya tarehe, majina ya mashahidi, na maneno yaliyonukuliwa (hasa ya Janeth Charles) yametajwa ndani ya hati hii kuwa hayajathibitishwa kikamilifu au ni ya kukumbukwa/kuelezwa tu, si nakala halisi. Kutoa taarifa isiyo sahihi chini ya kiapo mbele ya Kamishna wa Viapo ni kosa la jinai (perjury) chini ya Sheria ya Viapo, Sura ya 34. Thibitisha kila ukweli, tarehe, na jina kwa hati halisi kabla ya kusaini mahali popote.</p>
-      </div>
-      <div class="caution">
-        <p class="label">3. Shauri hili linahusu mtoto mchanga</p>
-        <p>Kwa kuwa jambo hili linahusisha ulezi wa mtoto (Nancy Herman Sade), maslahi ya mtoto yatapewa uzito mkubwa na Mahakama. Ni muhimu sana kupata ushauri wa Wakili aliyesajiliwa Tanzania, hasa kuhusu masuala ya ulezi, kabla ya kuchukua hatua yoyote ya kisheria.</p>
-      </div>
-      <div class="caution">
-        <p class="label">4. Uwezo wa kuthibitisha ukweli wa taarifa ni mdogo</p>
-        <p>Hati hizi zimeunganishwa kama zilivyowasilishwa, bila kuongeza au kupunguza ukweli wowote. Usahihi wa tarehe, majina, vifungu vya sheria, na matukio uliyoelezwa haujathibitishwa. Hayo ni jukumu la mhusika na Wakili wake kuyathibitisha kabla ya kuwasilisha Mahakamani au kwa Kamishna wa Viapo.</p>
-      </div>
-
-      <div class="divider-doc"></div>
-
-      <!-- ---- Maelezo ya awali (Kiapo) ---- -->
-      <h2 class="section">Maelezo Yaliyoambatanishwa na Rasimu ya Kiapo</h2>
-      <p style="font-style:italic; color:var(--ink-soft); font-size:0.9rem;">(Maelezo haya yalikuwa yameambatanishwa na rasimu ya awali ya Kiapo. Yamehifadhiwa hapa bila kubadilishwa, kwa madhumuni ya kumbukumbu.)</p>
-
-      <div class="onyo">
-        <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
-        <p>
-          Kabla ya kusaini na kuwasilisha kiapo hiki mahakamani au kwa Kamishna wa Viapo, tafadhali soma kwa makini vitu vifuatavyo vilivyobainika wakati wa kulinganisha kiapo cha awali na hati za mauziano zilizowasilishwa:<br><br>
-          &bull; <strong>Tarehe:</strong> imethibitishwa kuwa matukio yote — kwenda kumchukua Magreth na ununuzi wa nyumba ya Nsemulwa/Migazini — yalitokea mwezi wa Februari 2026, si Januari kama ilivyokuwa kwenye kiapo cha awali. Tarehe zimesahihishwa kuwa Februari (siku 5, 7, na 9 Februari 2026), zinazoendana na Mkataba wa Mauziano wenye tarehe 09/02/2026.<br><br>
-          &bull; <strong>Chanzo cha fedha za nyumba ya Nsemulwa/Migazini:</strong> mkopo wa benki ulichukuliwa kama fedha taslimu kupitia ATM, kisha kumlipa muuzaji Ramadhan Adam Said fedha taslimu moja kwa moja. Jambo hilo limewekwa kama aya ya 20 kwenye kiapo. Endapo kuna Mkataba wa Mkopo au taarifa ya akaunti (bank statement), inashauriwa kuongezwa kama Kielelezo B.<br><br>
-          &bull; Imeongezwa Sehemu ya Nane yenye vifungu vya sheria za Tanzania (Sheria ya Ndoa Sura 29, Sheria ya Ardhi Sura 113, Sheria ya Mikataba Sura 345, Sheria ya Mtoto Sura 13, Sheria ya Ushahidi Sura 6, Sheria ya Viapo Sura 34, Sheria ya Mahakama za Mahakimu Sura 11). Bado ni muhimu Wakili avipitie kabla ya kuwasilisha.<br><br>
-          &bull; <strong>Mashahidi:</strong> majina yamebadilishwa kulingana na mikataba halisi (Kagusa Refi Kauzeni na Sara Beny Charamila — Nsemulwa; Christopher Tadeo na Sara B. Chalamila — Kigamboni). Yanahitaji kusomwa tena kwa uangalifu.<br><br>
-          &bull; Umri (miaka 27) na tarehe za mahusiano (13 na 22 Februari 2025) hazijabadilishwa kwa kuwa hakuna hati inayothibitisha au kupingana nazo — zinahitaji kuthibitishwa binafsi kabla ya kusaini.<br><br>
-          &bull; Hii ni rasimu tu iliyoandaliwa kwa msaada wa AI, si na Wakili. Ni vyema ithibitishwe na Wakili aliyesajiliwa Tanzania kabla ya kuwasilisha.
+      <!-- ================= TABLE OF CONTENTS ================= -->
+      <aside class="reader-toc" id="reader-toc">
+        <h3>Yaliyomo</h3>
+        <nav>
+          <a class="toc-link" href="#ch1"><span class="toc-num">1</span><span>Ukurasa wa Tahadhari</span></a>
+          <a class="toc-link" href="#ch2"><span class="toc-num">2</span><span>Maelezo Kabla ya Kuwasilisha</span></a>
+          <a class="toc-link" href="#ch3"><span class="toc-num">3</span><span>Kiapo Kikuu cha Utetezi</span></a>
+          <a class="toc-link" href="#ch4"><span class="toc-num">4</span><span>Maelezo Kuhusu Kielelezo &quot;D&quot;</span></a>
+          <a class="toc-link" href="#ch5"><span class="toc-num">5</span><span>Kielelezo &quot;D&quot; &mdash; Taarifa ya Tukio</span></a>
+        </nav>
+        <p class="toc-note">
+          Toleo la Februari 2026 pekee limewekwa humu (nyumba mbili — Migazini/Nsemulwa na Kigamboni).
+          Vielelezo A&ndash;G rasmi vinapatikana ndani ya Sura ya 3, kifungu cha 46.
         </p>
-      </div>
+      </aside>
 
-      <div class="divider-doc"></div>
+      <!-- ================= MAIN READING AREA ================= -->
+      <main class="reader-main">
+        <div class="wrap">
 
-      <!-- ---- KIAPO ---- -->
-      <div class="doc-top">
-        <div class="flag-mark" aria-hidden="true"></div>
-        <p class="country-name">JAMHURI YA MUUNGANO WA TANZANIA</p>
-        <hr class="rule" style="width:55%; margin:0.9rem auto 1.1rem;">
-        <div class="case-caption">
-          <p>KATIKA MAHAKAMA YA MWANZO</p>
-          <p>WILAYA YA MPANDA</p>
-          <p>MKOA WA KATAVI</p>
+          <p style="text-align:center; margin-bottom:1.8rem;">
+            <a class="home-link" href="index.html">&larr; Mwanzoni</a>
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            <a class="home-link" href="mahusiano.html">Historia ya Mahusiano na Watoto &rarr;</a>
+          </p>
+
+          <!-- ============================================================
+               SURA 1 — UKURASA WA TAHADHARI
+               ============================================================ -->
+          <section id="ch1" class="chapter">
+            <span class="chapter-kicker">Sura 1</span>
+            <div class="doc-top">
+              <p class="cover-title">Ukurasa wa Tahadhari</p>
+              <p class="cover-sub">Kabla ya kusoma au kutumia hati zilizoambatanishwa</p>
+            </div>
+
+            <div class="caution">
+              <p class="label">1. Hii si hati iliyotolewa na Mahakama au Serikali</p>
+              <p>Muundo huu (nembo, kichwa cha Mahakama) unafuata mtindo wa kawaida wa hati za kiapo zinazoandaliwa na mhusika au Wakili wake kabla ya kuwasilishwa Mahakamani. Hati hii bado haijathibitishwa na Mahakama, Kamishna wa Viapo, wala ofisi yoyote ya Serikali.</p>
+            </div>
+            <div class="caution">
+              <p class="label">2. Kiapo cha uongo ni kosa la jinai</p>
+              <p>Kama ilivyoainishwa ndani ya hati zenyewe, baadhi ya tarehe, majina ya mashahidi, na maneno yaliyonukuliwa (hasa ya JANETH CHARLES) yametajwa kuwa hayajathibitishwa kikamilifu au ni ya kukumbukwa/kuelezwa tu, si nakala halisi. Kutoa taarifa isiyo sahihi chini ya kiapo mbele ya Kamishna wa Viapo ni kosa la jinai (perjury) chini ya Sheria ya Viapo, Sura ya 34. THIBITISHA kila ukweli, tarehe, na jina kwa hati halisi kabla ya kusaini mahali popote.</p>
+            </div>
+            <div class="caution">
+              <p class="label">3. Shauri hili linahusu mtoto mchanga</p>
+              <p>Kwa kuwa jambo hili linahusisha ulezi wa mtoto (NANCY HERMAN SADE), maslahi ya mtoto yatapewa uzito mkubwa na Mahakama. Ni muhimu sana upate ushauri wa Wakili aliyesajiliwa Tanzania, hasa kuhusu masuala ya ulezi (custody), kabla ya kuchukua hatua yoyote ya kisheria.</p>
+            </div>
+            <div class="caution">
+              <p class="label">4. Sina uwezo wa kuthibitisha ukweli wa taarifa</p>
+              <p>Hati hizi zimeunganishwa kama zilivyowasilishwa, bila kuongeza au kupunguza ukweli wowote. Usahihi wa tarehe, majina, vifungu vya sheria, wala matukio yaliyoelezwa haujathibitishwa. Hayo ni jukumu la mhusika na Wakili wake kuyathibitisha kabla ya kuwasilisha Mahakamani au kwa Kamishna wa Viapo.</p>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SURA 2 — MAELEZO KABLA YA KUWASILISHA MAHAKAMANI
+               ============================================================ -->
+          <section id="ch2" class="chapter">
+            <span class="chapter-kicker">Sura 2</span>
+            <div class="doc-top">
+              <p class="cover-title">Maelezo Kabla ya Kuwasilisha Mahakamani</p>
+              <p class="cover-sub">Yaliyoambatanishwa na rasimu ya Kiapo &mdash; yamehifadhiwa bila kubadilishwa</p>
+            </div>
+
+            <div class="onyo">
+              <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+              <p>Kabla ya kusaini na kuwasilisha kiapo hiki mahakamani au kwa Kamishna wa Viapo, tafadhali soma kwa makini vitu vifuatavyo vilivyobainika wakati wa kulinganisha kiapo cha awali na hati za mauziano zilizowasilishwa:</p>
+              <ul class="witness-list">
+                <li><strong>Tarehe:</strong> imethibitishwa kuwa matukio yote &mdash; kwenda kumchukua Magreth na ununuzi wa nyumba ya Nsemulwa/Migazini &mdash; yalitokea mwezi wa Februari 2026, si Januari kama ilivyokuwa kwenye kiapo cha awali. Tarehe zimesahihishwa kuwa Februari (siku 5, 7, na 9 Februari 2026), zinazoendana na Mkataba wa Mauziano wenye tarehe 09/02/2026.</li>
+                <li><strong>Chanzo cha fedha za nyumba ya Nsemulwa/Migazini:</strong> mkopo wa benki ulichukuliwa kama fedha taslimu kupitia ATM, kisha kumlipa muuzaji Ramadhan Adam Said fedha taslimu moja kwa moja. Jambo hilo limewekwa kama aya ya 20 kwenye kiapo. Endapo kuna Mkataba wa Mkopo au taarifa ya akaunti (bank statement), inashauriwa kuongezwa kama Kielelezo B.</li>
+                <li>Imeongezwa Sehemu ya Nane yenye vifungu vya sheria za Tanzania (Sheria ya Ndoa Sura 29, Sheria ya Ardhi Sura 113, Sheria ya Mikataba Sura 345, Sheria ya Mtoto Sura 13, Sheria ya Ushahidi Sura 6, Sheria ya Viapo Sura 34, Sheria ya Mahakama za Mahakimu Sura 11). Bado ni muhimu Wakili avipitie kabla ya kuwasilisha.</li>
+                <li><strong>Mashahidi:</strong> majina yamebadilishwa kulingana na mikataba halisi (Kagusa Refi Kauzeni na Sara Beny Charamila &mdash; Nsemulwa; Christopher Tadeo na Sara B. Chalamila &mdash; Kigamboni). Yanahitaji kusomwa tena kwa uangalifu.</li>
+                <li>Umri (miaka 27) na tarehe za mahusiano (13 na 22 Februari 2025) hazijabadilishwa kwa kuwa hakuna hati inayothibitisha au kupingana nazo &mdash; zinahitaji kuthibitishwa binafsi kabla ya kusaini.</li>
+                <li>Hii ni rasimu tu iliyoandaliwa kwa msaada wa AI, si na Wakili. Ni vyema ithibitishwe na Wakili aliyesajiliwa Tanzania kabla ya kuwasilisha.</li>
+              </ul>
+            </div>
+            <p style="text-align:center; font-style:italic; color:var(--ink-soft); font-size:0.9rem;">&mdash; Mwisho wa maelezo ya awali. Kiapo halisi kinaanza sura inayofuata. &mdash;</p>
+          </section>
+
+          <!-- ============================================================
+               SURA 3 — KIAPO KIKUU CHA UTETEZI NA UTHIBITISHO WA UMILIKI
+               ============================================================ -->
+          <section id="ch3" class="chapter">
+            <span class="chapter-kicker">Sura 3 &middot; Toleo la Februari 2026</span>
+
+            <div class="doc-top">
+              <div class="flag-mark" aria-hidden="true"></div>
+              <p class="country-name">JAMHURI YA MUUNGANO WA TANZANIA</p>
+              <hr class="rule" style="width:55%; margin:0.9rem auto 1.1rem;">
+              <div class="case-caption">
+                <p>KATIKA MAHAKAMA YA MWANZO</p>
+                <p>WILAYA YA MPANDA</p>
+                <p>MKOA WA KATAVI</p>
+              </div>
+              <p class="doc-title">KIAPO CHA UTETEZI NA UTHIBITISHO WA UMILIKI WA MALI</p>
+              <p class="doc-subtitle">(Precautionary Affidavit of Ownership)</p>
+            </div>
+
+            <p>MIMI, HERMAN ONESMO SADE, mwanaume mzima, raia wa Jamhuri ya Muungano wa Tanzania, mwenye umri wa miaka 27, askari wa Jeshi la Zimamoto na Uokoaji kwa taaluma na kazi, nikiwa na makazi ya kudumu Mkoa wa Lindi, NINATOA KIAPO kifuatacho:</p>
+
+            <p>1. Kwamba maelezo yote yaliyomo katika kiapo hiki ni ya kweli, sahihi, na kamili kadri ninavyojua na kuamini.</p>
+            <p>2. Kwamba nina uwezo wa kisheria wa kutoa kiapo hiki, na ninafanya hivyo kwa hiari yangu kamili bila kulazimishwa au kudanganywa na mtu yeyote.</p>
+
+            <h2 class="section">Sehemu ya Kwanza: Historia ya Mahusiano</h2>
+            <p>3. Kwamba mnamo mwaka 2025, niliingia katika mahusiano ya kimapenzi na mwanamke aitwaye MAGRETH DESDEL KASAGULA, ambaye alikuwa na makazi yake Mpanda, Mkoa wa Katavi.</p>
+            <p>4. Kwamba katika mahusiano hayo, nilifuata taratibu za kimila kwa kutoa posa na sehemu ya mahari kwa wazazi wake kama ilivyokuwa desturi ya jamii yetu.</p>
+            <p>5. Kwamba hata hivyo, hakukuwa na ndoa ya kisheria wala ndoa ya kimila iliyosajiliwa katika ofisi yoyote ya serikali kati yangu na MAGRETH DESDEL KASAGULA.</p>
+            <p>6. Kwamba mnamo tarehe 13 Februari 2025, nilimchukua mwanamke huyo kutoka kwa wazazi wake Mpanda kwa idhini na ridhaa yao, na mnamo tarehe 22 Februari 2025 tukaanza kuishi pamoja Mjini Lindi kama mume na mke.</p>
+
+            <div class="onyo">
+              <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+              <p>Thibitisha tarehe hizi mbili (13 na 22 Februari 2025) ni sahihi kabla ya kusaini &mdash; hakuna hati ya kuzithibitisha.</p>
+            </div>
+
+            <h2 class="section">Sehemu ya Pili: Ujauzito na Kuzaliwa kwa Mtoto</h2>
+            <p>7. Kwamba mnamo mwezi Septemba 2025, MAGRETH DESDEL KASAGULA akiwa na ujauzito wa takribani miezi saba, alisafiri kurudi nyumbani kwa wazazi wake Mpanda, Mkoa wa Katavi, kwa makubaliano ya kifamilia.</p>
+            <p>8. Kwamba mnamo tarehe 4 Desemba 2025, MAGRETH DESDEL KASAGULA alijifungua mtoto wa kike katika Hospitali ya Mkoa wa Mpanda, Katavi.</p>
+            <p>9. Kwamba mtoto huyo amepewa jina la NANCY HERMAN SADE, na jina langu linaonekana wazi kwenye cheti chake cha kuzaliwa kama baba wake wa kisheria.</p>
+            <p>10. Kwamba nakiri na kusisitiza kuwa NANCY HERMAN SADE ni mtoto wangu wa kisheria, na nina wajibu wa kimsingi wa kumlea, kumlinda na kumhudumia.</p>
+
+            <h2 class="section">Sehemu ya Tatu: Tukio la Kufukuzwa na Kunyimwa Mtoto</h2>
+            <p>11. Kwamba mnamo tarehe 5 Februari 2026, nilipata likizo kutoka kazini na kusafiri kutoka Lindi kwenda Mpanda, Katavi.</p>
+            <p>12. Kwamba mnamo tarehe 7 Februari 2026, nilienda nyumbani kwa wazazi wa MAGRETH DESDEL KASAGULA kwa madhumuni mawili: (a) Kuwasalimu na kuwaonyesha heshima; (b) Kumchukua MAGRETH DESDEL KASAGULA pamoja na mtoto wetu NANCY HERMAN SADE warudi kuishi nami Lindi.</p>
+            <p>13. Kwamba hata hivyo, wazazi wa MAGRETH DESDEL KASAGULA walikataa kabisa kuniruhusu kumchukua, na mama wa MAGRETH alinifokea kwa maneno ya dharau akiniambia: &ldquo;Toka, toka, ondoka&rdquo;.</p>
+            <p>14. Kwamba nilifukuzwa nyumbani hapo kwa nguvu na bila heshima, na nilinyimwa haki yangu ya kisheria ya kumuona na kumchukua mtoto wangu NANCY HERMAN SADE.</p>
+            <p>15. Kwamba MAGRETH DESDEL KASAGULA mwenyewe alitaka kuondoka nami, lakini baba wake wa kambo aliingilia kati na kumzuia, na hivyo mimi nilizuiliwa kwa nguvu.</p>
+            <p>16. Kwamba tukio hilo lilitokea mbele ya mashahidi, na linaweza kuthibitishwa.</p>
+
+            <h2 class="section">Sehemu ya Nne: Ununuzi wa Nyumba ya Kwanza &mdash; Eneo la Migazini, Kata ya Nsemulwa, Mpanda</h2>
+            <p>17. Kwamba baada ya kufukuzwa na kunyimwa mtoto wangu, siku mbili tu baadaye, mnamo tarehe 09 Februari 2026, nilifanya uamuzi wa kibinafsi wa kununua nyumba pamoja na kiwanja vilivyopo eneo la Migazini, Kata ya Nsemulwa, Wilaya ya Mpanda, Mkoa wa Katavi.</p>
+            <p>18. Kwamba nyumba na kiwanja hivyo vilinunuliwa kutoka kwa muuzaji RAMADHAN ADAM SAID, mkazi wa Migazini, Kata ya Nsemulwa, Wilaya ya Mpanda, Mkoa wa Katavi, kwa ushirikiano na ridhaa ya mke wake ZAINABU OMARI JUMA.</p>
+            <p>19. Kwamba thamani ya mauziano ya nyumba na kiwanja hicho ilikuwa Shilingi za Kitanzania Milioni Saba tu (Tshs. 7,000,000/=), zilizolipwa kwa awamu tatu (3) kama zilivyoainishwa kwenye Mkataba wa Mauziano wa tarehe 09/02/2026.</p>
+            <p>20. Kwamba fedha nilizotumia kununulia nyumba hiyo zilitokana na mkopo (loan) nilioukopa katika benki, ambao niliupokea na kuutoa kwa fedha taslimu (cash) kupitia ATM, kisha nikatumia fedha hizo taslimu kumlipa muuzaji RAMADHAN ADAM SAID moja kwa moja kwa awamu tatu kama zilivyoainishwa kwenye Mkataba wa Mauziano. Kwamba kwa sababu hiyo, mkopo huo haukuwa umefungamanishwa moja kwa moja na nyumba hii kama dhamana (mortgage/security) kwa benki, bali ulikuwa ni chanzo cha fedha za kibinafsi nilizotumia kwa manunuzi ya kawaida ya fedha taslimu, jambo linaloendana na Mkataba wa Mauziano niliouingia na muuzaji.</p>
+
+            <div class="onyo">
+              <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+              <p>Mkopo wa benki ulichukuliwa kama fedha taslimu kupitia ATM, kisha kumlipa muuzaji fedha taslimu &mdash; si mkopo uliofungamanishwa moja kwa moja na nyumba kama dhamana (mortgage). Hii inaimarisha zaidi hoja ya umiliki wa pekee, kwa kuwa hakuna benki yenye dhamana iliyosajiliwa juu ya nyumba hii mahususi. Endapo kuna Mkataba wa Mkopo kutoka benki, inashauriwa kuongezwa kama Kielelezo B.</p>
+            </div>
+
+            <p>21. Kwamba kiwanja na nyumba hiyo inapakana na maeneo yafuatayo: Kaskazini - kiwanja cha Rajabu; Kusini - eneo la Ashura Athumani; Mashariki - eneo la Jumanne Rashidi; na maeneo mengine kama yalivyoainishwa kwenye Mkataba wa Mauziano.</p>
+            <p>22. Kwamba Mkataba wa Mauziano wa nyumba hii ulishuhudiwa na mashahidi wafuatao: Kwa upande wa Muuzaji &ndash; mashahidi walioorodheshwa kwenye mkataba; Kwa upande wa Mnunuzi (mimi) &ndash; KAGUSA REFI KAUZENI na SARA BENY CHARAMILA.</p>
+            <p>23. Kwamba Mkataba huo ulithibitishwa na Wakili/Kamishna wa Viapo MONICA MARCO LUGONDA, S.L.P 1571, Dar es Salaam, na kupigwa muhuri rasmi.</p>
+            <p>24. Kwamba MAGRETH DESDEL KASAGULA: (a) Hakusaini Mkataba wa Mauziano wa nyumba hii; (b) Hakushiriki katika maamuzi yoyote ya kuinunua; (c) Hakutoa hata shilingi moja kwa ajili ya malipo ya awamu yoyote; (d) Hakuwahi kuishi kwenye nyumba hiyo hata kwa siku moja tangu ilinunuliwa; na kwamba wakati wa ununuzi, MAGRETH DESDEL KASAGULA alikuwa bado anaishi nyumbani kwa wazazi wake Mpanda, Katavi, hivyo hakuwa na uwezo wala nia ya kuchangia chochote.</p>
+
+            <h2 class="section">Sehemu ya Tano: Ununuzi wa Nyumba ya Pili &mdash; Mtaa wa Kigamboni, Kata ya Shanwe, Manispaa ya Mpanda</h2>
+            <p>25. Kwamba mnamo tarehe 16 Februari 2026, nilifanya uamuzi mwingine wa kibinafsi wa kununua kiwanja pamoja na nyumba iliyopo Mtaa wa Kigamboni, Kata ya Shanwe, Manispaa ya Mpanda, Mkoa wa Katavi, kutoka kwa muuzaji PIUS EMMANUEL MTEPA, mkazi wa Mpanda, Mkoa wa Katavi.</p>
+            <p>26. Kwamba thamani ya mauziano ya kiwanja na nyumba hiyo ilikuwa Shilingi za Kitanzania Milioni Nne na Laki Tano tu (Tshs. 4,500,000/=), zilizolipwa kwa mkupuo wakati wa kusaini mkataba, kama ilivyoainishwa kwenye Mkataba wa Kuuziana Kiwanja na Nyumba wa tarehe 16 Februari 2026.</p>
+            <p>27. Kwamba kabla ya mauziano, muuzaji PIUS EMMANUEL MTEPA alitoa Kiapo cha Umiliki mbele ya Kamishna wa Viapo tarehe 16 Februari 2026, akithibitisha chini ya kiapo kuwa: (a) yeye ndiye mmiliki halali wa kiwanja pamoja na nyumba hiyo; (b) aliipata kwa jasho na juhudi zake binafsi na siyo mali ya ndoa; (c) mali hiyo haihusishi haki, madai, au maslahi ya mke wake wa sasa, mke wa zamani, au mtu mwingine yeyote.</p>
+            <p>28. Kwamba mauziano hayo pia yalithibitishwa rasmi na Ofisi ya Serikali ya Mtaa wa Kigamboni, Halmashauri ya Mji wa Mpanda, kupitia Hati ya Uthibitisho wa Kuuziana Mali, iliyosainiwa na Mwenyekiti wa Serikali ya Mtaa na kupigwa muhuri, tarehe 16 Februari 2026.</p>
+            <p>29. Kwamba Mkataba wa Kuuziana Kiwanja na Nyumba (Kigamboni) ulishuhudiwa na: Shahidi wa Muuzaji &ndash; CHRISTOPHER TADEO; Shahidi wa Mnunuzi &ndash; SARA B. CHALAMILA, na ulithibitishwa na Wakili/Kamishna wa Viapo HAMAD SAID AMOUR, S.L. Posta 119, Mpanda-Katavi.</p>
+            <p>30. Kwamba kiwanja na nyumba hiyo ya Kigamboni inapakana na maeneo yafuatayo: Kaskazini &ndash; eneo la Baba Abdallah; Kusini &ndash; eneo la Mama Kalunde; Mashariki &ndash; eneo la Mama Kuku; Magharibi &ndash; eneo la Baba Joy.</p>
+            <p>31. Kwamba MAGRETH DESDEL KASAGULA hakushiriki kwa namna yoyote katika ununuzi wa nyumba hii ya Kigamboni, wala hakuchangia fedha, saini, au ushahidi wowote katika mkataba huo, na hakuwahi kuishi kwenye nyumba hiyo.</p>
+
+            <div class="onyo">
+              <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+              <p>Hati ya Ofisi ya Serikali ya Mtaa (Hati ya Uthibitisho) iliyoandikwa kwa mkono inaonyesha kiasi cha Tshs. 4,500,000/=, sawa na kwenye Mkataba wa Kuuziana. Baadhi ya maandishi ya mkono kwenye hati za awali (mfano nakala zilizopigwa muhuri wa &lsquo;HATI YA MAUZO YA...&rsquo;) hayasomeki vizuri kwenye baadhi ya nambari; tafadhali linganisha na nakala zako za awali kabla ya kuwasilisha.</p>
+            </div>
+
+            <h2 class="section">Sehemu ya Sita: Hali ya Sasa ya Mahusiano</h2>
+            <p>32. Kwamba tangu nilipofukuzwa tarehe 7 Februari 2026, MAGRETH DESDEL KASAGULA na mimi hatukuwa tena katika mahusiano ya ndoa wala ya kuishi pamoja.</p>
+            <p>33. Kwamba hakuna ndoa ya kisheria wala ya kimila iliyosajiliwa iliyowahi kuwepo kati yangu na MAGRETH DESDEL KASAGULA, na kwa hiyo hakuna msingi wa kisheria wa kudai kuwa nyumba za Nsemulwa/Migazini au Kigamboni ni &ldquo;mali ya pamoja&rdquo; ya ndoa.</p>
+            <p>34. Kwamba MAGRETH DESDEL KASAGULA hataki kabisa madai yoyote juu ya nyumba hizo, wala hajaonyesha nia yoyote ya kumiliki au kushiriki umiliki wake.</p>
+
+            <h2 class="section">Sehemu ya Saba: Tamko la Umiliki wa Kikamilifu wa Mali Zote Mbili</h2>
+            <p>35. Kwamba kwa kuzingatia ukweli kwamba: (a) hakukuwa na ndoa ya kisheria wala ya kimila iliyosajiliwa kati yangu na MAGRETH DESDEL KASAGULA; (b) nyumba zote mbili &ndash; ya Nsemulwa/Migazini na ya Kigamboni &ndash; zilinunuliwa kwa jina langu pekee, HERMAN ONESMO SADE; (c) mikataba yote miwili ya mauziano inaonyesha mimi pekee kama mnunuzi; (d) MAGRETH DESDEL KASAGULA hakutoa mchango wowote wa kifedha katika ununuzi wa mali yoyote kati ya hizo mbili; (e) MAGRETH DESDEL KASAGULA hakuwahi kuishi kwenye nyumba yoyote kati ya hizo mbili; (f) nyumba zote mbili zilinunuliwa baada ya mahusiano yangu na MAGRETH DESDEL KASAGULA kuvunjika,</p>
+            <p>36. Kwamba NATAMKA NA KUSISITIZA kuwa: (a) nyumba na kiwanja vilivyopo Migazini, Kata ya Nsemulwa, Wilaya ya Mpanda, Mkoa wa Katavi; na (b) kiwanja na nyumba vilivyopo Mtaa wa Kigamboni, Kata ya Shanwe, Manispaa ya Mpanda, Mkoa wa Katavi, ni MALI YANGU BINAFSI KIKAMILIFU, na havihusiki kwa namna yoyote na MAGRETH DESDEL KASAGULA.</p>
+
+            <h2 class="section">Sehemu ya Nane: Misingi ya Kisheria Inayounga Mkono Umiliki Wangu</h2>
+            <p>37. Kwamba kwa mujibu wa Kifungu cha 160(1) cha Sheria ya Ndoa, Sura ya 29 [Law of Marriage Act, Cap. 29 R.E. 2019], dhana ya kisheria ya kuwepo kwa ndoa (presumption of marriage) hutokana na mwanamume na mwanamke kuishi pamoja wakiwa na sifa za mume na mke kwa muda wa miaka miwili (2) au zaidi. Kwamba mimi na MAGRETH DESDEL KASAGULA tuliishi pamoja kwa kipindi kisichozidi mwaka mmoja (kuanzia Februari 2025 hadi Februari 2026), hivyo kipindi hicho hakikutimiza sharti la miaka miwili linalotakiwa kisheria, na kwa hiyo hakuna dhana ya ndoa inayoweza kutumika kati yetu.</p>
+            <p>38. Kwamba kwa kuwa hakuna dhana ya ndoa wala ndoa halisi (ya kisheria au ya kimila) iliyowahi kuwepo kati yangu na MAGRETH DESDEL KASAGULA, masharti ya mgawanyo wa mali ya ndoa yaliyowekwa chini ya Sheria ya Ndoa, Sura ya 29, hayawezi kutumika kwa mali zangu, kwani masharti hayo yanahusu tu mali zilizopatikana wakati wa uhalisia wa ndoa iliyosajiliwa au inayotambulika kisheria.</p>
+            <p>39. Kwamba hata kama, kwa hoja ya ziada tu (without prejudice), ingedhaniwa kuwa kulikuwa na uhusiano wa kindoa, Kifungu cha 60 cha Sheria ya Ndoa, Sura ya 29, kinaweka dhana inayoweza kupingwa (rebuttable presumption) kwamba mali iliyonunuliwa wakati wa ndoa kwa jina la mume peke yake ni mali yake peke yake, isipokuwa ithibitishwe vinginevyo na upande unaopinga. Nyumba zote mbili nilizonunua ni kwa jina langu peke yangu, HERMAN ONESMO SADE, jambo linalothibitisha zaidi umiliki wangu wa pekee.</p>
+            <p>40. Kwamba Kifungu cha 59(1) cha Sheria ya Ndoa, Sura ya 29, pamoja na Kifungu cha 114 cha Sheria ya Ardhi, Sura ya 113 [Land Act, Cap. 113 R.E. 2019], vinahitaji ridhaa ya mwenza (spousal consent) pale tu ambapo mali husika ni &ldquo;nyumba ya ndoa&rdquo; (matrimonial home) ambayo mwenza huyo anaishi ndani yake wakati wa mauziano au uwekaji rehani. Kwa kuwa MAGRETH DESDEL KASAGULA hakuwahi kuishi hata siku moja katika nyumba yoyote kati ya hizi mbili, na kwa kuwa hakukuwa na ndoa kati yetu, masharti hayo ya ridhaa ya mwenza hayatumiki kabisa kwenye mauziano haya mawili.</p>
+            <p>41. Kwamba mikataba yote miwili ya mauziano ilifanyika kwa hiari kati ya wanunuzi na wauzaji, iliandikwa, ikashuhudiwa na mashahidi, na ikathibitishwa mbele ya Wakili/Kamishna wa Viapo aliyeidhinishwa kisheria, kama inavyotakiwa kwa mujibu wa Sheria ya Mikataba, Sura ya 345 [Law of Contract Act, Cap. 345 R.E. 2019], hususan masharti kuhusu ridhaa huru ya pande zote mbili na malipo halali (consideration).</p>
+            <p>42. Kwamba kwa mujibu wa Sheria ya Ardhi, Sura ya 113, hasa vifungu vinavyoeleza kanuni za msingi za umiliki na usajili wa ardhi, ninakusudia kukamilisha usajili rasmi wa hatimiliki za nyumba zote mbili katika Ofisi husika za Ardhi ili kuimarisha zaidi uthibitisho wa kisheria wa umiliki wangu, nikitambua kuwa mkataba wa mauziano peke yake si uthibitisho kamili wa umiliki mpaka usajili ukamilike.</p>
+            <p>43. Kwamba kiapo hiki kinatolewa kwa mujibu wa Sheria ya Viapo na Matamko ya Kisheria, Sura ya 34 [Oaths and Statutory Declarations Act, Cap. 34], kikiwa kimethibitishwa na Kamishna wa Viapo aliyeidhinishwa chini ya Sheria ya Manotari na Makamishna wa Viapo, Sura ya 12 [Notaries Public and Commissioners for Oaths Act, Cap. 12], na kinatambulika kisheria kama ushahidi unaokubalika mahakamani chini ya Sheria ya Ushahidi, Sura ya 6 [Evidence Act, Cap. 6 R.E. 2022].</p>
+            <p>44. Kwamba wajibu wangu wa kimsingi wa kumlea, kumlinda na kumhudumia mtoto wangu NANCY HERMAN SADE, kama unavyotambuliwa chini ya Sheria ya Mtoto, Sura ya 13 [Law of the Child Act, Cap. 13 R.E. 2019], ni jambo huru na tofauti kabisa na suala la umiliki wa mali. Kutimiza wajibu huo wa kisheria kwa mtoto wangu hakumpi MAGRETH DESDEL KASAGULA, wala mtu mwingine yeyote, haki ya kumiliki au kudai mgawanyo wa nyumba zangu.</p>
+            <p>45. Kwamba Mahakama hii ya Mwanzo ina mamlaka kamili ya kisheria ya kusikiliza na kuamua shauri hili kwa mujibu wa Sheria ya Mahakama za Mahakimu, Sura ya 11 [Magistrates' Courts Act, Cap. 11 R.E. 2019].</p>
+
+            <div class="onyo">
+              <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+              <p>Vifungu hivi vimeangaliwa dhidi ya vyanzo vya sheria za Tanzania (TanzLII na Ofisi ya Mwanasheria Mkuu wa Serikali). Hata hivyo, sheria hurekebishwa mara kwa mara (Revised Editions), na matumizi sahihi ya vifungu hivi kwenye shauri mahususi yanahitaji uthibitisho wa Wakili aliyesajiliwa, ambaye ataweza pia kuongeza vifungu vingine vinavyoweza kusaidia zaidi, au kurekebisha kama toleo la sheria limebadilika.</p>
+            </div>
+
+            <h2 class="section">Sehemu ya Tisa: Vielelezo Vinavyothibitisha</h2>
+            <p>46. Kwamba nina vielelezo vifuatavyo vinavyothibitisha ukweli wa maelezo haya, ambavyo niko tayari kuviwasilisha mahakamani inapohitajika:</p>
+            <ul class="witness-list">
+              <li>Kielelezo &ldquo;A&rdquo; &ndash; Mkataba wa Mauziano ya Nyumba na Kiwanja, Migazini/Nsemulwa (tarehe 09/02/2026)</li>
+              <li>Kielelezo &ldquo;B&rdquo; &ndash; Mkataba wa Mkopo kutoka NMB (kama upo &ndash; kuthibitishwa na Herman)</li>
+              <li>Kielelezo &ldquo;C&rdquo; &ndash; Nakala ya Cheti cha Kuzaliwa cha NANCY HERMAN SADE</li>
+              <li>Kielelezo &ldquo;D&rdquo; &ndash; Ushahidi wa tukio la kufukuzwa (maelezo ya mashahidi au ushahidi mwingine)</li>
+              <li>Kielelezo &ldquo;E&rdquo; &ndash; Mkataba wa Kuuziana Kiwanja na Nyumba, Kigamboni (tarehe 16/02/2026)</li>
+              <li>Kielelezo &ldquo;F&rdquo; &ndash; Kiapo cha Umiliki cha Pius Emmanuel Mtepa (tarehe 16/02/2026)</li>
+              <li>Kielelezo &ldquo;G&rdquo; &ndash; Hati ya Uthibitisho wa Kuuziana Mali, Ofisi ya Serikali ya Mtaa wa Kigamboni (tarehe 16/02/2026)</li>
+            </ul>
+
+            <h2 class="section">Sehemu ya Kumi: Lengo la Kiapo Hiki</h2>
+            <p>47. Kwamba ninatoa kiapo hiki kwa madhumuni ya: (a) kuthibitisha umiliki wangu wa kikamilifu wa nyumba za Nsemulwa/Migazini na Kigamboni; (b) kujiandaa kwa madai yoyote ya baadaye yanayoweza kutokea; (c) kuweka rekodi halali ya ukweli wa mambo kama yalivyotokea; (d) kulinda haki zangu za kisheria za umiliki wa mali.</p>
+
+            <div class="divider-doc"></div>
+
+            <h2 class="section">Tamko la Mwisho</h2>
+            <p>48. Kwamba naelewa kuwa kiapo hiki kinaweza kutumika mahakamani kama ushahidi, na kuwa kutoa ushahidi wa uongo kwenye kiapo ni kosa la jinai linaloadhibiwa kwa sheria.</p>
+            <p>49. Kwamba maelezo yote niliyoyatoa hapa juu ni ya kweli, sahihi, na kamili kadri ninavyojua, na naomba Mahakama au Mamlaka yoyote inayohusika kuyazingatia kwa umakini.</p>
+
+            <p style="margin-top:2rem;">NIMETOA KIAPO hiki tarehe __________ mwezi __________ mwaka __________ huko __________</p>
+            <p>Sahihi ya Mtoa Kiapo: _______________________________<br>
+            Jina: HERMAN ONESMO SADE</p>
+            <p style="margin-top:1.4rem;">IMETHIBITISHWA MBELE YANGU:</p>
+            <p>Sahihi ya Kamishna wa Viapo: _______________________________<br>
+            Jina: _______________________________<br>
+            Cheo: _______________________________<br>
+            Muhuri wa Ofisi: _______________________________<br>
+            Tarehe: _______________________________</p>
+          </section>
+
+          <!-- ============================================================
+               SURA 4 — MAELEZO KUHUSU KIELELEZO "D"
+               ============================================================ -->
+          <section id="ch4" class="chapter">
+            <span class="chapter-kicker">Sura 4</span>
+            <div class="doc-top">
+              <p class="cover-title">Maelezo Kuhusu Hati Hii (Kielelezo &ldquo;D&rdquo;)</p>
+              <p class="cover-sub">Yaliyoambatanishwa na rasimu ya awali ya Kielelezo &ldquo;D&rdquo; &mdash; yamehifadhiwa bila kubadilishwa</p>
+            </div>
+
+            <div class="onyo">
+              <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
+              <p>Hii ni taarifa ya kina ya tukio la kufukuzwa, iliyoandaliwa kutumika kama Kielelezo &ldquo;D&rdquo; kuambatanishwa na Kiapo kikuu. Kabla ya kuiwasilisha, tafadhali zingatia haya:</p>
+              <ul class="witness-list">
+                <li>Mashahidi waliotajwa &mdash; Policapo Pangani, Janeth Charles, Maria Pangani, na Tina Pangani &mdash; ni ndugu wa karibu wa MAGRETH DESDEL KASAGULA, hivyo kwa vitendo hawatapenda kusaini taarifa hii kwa hiari kuunga mkono upande huu. Wameorodheshwa kama &ldquo;waliokuwepo eneo la tukio&rdquo; (si kama mashahidi wanaosaidia), kwa sababu ni sahihi kisheria kuwataja wote waliokuwepo. Iwapo shauri litafika mahakamani, Mahakama inaweza kuwaita kama mashahidi (hata kama ni wa upande mwingine) kwa lengo la kuthibitisha au kupinga tukio hili.</li>
+                <li>Shahidi bora zaidi hapa ni yule MPANGAJI aliyekuwepo wakati huo, kwa sababu si ndugu wa Magreth. Jina lake kamili na (kama inawezekana) namba ya simu bado linahitajika, ili aweze kuongezwa kama shahidi anayeweza kuthibitisha tukio hili kwa hiari, na hata kutoa saini/kiapo chake mwenyewe kama shahidi huru.</li>
+                <li>Wazazi, SARA BENY CHALAMILA na ONESMO GAITANI SADE, waliopokea taarifa ya tukio mara moja baada ya tukio kutokea, wanaweza kutoa &ldquo;ushahidi wa taarifa iliyotolewa mara moja baada ya tukio&rdquo; (recent complaint evidence) &mdash; hii ni aina ya ushahidi inayosaidia lakini si sawa na ushahidi wa moja kwa moja wa tukio lenyewe, kwa sababu hawakuwepo eneo la tukio.</li>
+                <li>Maneno yaliyoandikwa ya JANETH CHARLES ni kwa mujibu wa ulivyoelezwa; yameandikwa kama yalivyosemwa kwa lugha ya kawaida (si tafsiri halisi ya kila neno), hivyo yanahitaji kusomwa kwa makini na kurekebishwa endapo si sahihi kikamilifu.</li>
+              </ul>
+            </div>
+          </section>
+
+          <!-- ============================================================
+               SURA 5 — KIELELEZO "D": TAARIFA YA TUKIO LA KUFUKUZWA
+               ============================================================ -->
+          <section id="ch5" class="chapter">
+            <span class="chapter-kicker">Sura 5 &middot; Toleo la Februari 2026</span>
+
+            <div class="doc-top">
+              <div class="flag-mark" aria-hidden="true"></div>
+              <p class="country-name">JAMHURI YA MUUNGANO WA TANZANIA</p>
+              <hr class="rule" style="width:55%; margin:0.9rem auto 1.1rem;">
+              <div class="case-caption">
+                <p>KATIKA MAHAKAMA YA MWANZO</p>
+                <p>WILAYA YA MPANDA</p>
+                <p>MKOA WA KATAVI</p>
+              </div>
+              <p class="doc-title">KIELELEZO &ldquo;D&rdquo;</p>
+              <p class="doc-title" style="font-size:1.05rem; margin-top:2px;">TAARIFA YA TUKIO LA KUFUKUZWA NA KUNYIMWA MTOTO</p>
+              <p class="doc-subtitle">(Inayoambatana na Kiapo cha Utetezi na Uthibitisho wa Umiliki wa Mali cha HERMAN ONESMO SADE)</p>
+            </div>
+
+            <p>MIMI, HERMAN ONESMO SADE, mwanaume mzima, raia wa Jamhuri ya Muungano wa Tanzania, mwenye umri wa miaka 27, askari wa Jeshi la Zimamoto na Uokoaji kwa taaluma na kazi, nikiwa na makazi ya kudumu Mkoa wa Lindi, NATOA TAARIFA ifuatayo kwa uhuru wangu na kwa ukweli kadri ninavyokumbuka, kuhusiana na tukio la kufukuzwa nyumbani kwa wazazi wa MAGRETH DESDEL KASAGULA:</p>
+
+            <h2 class="section">Sehemu ya Kwanza: Maelezo ya Jumla ya Tukio</h2>
+            <p>1. Kwamba mnamo tarehe 7 Februari 2026, majira ya jioni, nilifika nyumbani kwa wazazi wa MAGRETH DESDEL KASAGULA, Mpanda, Mkoa wa Katavi, kwa madhumuni mawili: (a) kuwasalimu na kuwaonyesha heshima kama ilivyo desturi; na (b) kumchukua MAGRETH DESDEL KASAGULA pamoja na mtoto wetu NANCY HERMAN SADE ili warudi kuishi nami Lindi.</p>
+            <p>2. Kwamba tukio hili lilitokea majira ya jioni ya siku hiyo.</p>
+
+            <h2 class="section">Sehemu ya Pili: Waliokuwepo Eneo la Tukio</h2>
+            <p>3. Kwamba wakati wa tukio hili, walikuwepo watu wafuatao:</p>
+            <ul class="witness-list">
+              <li>MAGRETH DESDEL KASAGULA &ndash; mama wa mtoto NANCY HERMAN SADE</li>
+              <li>POLICAPO PANGANI &ndash; baba wa kambo wa Magreth Desdel Kasagula</li>
+              <li>JANETH CHARLES &ndash; mama mzazi wa Magreth Desdel Kasagula</li>
+              <li>MARIA PANGANI &ndash; mdogo wake Magreth Desdel Kasagula</li>
+              <li>TINA PANGANI &ndash; mdogo mwingine wa Magreth Desdel Kasagula</li>
+              <li>Ndugu wengine wa kike wakubwa wa Magreth Desdel Kasagula (majina kamili hayajatajwa)</li>
+              <li>Mtu aliyekuwa mpangaji wa nyumba hiyo wakati huo (jina litaongezwa litakapopatikana) &ndash; mtu huyu si ndugu wa familia ya Magreth na anaweza kuthibitisha tukio hili kama shahidi huru</li>
+            </ul>
+
+            <h2 class="section">Sehemu ya Tatu: Maelezo ya Kilichotokea</h2>
+            <p>4. Kwamba nilipofika na kueleza nia yangu ya kumchukua MAGRETH DESDEL KASAGULA pamoja na mtoto wetu, JANETH CHARLES (mama mzazi wa Magreth) alinifukuza kwa hasira na dharau, akiniambia maneno:</p>
+            <blockquote class="court-quote">&ldquo;Toka, toka, ondoka.&rdquo;</blockquote>
+            <p>5. Kwamba JANETH CHARLES pia alimwambia MAGRETH DESDEL KASAGULA, mbele yangu na mbele ya waliokuwepo, kwa maana kwamba: hata kama mtoto atazaliwa au ameshazaliwa, yeye (Janeth) atamlea mwenyewe; akihoji kwa nini yeye (Janeth) alimlea Magreth kama si kwa ajili ya jambo kama hili; na kudai kuwa angeweza &ldquo;kumrudisha tumboni mwake&rdquo; kwa maana kwamba yeye ndiye aliyemzaa Magreth na ana mamlaka juu yake.</p>
+            <p>6. Kwamba kutokana na maneno na vitendo hivyo, nilifukuzwa nyumbani hapo kwa nguvu na bila heshima, na nilinyimwa haki yangu ya kumuona na kumchukua mtoto wangu NANCY HERMAN SADE siku hiyo.</p>
+            <p>7. Kwamba MAGRETH DESDEL KASAGULA mwenyewe alionyesha nia ya kutaka kuondoka nami, lakini POLICAPO PANGANI (baba wake wa kambo) aliingilia kati na kumzuia asiondoke, na hivyo mimi nilizuiliwa kwa nguvu kumchukua yeye pamoja na mtoto.</p>
+            <p>8. Kwamba tukio hili lilitokea mbele ya watu wote walioorodheshwa katika Sehemu ya Pili hapo juu, wakiwemo POLICAPO PANGANI, JANETH CHARLES, MARIA PANGANI, TINA PANGANI, ndugu wengine wa Magreth, na mpangaji wa nyumba hiyo.</p>
+
+            <h2 class="section">Sehemu ya Nne: Taarifa Niliyotoa Mara Moja Baada ya Tukio</h2>
+            <p>9. Kwamba mara baada ya kufukuzwa, nilirudi na kutoa taarifa ya tukio hili mara moja kwa wazazi wangu: SARA BENY CHALAMILA (mama yangu mzazi) na ONESMO GAITANI SADE (baba yangu mzazi), ambao wanaweza kuthibitisha kuwa niliwaeleza tukio hili muda mfupi baada ya kutokea.</p>
+            <p>10. Kwamba sikuwa na ushahidi wa maandishi (ujumbe wa simu, barua pepe, au mawasiliano mengine) kuhusiana na tukio hili wakati huo.</p>
+
+            <h2 class="section">Sehemu ya Tano: Tamko la Mwisho</h2>
+            <p>11. Kwamba maelezo yote niliyoyatoa hapa juu ni ya kweli na sahihi kadri ninavyokumbuka na kujua, na niko tayari kuyathibitisha kwa kiapo mbele ya Kamishna wa Viapo au Mahakama inapohitajika.</p>
+            <p>12. Kwamba naomba taarifa hii itambuliwe kama Kielelezo &ldquo;D&rdquo; kinachoambatana na Kiapo changu cha Utetezi na Uthibitisho wa Umiliki wa Mali.</p>
+
+            <p style="margin-top:2rem;">IMETOLEWA tarehe __________ mwezi __________ mwaka __________ huko __________</p>
+            <p>Sahihi: _______________________________<br>
+            Jina: HERMAN ONESMO SADE</p>
+            <p style="margin-top:1.4rem;">IMETHIBITISHWA MBELE YANGU:</p>
+            <p>Sahihi ya Kamishna wa Viapo: _______________________________<br>
+            Jina: _______________________________<br>
+            Cheo: _______________________________<br>
+            Muhuri wa Ofisi: _______________________________<br>
+            Tarehe: _______________________________</p>
+          </section>
+
         </div>
-        <p class="doc-title">KIAPO CHA UTETEZI NA UTHIBITISHO WA UMILIKI WA MALI</p>
-        <p class="doc-subtitle">(Precautionary Affidavit of Ownership)</p>
-      </div>
-
-      <p>MIMI, HERMAN ONESMO SADE, mwanaume mzima, raia wa Jamhuri ya Muungano wa Tanzania, mwenye umri wa miaka 27, askari wa Jeshi la Zimamoto na Uokoaji kwa taaluma na kazi, nikiwa na makazi ya kudumu Mkoa wa Lindi, NINATOA KIAPO kifuatacho:</p>
-
-      <p>1. Kwamba maelezo yote yaliyomo katika kiapo hiki ni ya kweli, sahihi, na kamili kadri ninavyojua na kuamini.</p>
-      <p>2. Kwamba nina uwezo wa kisheria wa kutoa kiapo hiki, na ninafanya hivyo kwa hiari yangu kamili bila kulazimishwa au kudanganywa na mtu yeyote.</p>
-
-      <h2 class="section">Sehemu ya Kwanza: Historia ya Mahusiano</h2>
-      <p>3. Kwamba mnamo mwaka 2025, niliingia katika mahusiano ya kimapenzi na mwanamke aitwaye MAGRETH DESDEL KASAGULA, ambaye alikuwa na makazi yake Mpanda, Mkoa wa Katavi.</p>
-      <p>4. Kwamba katika mahusiano hayo, nilifuata taratibu za kimila kwa kutoa posa na sehemu ya mahari kwa wazazi wake kama ilivyokuwa desturi ya jamii yetu.</p>
-      <p>5. Kwamba hata hivyo, hakukuwa na ndoa ya kisheria wala ndoa ya kimila iliyosajiliwa katika ofisi yoyote ya serikali kati yangu na MAGRETH DESDEL KASAGULA.</p>
-      <p>6. Kwamba mnamo tarehe 13 Februari 2025, nilimchukua mwanamke huyo kutoka kwa wazazi wake Mpanda kwa idhini na ridhaa yao, na mnamo tarehe 22 Februari 2025 tukaanza kuishi pamoja Mjini Lindi kama mume na mke.</p>
-
-      <div class="onyo">
-        <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
-        <p>Thibitisha tarehe hizi mbili (13 na 22 Februari 2025) ni sahihi kabla ya kusaini — hakuna hati ya kuzithibitisha.</p>
-      </div>
-
-      <h2 class="section">Sehemu ya Pili: Ujauzito na Kuzaliwa kwa Mtoto</h2>
-      <p>7. Kwamba mnamo mwezi Septemba 2025, MAGRETH DESDEL KASAGULA akiwa na ujauzito wa takribani miezi saba, alisafiri kurudi nyumbani kwa wazazi wake Mpanda, Mkoa wa Katavi, kwa makubaliano ya kifamilia.</p>
-      <p>8. Kwamba mnamo tarehe 4 Desemba 2025, MAGRETH DESDEL KASAGULA alijifungua mtoto wa kike katika Hospitali ya Mkoa wa Mpanda, Katavi.</p>
-      <p>9. Kwamba mtoto huyo amepewa jina la NANCY HERMAN SADE, na jina langu linaonekana wazi kwenye cheti chake cha kuzaliwa kama baba wake wa kisheria.</p>
-      <p>10. Kwamba nakiri na kusisitiza kuwa NANCY HERMAN SADE ni mtoto wangu wa kisheria, na nina wajibu wa kimsingi wa kumlea, kumlinda na kumhudumia.</p>
-
-      <h2 class="section">Sehemu ya Tatu: Tukio la Kufukuzwa na Kunyimwa Mtoto</h2>
-      <p>11. Kwamba mnamo tarehe 5 Februari 2026, nilipata likizo kutoka kazini na kusafiri kutoka Lindi kwenda Mpanda, Katavi.</p>
-      <p>12. Kwamba mnamo tarehe 7 Februari 2026, nilienda nyumbani kwa wazazi wa MAGRETH DESDEL KASAGULA kwa madhumuni mawili: (a) Kuwasalimu na kuwaonyesha heshima; (b) Kumchukua MAGRETH DESDEL KASAGULA pamoja na mtoto wetu NANCY HERMAN SADE warudi kuishi nami Lindi.</p>
-      <p>13. Kwamba hata hivyo, wazazi wa MAGRETH DESDEL KASAGULA walikataa kabisa kuniruhusu kumchukua, na mama wa MAGRETH alinifokea kwa maneno ya dharau akiniambia niondoke mara moja.</p>
-      <p>14. Kwamba nilifukuzwa nyumbani hapo kwa nguvu na bila heshima, na nilinyimwa haki yangu ya kisheria ya kumuona na kumchukua mtoto wangu NANCY HERMAN SADE.</p>
-      <p>15. Kwamba MAGRETH DESDEL KASAGULA mwenyewe alitaka kuondoka nami, lakini baba wake wa kambo aliingilia kati na kumzuia, na hivyo mimi nilizuiliwa kwa nguvu.</p>
-      <p>16. Kwamba tukio hilo lilitokea mbele ya mashahidi, na linaweza kuthibitishwa.</p>
-
-      <h2 class="section">Sehemu ya Nne: Ununuzi wa Nyumba ya Kwanza — Eneo la Migazini, Kata ya Nsemulwa, Mpanda</h2>
-      <p>17. Kwamba baada ya kufukuzwa na kunyimwa mtoto wangu, siku mbili tu baadaye, mnamo tarehe 09 Februari 2026, nilifanya uamuzi wa kibinafsi wa kununua nyumba pamoja na kiwanja vilivyopo eneo la Migazini, Kata ya Nsemulwa, Wilaya ya Mpanda, Mkoa wa Katavi.</p>
-      <p>18. Kwamba nyumba na kiwanja hivyo vilinunuliwa kutoka kwa muuzaji RAMADHAN ADAM SAID, mkazi wa Migazini, Kata ya Nsemulwa, Wilaya ya Mpanda, Mkoa wa Katavi, kwa ushirikiano na ridhaa ya mke wake ZAINABU OMARI JUMA.</p>
-      <p>19. Kwamba thamani ya mauziano ya nyumba na kiwanja hicho ilikuwa Shilingi za Kitanzania Milioni Saba tu (Tshs. 7,000,000/=), zilizolipwa kwa awamu tatu (3) kama zilivyoainishwa kwenye Mkataba wa Mauziano wa tarehe 09/02/2026.</p>
-      <p>20. Kwamba fedha nilizotumia kununulia nyumba hiyo zilitokana na mkopo (loan) nilioukopa katika benki, ambao niliupokea na kuutoa kwa fedha taslimu (cash) kupitia ATM, kisha nikatumia fedha hizo taslimu kumlipa muuzaji RAMADHAN ADAM SAID moja kwa moja kwa awamu tatu kama zilivyoainishwa kwenye Mkataba wa Mauziano. Kwamba kwa sababu hiyo, mkopo huo haukuwa umefungamanishwa moja kwa moja na nyumba hii kama dhamana (mortgage/security) kwa benki, bali ulikuwa ni chanzo cha fedha za kibinafsi nilizotumia kwa manunuzi ya kawaida ya fedha taslimu, jambo linaloendana na Mkataba wa Mauziano niliouingia na muuzaji.</p>
-
-      <div class="onyo">
-        <p class="label">ONYO/KUMBUKA KWA HERMAN</p>
-        <p>Mkopo wa benki ulichukuliwa kama fedha taslimu kupitia ATM, kisha kumlipa muuzaji fedha taslimu — si mkopo uliofungamanishwa moja kwa moja na nyumba kama dhamana (mortgage). Hii inaimarisha zaidi hoja ya umiliki wa pekee, kwa kuwa hakuna benki yenye dhamana iliyosajiliwa juu ya nyumba hii mahususi. Endapo kuna Mkataba wa Mkopo kutoka benki, inashauriwa kuongezwa kama Kielelezo B.</p>
-      </div>
-
-      <p>21. Kwamba kiwanja na nyumba hiyo inapakana na maeneo yafuatayo: Kaskazini - kiwanja cha Rajabu; Kusini - eneo la Ashura Athumani; Mashariki - eneo la Jumanne Rashidi; na maeneo mengine kama yalivyoainishwa kwenye Mkataba wa Mauziano.</p>
-      <p>22. Kwamba Mkataba wa Mauziano wa nyumba hii ulishuhudiwa na mashahidi wafuatao: Kwa upande wa Muuzaji – mashahidi walioorodheshwa kwenye mkataba; Kwa upande wa Mnunuzi (mimi) – KAGUSA REFI KAUZENI na SARA BENY CHARAMILA.</p>
-      <p>23. Kwamba Mkataba huo ulithibitishwa na Wakili/Kamishna wa Viapo MONICA MARCO LUGONDA, S.L.P 1571, Dar es Salaam, na kupigwa muhuri rasmi.</p>
-      <p>24. Kwamba MAGRETH DESDEL KASAGULA: (a) Hakusaini Mkataba wa Mauziano wa nyumba hii; (b) Hakushiriki katika maamuzi yoyote ya kuinunua; (c) Hakutoa hata shilingi moja kwa ajili ya malipo ya awamu yoyote; (d) Hakuwahi kuishi kwenye nyumba hiyo hata kwa siku moja tangu ilinunuliwa; na kwamba wakati wa ununuzi, MAGRETH DESDEL KASAGULA alikuwa bado anaishi nyumbani kwa wazazi wake Mpanda, Katavi, hivyo hakuwa na uwezo wala nia ya kuchangia chochote.</p>
-
-      <h2 class="section">Sehemu ya Tano: Ununuzi wa Nyumba ya Pili — Mtaa wa Kigamboni, Kata ya Shanwe, Manispaa ya Mpanda</h2>
-      <p>25. Kwamba mnamo tarehe 16 Februari 2026, nilifanya uamuzi mwingine wa kibinafsi wa kununua kiwanja pamoja na nyumba iliyopo Mtaa wa Kigamboni, Kata ya Shanwe, Manispaa ya Mpanda, Mkoa wa Katavi, kutoka kwa muuzaji PIUS EMMANUEL MTEPA, mkazi wa Mpanda, Mkoa wa Katavi.</p>
-      <p>26. Kwamba thamani ya mauziano ya kiwanja na nyumba hiyo ilikuwa Shilingi za Kitanzania Milioni Nne na Laki Tano tu (Tshs. 4,500,000/=), zilizolipwa kwa mkupuo wakati wa kusaini mkataba, kama ilivyoainishwa kwenye Mkataba wa Kuuziana Kiwanja na Nyumba wa tarehe 16 Februari 2026.</p>
-      <p>27. Kwamba kabla ya mauziano, muuzaji PIUS EMMANUEL MTEPA alitoa Kiapo cha Umiliki mbele ya Kamishna wa Viapo tarehe 16 Februari 2026, akithibitisha chini ya kiapo kuwa: (a) yeye ndiye mmiliki halali wa kiwanja pamoja na nyumba hiyo; (b) aliipata kwa jasho na juhudi zake binafsi na siyo mali ya ndoa; (c) mali hiyo haihusishi haki, madai, au maslahi ya mke wake wa sasa, mke wa zamani, au mtu mwingine yeyote.</p>
-      <p>28. Kwamba mauziano hayo pia yalithibitishwa rasmi na Ofisi ya Serikali ya Mtaa wa Kigamboni, Halmashauri ya Mji wa Mpanda, kupitia Hati ya Uthibitisho wa Kuuziana Mali, iliyosainiwa na Mwenyekiti wa Serikali ya Mtaa na kupigwa muhuri, tarehe 16 Februari 2026.</p>
-      <p>29. Kwamba Mkataba wa Kuuziana Kiwanja na Nyumba (Kigamboni) ulishuhudiwa na: Shahidi wa Muuzaji – CHRISTOPHER TADEO; Shahidi wa Mnunuzi – SARA B. CHALAMILA, na ulithibitishwa na Wakili/Kamishna wa Viapo HAMAD SAID AMOUR, S.L. Posta 119, Mpanda-Katavi.</p>
-      <p>30. Kwamba kiwanja na nyumba hiyo ya Kigamboni inapakana na maeneo yafuatayo: Kaskazini – eneo la Baba Abdallah; Kusini – eneo la Mama Kalunde; Mashariki – eneo la Mama Kuku; Magharibi – eneo la Baba Joy.</p>
-      <p>31. Kwamba MAGRETH DESDEL KASAGULA hakushiriki kwa namna yoyote katika ununuzi wa nyumba hii ya Kigamboni…</p>
-
-      <div class="onyo">
-        <p class="label">KUMBUKA</p>
-        <p>Maandishi ya awali uliyoyatuma yalikatika hapa (aya ya 31). Nitunge sehemu iliyobaki (Sehemu ya Sita na kuendelea, pamoja na Sehemu ya Nane ya vifungu vya sheria na sehemu ya viapo/sahihi) nikitumia mtindo huu huu — nitumie maandishi yaliyobaki ili nikamilishe ukurasa bila kubadilisha maneno yako.</p>
-      </div>
-
+      </main>
     </div>
+
+    <button class="back-to-top" id="back-to-top" aria-label="Rudi Juu" title="Rudi Juu">&uarr;</button>
   </div>
 
 <script>
 (function(){
-  // FUNGUO YA SIRI — badilisha namba hii kabla ya kutumia ukurasa.
-  var SIRI = "1145";
+  "use strict";
 
+  /* =========================================================
+     1. LOCK SCREEN
+     ========================================================= */
+  var SIRI = "1145";
   var lockScreen = document.getElementById('lock-screen');
   var content = document.getElementById('content');
   var lockForm = document.getElementById('lock-form');
@@ -200,16 +759,160 @@
 
   lockForm.addEventListener('submit', function(e){
     e.preventDefault();
-    if(passwordInput.value === SIRI){
+    if (passwordInput.value === SIRI) {
       lockScreen.style.display = 'none';
       content.style.display = 'block';
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
+      initReader();
     } else {
       lockError.textContent = 'Namba ya siri si sahihi. Jaribu tena.';
       passwordInput.value = '';
       passwordInput.focus();
     }
   });
+
+  /* =========================================================
+     2. READER INITIALISATION (inaanza baada ya kufungua)
+     ========================================================= */
+  var readerReady = false;
+
+  function initReader(){
+    if (readerReady) return;
+    readerReady = true;
+
+    setupDarkMode();
+    setupMobileToc();
+    setupScrollProgress();
+    setupActiveTocHighlight();
+    setupScrollReveal();
+    setupBackToTop();
+    setupSmoothTocLinks();
+  }
+
+  /* ---- 2.1 Dark reading mode (imehifadhiwa kwenye kifaa) ---- */
+  function setupDarkMode(){
+    var toggle = document.getElementById('dark-toggle');
+    var icon = document.getElementById('dark-icon');
+    var saved = null;
+    try { saved = localStorage.getItem('kiapo-dark-mode'); } catch (err) { saved = null; }
+
+    if (saved === '1') {
+      document.body.classList.add('dark-reading');
+      icon.textContent = '\u2600'; // jua — bonyeza kurudi mchana
+    }
+
+    toggle.addEventListener('click', function(){
+      var isDark = document.body.classList.toggle('dark-reading');
+      icon.textContent = isDark ? '\u2600' : '\u263D';
+      try { localStorage.setItem('kiapo-dark-mode', isDark ? '1' : '0'); } catch (err) {}
+    });
+  }
+
+  /* ---- 2.2 TOC ya simu (fungua/funga) ---- */
+  function setupMobileToc(){
+    var tocToggle = document.getElementById('toc-toggle');
+    var scrim = document.getElementById('toc-scrim');
+
+    function closeToc(){ document.body.classList.remove('toc-open'); }
+    function openToc(){ document.body.classList.add('toc-open'); }
+
+    tocToggle.addEventListener('click', function(){
+      document.body.classList.contains('toc-open') ? closeToc() : openToc();
+    });
+    scrim.addEventListener('click', closeToc);
+
+    document.querySelectorAll('.toc-link').forEach(function(link){
+      link.addEventListener('click', closeToc);
+    });
+  }
+
+  /* ---- 2.3 Upau wa maendeleo ya kusoma ---- */
+  function setupScrollProgress(){
+    var bar = document.getElementById('progress-bar');
+    function update(){
+      var doc = document.documentElement;
+      var scrollTop = doc.scrollTop || document.body.scrollTop;
+      var scrollHeight = doc.scrollHeight - doc.clientHeight;
+      var pct = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+      bar.style.width = pct + '%';
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  }
+
+  /* ---- 2.4 TOC inayong'aa kulingana na sura inayosomwa ---- */
+  function setupActiveTocHighlight(){
+    var chapters = Array.prototype.slice.call(document.querySelectorAll('.chapter'));
+    var links = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
+
+    function setActive(id){
+      links.forEach(function(link){
+        var match = link.getAttribute('href') === '#' + id;
+        link.classList.toggle('active', match);
+      });
+    }
+
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      }, { rootMargin: '-40% 0px -50% 0px', threshold: 0 });
+
+      chapters.forEach(function(ch){ observer.observe(ch); });
+    }
+  }
+
+  /* ---- 2.5 Scroll-reveal ya kisasa kwa kila sura ---- */
+  function setupScrollReveal(){
+    var chapters = Array.prototype.slice.call(document.querySelectorAll('.chapter'));
+
+    if (!('IntersectionObserver' in window)) {
+      chapters.forEach(function(ch){ ch.classList.add('in-view'); });
+      return;
+    }
+
+    var revealObserver = new IntersectionObserver(function(entries, obs){
+      entries.forEach(function(entry){
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
+    chapters.forEach(function(ch){ revealObserver.observe(ch); });
+  }
+
+  /* ---- 2.6 Kitufe cha "Rudi Juu" ---- */
+  function setupBackToTop(){
+    var btn = document.getElementById('back-to-top');
+    function toggleVisibility(){
+      var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+      btn.classList.toggle('show', scrollTop > 480);
+    }
+    window.addEventListener('scroll', toggleVisibility, { passive: true });
+    btn.addEventListener('click', function(){
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    toggleVisibility();
+  }
+
+  /* ---- 2.7 Kuruka kwa upole kati ya sura kupitia TOC ---- */
+  function setupSmoothTocLinks(){
+    document.querySelectorAll('.toc-link').forEach(function(link){
+      link.addEventListener('click', function(e){
+        var targetId = link.getAttribute('href');
+        var target = document.querySelector(targetId);
+        if (!target) return;
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.replaceState(null, '', targetId);
+      });
+    });
+  }
+
 })();
 </script>
 

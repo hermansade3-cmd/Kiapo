@@ -223,11 +223,18 @@ body.toc-open .toc-scrim { opacity: 1; pointer-events: auto; }
 /* ---- 6. Chapters + scroll-reveal ---- */
 .chapter {
   padding-top: 6px;
+  /* MUHIMU: maudhui yanaonekana kwa default — HAYATEGEMEI JavaScript.
+     Uonekano wa "kufifia-kuingia" (fade/slide-in) huwekwa TU na JS
+     kwa kuongeza class .pre-reveal kabla ya kuanza kuchunguza scroll,
+     ili endapo JS itashindwa kufanya kazi kwa sababu yoyote, maandishi
+     yote yabaki yanaonekana badala ya kufichika. */
+}
+.chapter.pre-reveal {
   opacity: 0;
   transform: translateY(18px);
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
-.chapter.in-view {
+.chapter.pre-reveal.in-view {
   opacity: 1;
   transform: translateY(0);
 }
@@ -864,13 +871,20 @@ body.dark-reading .chapter-kicker {
     }
   }
 
-  /* ---- 2.5 Scroll-reveal ya kisasa kwa kila sura ---- */
+  /* ---- 2.5 Scroll-reveal ya kisasa kwa kila sura ----
+     Maudhui yanaonekana kwa default (CSS ya .chapter haina opacity:0).
+     Hapa chini ndipo pekee tunapoongeza class .pre-reveal (ambayo
+     ndiyo yenye opacity:0), na mara moja tunaanza kuichunguza kwa
+     IntersectionObserver ili kuiondoa haraka. Tuna "safety net" ya
+     setTimeout endapo observer itashindwa kufyatuka kwa sababu
+     yoyote — baada ya sekunde 2 kila kitu kinaonekana bila masharti,
+     ili maandishi yasibaki yamefichika kamwe. */
   function setupScrollReveal(){
     var chapters = Array.prototype.slice.call(document.querySelectorAll('.chapter'));
+    if (!chapters.length) return;
 
     if (!('IntersectionObserver' in window)) {
-      chapters.forEach(function(ch){ ch.classList.add('in-view'); });
-      return;
+      return; // hakuna .pre-reveal iliyoongezwa — tayari yanaonekana
     }
 
     var revealObserver = new IntersectionObserver(function(entries, obs){
@@ -880,9 +894,18 @@ body.dark-reading .chapter-kicker {
           obs.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px -40px 0px' });
 
-    chapters.forEach(function(ch){ revealObserver.observe(ch); });
+    chapters.forEach(function(ch){
+      ch.classList.add('pre-reveal');
+      revealObserver.observe(ch);
+    });
+
+    /* Safety net: baada ya sekunde 2, hakikisha kila sura inaonekana
+       hata kama observer haikufyatuka kwa sababu yoyote. */
+    window.setTimeout(function(){
+      chapters.forEach(function(ch){ ch.classList.add('in-view'); });
+    }, 2000);
   }
 
   /* ---- 2.6 Kitufe cha "Rudi Juu" ---- */

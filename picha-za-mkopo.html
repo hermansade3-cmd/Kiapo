@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Application Details</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --primary:#1b3a63;
+    --primary-dark:#173257;
+    --accent:#2f5fa8;
+    --pink:#d6336c;
+    --green:#2fa360;
+    --bg:#edf1f6;
+    --surface:#ffffff;
+    --row-alt:#f1f3f5;
+    --border:#e3e7eb;
+    --text:#242a33;
+    --text-muted:#6b7280;
+    --footer-bg:#1d3f78;
+    --sidebar-w:88px;
+    --header-h:72px;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    font-family:'Poppins',sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .app{
+    display:grid;
+    grid-template-columns:var(--sidebar-w) 1fr;
+    grid-template-rows:var(--header-h) auto;
+    min-height:100vh;
+  }
+
+  /* ---------- SIDEBAR ---------- */
+  .sidebar{
+    grid-row:1 / span 2;
+    grid-column:1;
+    background:var(--surface);
+    border-right:1px solid var(--border);
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+  .logo-cell{
+    height:var(--header-h);
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom:1px solid var(--border);
+  }
+  .logo-cell svg{width:44px;height:44px;}
+  .side-icons{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:34px;
+    margin-top:26px;
+  }
+  .side-icon{
+    width:26px;height:26px;
+    color:var(--primary);
+    cursor:pointer;
+    opacity:.85;
+    transition:opacity .15s;
+  }
+  .side-icon:hover{opacity:1;}
+  .side-icon.active{color:var(--accent);}
+
+  /* ---------- TOPBAR ---------- */
+  .topbar{
+    grid-row:1;
+    grid-column:2;
+    background:var(--surface);
+    border-bottom:1px solid var(--border);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 24px;
+  }
+  .hamburger{
+    background:none;border:none;cursor:pointer;
+    display:flex;flex-direction:column;gap:5px;
+    padding:8px;
+  }
+  .hamburger span{
+    width:26px;height:3px;background:var(--primary-dark);
+    border-radius:2px;
+  }
+  .topbar-right{
+    display:flex;align-items:center;gap:22px;
+  }
+  .lang-select{
+    display:flex;align-items:center;gap:6px;
+    color:var(--accent);font-weight:500;font-size:15px;
+    cursor:pointer;user-select:none;
+  }
+  .lang-select svg{width:18px;height:18px;}
+  .lang-select .chev{width:12px;height:12px;transition:transform .15s;}
+  .lang-select.open .chev{transform:rotate(180deg);}
+  .user{
+    display:flex;align-items:center;gap:10px;cursor:pointer;
+  }
+  .user-name{font-weight:600;color:var(--primary);font-size:15px;}
+  .avatar{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .avatar svg{width:20px;height:20px;}
+
+  /* ---------- CONTENT ---------- */
+  .content{
+    grid-row:2;grid-column:2;
+    padding:28px 32px 40px;
+  }
+  .breadcrumb{
+    background:#e8edf2;
+    color:var(--accent);
+    font-weight:500;
+    padding:14px 20px;
+    border-radius:6px;
+    font-size:15px;
+    margin-bottom:22px;
+  }
+  .breadcrumb .sep{color:#aab3bd;margin:0 6px;}
+  .breadcrumb .current{color:#7f8a97;}
+
+  /* summary cards */
+  .summary-cards{
+    display:flex;
+    flex-wrap:wrap;
+    gap:22px;
+    margin-bottom:28px;
+  }
+  .summary-card{
+    background:var(--surface);
+    border-radius:14px;
+    box-shadow:0 2px 10px rgba(30,50,80,.06);
+    padding:22px 26px;
+    text-align:center;
+    min-width:230px;
+    flex:1 1 230px;
+  }
+  .summary-card .label{
+    color:var(--text-muted);
+    font-size:15px;
+    margin-bottom:10px;
+  }
+  .summary-card .value{
+    font-weight:700;
+    font-size:19px;
+    color:var(--text);
+  }
+  .summary-card .value.pink{color:var(--pink);font-weight:600;}
+  .summary-card.grow-1{flex-basis:100%;max-width:280px;}
+
+  /* flow card */
+  .flow-card{
+    background:var(--surface);
+    border-radius:14px;
+    box-shadow:0 2px 10px rgba(30,50,80,.06);
+    padding:30px 34px 8px;
+    margin-bottom:28px;
+  }
+  .flow-card h2{
+    margin:0 0 20px;
+    font-size:24px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .flow-header{
+    background:var(--primary);
+    color:#fff;
+    text-align:center;
+    letter-spacing:.5px;
+    font-weight:600;
+    padding:14px 0;
+    border-radius:6px 6px 0 0;
+  }
+  .timeline{
+    border:1px solid var(--border);
+    border-top:none;
+    padding:26px 20px 26px 10px;
+    position:relative;
+  }
+  .step{
+    display:flex;
+    align-items:flex-start;
+    position:relative;
+    padding-bottom:34px;
+  }
+  .step:last-child{padding-bottom:0;}
+  .step-num{
+    width:24px;
+    text-align:right;
+    font-size:26px;
+    color:#c3cad2;
+    font-weight:600;
+    margin-right:6px;
+    flex-shrink:0;
+  }
+  .step-marker{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    margin-right:22px;
+  }
+  .step-circle{
+    width:36px;height:36px;
+    border-radius:50%;
+    background:var(--green);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+    z-index:2;
+  }
+  .step-circle svg{width:18px;height:18px;color:#fff;}
+  .step-line{
+    position:absolute;
+    top:36px;
+    width:2px;
+    height:calc(100% + 34px - 36px);
+    background:var(--border);
+    z-index:1;
+  }
+  .step:last-child .step-line{display:none;}
+  .step-content{
+    background:var(--row-alt);
+    border-radius:8px;
+    padding:16px 20px;
+    flex:1;
+  }
+  .step-title{
+    font-weight:700;
+    font-size:14px;
+    letter-spacing:.4px;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+  .step-meta{
+    font-style:italic;
+    color:var(--text-muted);
+    font-size:13.5px;
+    margin-bottom:3px;
+  }
+  .step-desc{
+    color:var(--text-muted);
+    font-size:13.5px;
+  }
+
+  .status-rows{
+    border:1px solid var(--border);
+    border-top:none;
+    margin-top:0;
+  }
+  .status-row{
+    display:flex;
+    justify-content:space-between;
+    padding:16px 24px;
+    font-size:15px;
+  }
+  .status-row:nth-child(odd){background:var(--row-alt);}
+  .status-row .k{font-weight:500;color:var(--text);}
+  .status-row .v{color:var(--text);}
+
+  /* details grid */
+  .details-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:22px;
+  }
+  .detail-card{
+    background:var(--surface);
+    border-radius:14px;
+    box-shadow:0 2px 10px rgba(30,50,80,.06);
+    padding:28px 30px;
+  }
+  .detail-card h3{
+    margin:0 0 14px;
+    font-size:22px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .detail-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:16px;
+    padding:14px 10px;
+  }
+  .detail-row:nth-child(odd){background:var(--row-alt);}
+  .detail-row .k{color:var(--text-muted);font-size:15px;flex:1;}
+  .detail-row .v{color:var(--text);font-weight:600;font-size:15px;text-align:right;flex:1;}
+
+  /* footer */
+  .footer{
+    grid-column:1 / -1;
+    background:var(--footer-bg);
+    color:#fff;
+    text-align:center;
+    padding:16px 0;
+    font-size:15px;
+    margin-top:12px;
+  }
+  .footer strong{font-weight:700;}
+
+  /* ---------- PASSWORD LOCK SCREEN ---------- */
+  body.locked{overflow:hidden;}
+  body.locked .app,
+  body.locked .docs-section{display:none;}
+  .lock-screen{
+    display:none;
+    position:fixed;inset:0;
+    background:var(--bg);
+    align-items:center;
+    justify-content:center;
+    z-index:200;
+    padding:20px;
+  }
+  body.locked .lock-screen{display:flex;}
+  .lock-box{
+    background:var(--surface);
+    border-radius:16px;
+    box-shadow:0 6px 24px rgba(30,50,80,.12);
+    padding:36px 34px;
+    width:100%;
+    max-width:340px;
+    text-align:center;
+  }
+  .lock-box svg{width:40px;height:40px;color:var(--primary);margin-bottom:10px;}
+  .lock-box h3{margin:0 0 6px;font-size:19px;color:var(--text);}
+  .lock-box p{margin:0 0 18px;font-size:13.5px;color:var(--text-muted);}
+  .lock-box input{
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--border);
+    border-radius:8px;
+    font-family:'Poppins',sans-serif;
+    font-size:15px;
+    text-align:center;
+    letter-spacing:3px;
+    margin-bottom:12px;
+    outline:none;
+  }
+  .lock-box input:focus{border-color:var(--accent);}
+  .lock-box button{
+    width:100%;
+    padding:12px 14px;
+    border:none;
+    border-radius:8px;
+    background:var(--primary);
+    color:#fff;
+    font-family:'Poppins',sans-serif;
+    font-weight:600;
+    font-size:15px;
+    cursor:pointer;
+  }
+  .lock-box button:hover{background:var(--primary-dark);}
+  .lock-error{
+    color:var(--pink);
+    font-size:13px;
+    margin-top:10px;
+    min-height:16px;
+  }
+
+  /* ---------- DOCUMENTATION SECTION ---------- */
+  .docs-section{
+    max-width:1200px;
+    margin:0 auto 40px;
+    padding:0 32px;
+  }
+  .docs-card{
+    background:var(--surface);
+    border-radius:14px;
+    box-shadow:0 2px 10px rgba(30,50,80,.06);
+    padding:30px 34px;
+  }
+  .docs-card h2{
+    margin:0 0 6px;
+    font-size:24px;
+    font-weight:600;
+    color:var(--text);
+  }
+  .docs-card>p.intro{
+    color:var(--text-muted);
+    font-size:14.5px;
+    margin:0 0 22px;
+  }
+  .docs-item{
+    border-top:1px solid var(--border);
+    padding:18px 0;
+  }
+  .docs-item:first-of-type{border-top:none;}
+  .docs-item h4{
+    margin:0 0 6px;
+    font-size:16px;
+    color:var(--primary);
+  }
+  .docs-item p, .docs-item ul{
+    margin:0;
+    font-size:14px;
+    color:var(--text);
+    line-height:1.6;
+  }
+  .docs-item ul{padding-left:18px;margin-top:6px;}
+  .docs-item li{margin-bottom:4px;}
+  .docs-item code{
+    background:var(--row-alt);
+    padding:1px 6px;
+    border-radius:4px;
+    font-size:13px;
+  }
+
+  /* mobile sidebar drawer */
+  .sidebar-overlay{
+    display:none;
+    position:fixed;inset:0;
+    background:rgba(0,0,0,.35);
+    z-index:40;
+  }
+  .sidebar-overlay.show{display:block;}
+
+  @media (max-width:900px){
+    .details-grid{grid-template-columns:1fr;}
+    .summary-card{flex:1 1 100%;}
+  }
+
+  @media (max-width:700px){
+    :root{--sidebar-w:0px;--header-h:64px;}
+    .sidebar{
+      position:fixed;
+      top:0;left:0;bottom:0;
+      width:88px;
+      transform:translateX(-100%);
+      transition:transform .2s ease;
+      z-index:50;
+    }
+    .sidebar.open{transform:translateX(0);}
+    .content{padding:20px 16px 32px;}
+    .flow-card{padding:22px 16px 4px;}
+    .detail-card{padding:20px 18px;}
+    .user-name{display:none;}
+    .lang-select span.lang-text{display:none;}
+    .step-num{display:none;}
+    .step{padding-bottom:28px;}
+  }
+</style>
+</head>
+<body class="locked">
+
+<!-- PASSWORD LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>
+    </svg>
+    <h3>Ukurasa Umefungwa</h3>
+    <p>Weka password ili kuona maelezo ya maombi.</p>
+    <input type="password" id="passwordInput" maxlength="10" placeholder="••••" inputmode="numeric">
+    <button id="unlockBtn">Fungua</button>
+    <div class="lock-error" id="lockError"></div>
+  </div>
+</div>
+
+<div class="sidebar-overlay" id="overlay"></div>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo-cell">
+      <svg viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#0f7a3d"/>
+        <path d="M2 32a30 30 0 0 1 60 0" fill="#f2c400"/>
+        <path d="M4 24a28 28 0 0 1 56 0" fill="#1a4fa0"/>
+        <rect x="6" y="30" width="52" height="8" fill="#3a2a1a"/>
+        <circle cx="32" cy="32" r="6" fill="#fff"/>
+      </svg>
+    </div>
+    <div class="side-icons">
+      <div class="side-icon active" title="Home">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/>
+        </svg>
+      </div>
+      <div class="side-icon" title="Applications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/><rect x="8" y="3" width="8" height="4" rx="1"/>
+        </svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <button class="hamburger" id="hamburgerBtn" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="topbar-right">
+      <div class="lang-select" id="langSelect">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>
+        </svg>
+        <span class="lang-text">EN</span>
+        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M6 9l6 6 6-6"/>
+        </svg>
+      </div>
+      <div class="user">
+        <span class="user-name">Herman Sade</span>
+        <div class="avatar">
+          <svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <main class="content">
+    <div class="breadcrumb">Home<span class="sep">|</span><span class="current">Application Details</span></div>
+
+    <div class="summary-cards" id="summaryCards"></div>
+
+    <div class="flow-card">
+      <h2 id="flowTitle">Loan Application Flow, Details and Actions</h2>
+      <div class="flow-header">APPLICATION FLOW</div>
+      <div class="timeline" id="timeline"></div>
+
+      <div class="status-rows">
+        <div class="status-row"><span class="k">Loan State :</span><span class="v" id="loanState"></span></div>
+        <div class="status-row"><span class="k">Last Updated At:</span><span class="v" id="lastUpdated"></span></div>
+        <div class="status-row"><span class="k">Reason (if available):</span><span class="v" id="reason"></span></div>
+        <div class="status-row"><span class="k">Actions:</span><span class="v" id="actions"></span></div>
+      </div>
+    </div>
+
+    <div class="details-grid">
+      <div class="detail-card">
+        <h3>Loan Application Details</h3>
+        <div id="loanDetailRows"></div>
+      </div>
+
+      <div class="detail-card">
+        <h3>Account And FSP Details</h3>
+        <div id="fspDetailRows"></div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    Copyright © 2026, <strong>PO-PSMGG</strong> . All rights reserved
+  </footer>
+</div>
+
+<!-- ============================================================
+     MAELEZO YA MKOPO — kwa lugha rahisi, yanajiandaa kutoka
+     applicationData, sio maelezo ya vipengele vya ukurasa
+     ============================================================ -->
+<section class="docs-section">
+  <div class="docs-card">
+    <h2 id="docsTitle">Maelezo ya Mkopo Kwa Lugha Rahisi</h2>
+    <p class="intro" id="docsIntro"></p>
+    <div id="docsBody"></div>
+  </div>
+</section>
+
+<script>
+  /* ============================================================
+     DATA — badilisha maadili haya kulingana na maombi husika.
+     type: 'loan'  -> "Loan Application Flow..." (kadi 4: App#, Net Loan,
+                       Take Home, Total to Pay) — kama Picha ya pili
+     type: 'topup' -> "Loan Topup Application Flow..." (kadi 5: App#,
+                       Net Loan, Take Home, Liquidation, Total to Pay,
+                       na safu ya "Liquidation Amount" kwenye maelezo)
+                       — kama Picha ya kwanza na ya tatu
+     ============================================================ */
+  const applicationData = {
+    type: 'topup',
+    applicationNumber: 'ESS1770226925804',
+    applicationDate: 'Wednesday, February 4, 2026',
+    mobileNumber: '0712655957',
+    productName: 'MKOPO WA MFANYAKAZI',
+    netLoanAmount: 16000000.00,
+    takeHomeAmount: 14195313.34,
+    totalAmountToPay: 32162519.29,
+    interestAmount: 16162519.29,
+    insuranceAmount: 1200000.00,
+    processingFeeAmount: 240000.00,
+    liquidationAmount: 364686.66,
+    deductableAmount: 268020.99,
+    tenureMonths: 120,
+
+    fspName: 'NMB',
+    branchName: 'LINDI',
+    fspCode: 'FL7309',
+    accountNumber: '42110020461',
+    deductionCode: 'FL7309',
+    deductionDescription: 'NMB',
+
+    loanState: 'COMPLETED',
+    lastUpdated: 'Thursday, February 5, 2026',
+    reason: '',
+    actions: '',
+
+    flowSteps: [
+      { step:5, title:'FSP DISBURSED LOAN',          by:'FSP',      date:'Feb 5, 2026, 1:46:08 PM',  desc:'Loan Application Completed Successfully.' },
+      { step:4, title:'EMPLOYER (HRO) APPROVED',      by:'Employer', date:'Feb 5, 2026, 1:45:52 PM',  desc:'Loan Approved, Deduction Initiated' },
+      { step:3, title:'SUBMITTED TO EMPLOYER (HRO)',  by:'Employee', date:'Feb 5, 2026, 10:10:03 AM' },
+      { step:2, title:'FSP ACCEPTED',                 by:'FSP',      date:'Feb 4, 2026, 8:44:27 PM' },
+      { step:1, title:'SUBMITTED TO FSP',             by:'Employee', date:'Feb 4, 2026, 8:44:20 PM' }
+    ]
+  };
+
+  function money(n){
+    return 'TZS ' + Number(n).toLocaleString('en-US', {minimumFractionDigits:2, maximumFractionDigits:2});
+  }
+
+  function checkIcon(){
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg>';
+  }
+
+  function renderSummaryCards(d){
+    const el = document.getElementById('summaryCards');
+    let cards = [
+      { label:'Application Number', value:'#'+d.applicationNumber, pink:true },
+      { label:'Net Loan Amount',    value:money(d.netLoanAmount) },
+      { label:'Take Home Amount',   value:money(d.takeHomeAmount) }
+    ];
+    if(d.type === 'topup'){
+      cards.push({ label:'Liquidation Amount', value:money(d.liquidationAmount) });
+      cards.push({ label:'Total Amount to Pay', value:money(d.totalAmountToPay) });
+    } else {
+      cards.push({ label:'Total Amount to Pay', value:money(d.totalAmountToPay), growLast:true });
+    }
+    el.innerHTML = cards.map(c => `
+      <div class="summary-card${c.growLast ? ' grow-1' : ''}">
+        <div class="label">${c.label}</div>
+        <div class="value${c.pink ? ' pink' : ''}">${c.value}</div>
+      </div>
+    `).join('');
+  }
+
+  function renderFlowTitle(d){
+    document.getElementById('flowTitle').textContent =
+      d.type === 'topup'
+        ? 'Loan Topup Application Flow, Details and Actions'
+        : 'Loan Application Flow, Details and Actions';
+  }
+
+  function renderTimeline(d){
+    const el = document.getElementById('timeline');
+    const steps = [...d.flowSteps].sort((a,b) => b.step - a.step);
+    el.innerHTML = steps.map(s => `
+      <div class="step">
+        <div class="step-num">${s.step}</div>
+        <div class="step-marker">
+          <div class="step-circle">${checkIcon()}</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-content">
+          <div class="step-title">${s.title}</div>
+          <div class="step-meta">By ${s.by} on ${s.date}</div>
+          ${s.desc ? `<div class="step-desc">${s.desc}</div>` : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function renderStatus(d){
+    document.getElementById('loanState').textContent = d.loanState || '';
+    document.getElementById('lastUpdated').textContent = d.lastUpdated || '';
+    document.getElementById('reason').textContent = d.reason || '';
+    document.getElementById('actions').textContent = d.actions || '';
+  }
+
+  function row(k, v){
+    return `<div class="detail-row"><span class="k">${k}:</span><span class="v">${v}</span></div>`;
+  }
+
+  function renderLoanDetails(d){
+    let rows = '';
+    rows += row('Application Number', d.applicationNumber);
+    rows += row('Application Date', d.applicationDate);
+    rows += row('Mobile Number', d.mobileNumber);
+    rows += row('Product Name', d.productName);
+    rows += row('Total Net Amount', money(d.netLoanAmount));
+    rows += row('Total Amount to Pay', money(d.totalAmountToPay));
+    rows += row('Interest Amount ', money(d.interestAmount));
+    rows += row('Insurance Amount', money(d.insuranceAmount));
+    rows += row('Processing Fee Amount', money(d.processingFeeAmount));
+    if(d.type === 'topup'){
+      rows += row('Liquidation Amount', money(d.liquidationAmount));
+    }
+    rows += row('Deductable Amount (/Month)', money(d.deductableAmount));
+    rows += row('Tenure (Months)', d.tenureMonths + ' Months');
+    document.getElementById('loanDetailRows').innerHTML = rows;
+  }
+
+  function renderFspDetails(d){
+    let rows = '';
+    rows += row('FSP Name', d.fspName);
+    rows += row('Nearest Branch Name', d.branchName);
+    rows += row('FSP Code', d.fspCode);
+    rows += row('Account Number', d.accountNumber);
+    rows += row('Deduction Code', d.deductionCode);
+    rows += row('Deduction Description', d.deductionDescription);
+    document.getElementById('fspDetailRows').innerHTML = rows;
+  }
+
+  function renderLoanExplanation(d){
+    document.getElementById('docsTitle').textContent =
+      d.type === 'topup' ? 'Maelezo ya Mkopo wa Nyongeza (Topup) Kwa Lugha Rahisi'
+                          : 'Maelezo ya Mkopo Kwa Lugha Rahisi';
+
+    document.getElementById('docsIntro').textContent =
+      `Haya ni maelezo ya mkataba wa mkopo wa "${d.productName}" wenye namba ${d.applicationNumber}, `
+      + `yaliyoandaliwa kwa lugha rahisi ili kukusaidia kuelewa kila fedha unayopewa na kila fedha unayotakiwa kulipa.`;
+
+    const totalOverTenure = d.deductableAmount * d.tenureMonths;
+
+    let items = [];
+
+    items.push({
+      h: '1. Kiasi cha Mkopo Ulichoidhinishiwa (Net Loan Amount)',
+      p: `Umeidhinishiwa mkopo wa <strong>${money(d.netLoanAmount)}</strong>. Hiki ndicho kiasi cha msingi (bila riba wala ada) ambacho FSP (${d.fspName}) imekubali kukukopesha.`
+    });
+
+    items.push({
+      h: '2. Kiasi Utakachopokea Mkononi (Take Home Amount)',
+      p: `Kabla ya kuingia benki, mkopo unakatwa bima, ada ya uendeshaji`
+        + (d.type === 'topup' ? `, na deni la mkopo wa zamani (liquidation)` : ``)
+        + `. Baada ya makato hayo, kiasi ambacho kitaingia kwenye akaunti yako (${d.accountNumber}, ${d.fspName}) ni <strong>${money(d.takeHomeAmount)}</strong>.`
+    });
+
+    let deductions = `<ul>`
+      + `<li>Riba (Interest): <strong>${money(d.interestAmount)}</strong> — hii ndiyo faida ambayo FSP inapata kwa kukukopesha.</li>`
+      + `<li>Bima (Insurance): <strong>${money(d.insuranceAmount)}</strong> — inakulinda wewe/mkopo endapo litatokea tatizo (mfano kifo au kupoteza kazi).</li>`
+      + `<li>Ada ya Uendeshaji (Processing Fee): <strong>${money(d.processingFeeAmount)}</strong> — gharama ya FSP kuchakata maombi yako.</li>`;
+    if(d.type === 'topup'){
+      deductions += `<li>Kiasi cha Kufuta Deni la Zamani (Liquidation Amount): <strong>${money(d.liquidationAmount)}</strong> — sehemu ya mkopo huu mpya inayotumika kulipa/kufuta mkopo wako wa awali kabla haujaendelea na huu mpya.</li>`;
+    }
+    deductions += `</ul>`;
+
+    items.push({
+      h: '3. Gharama Zilizokatwa kwenye Mkopo',
+      p: `Kabla ya kukupatia pesa, gharama zifuatazo zilikatwa kwenye mkopo wako:` + deductions
+    });
+
+    items.push({
+      h: '4. Utakachokatwa Kila Mwezi (Deductable Amount)',
+      p: `Kila mwezi, kiasi cha <strong>${money(d.deductableAmount)}</strong> kitakatwa moja kwa moja kwenye mshahara/malipo yako kupitia ${d.deductionDescription} (Deduction Code: ${d.deductionCode}) kwa ajili ya kulipa mkopo huu.`
+    });
+
+    items.push({
+      h: '5. Muda wa Kulipa Mkopo (Tenure)',
+      p: `Mkopo huu utalipwa kwa muda wa <strong>${d.tenureMonths} Miezi</strong>. Hii ina maana utaendelea kukatwa ${money(d.deductableAmount)} kila mwezi kwa miezi ${d.tenureMonths} mfululizo.`
+    });
+
+    items.push({
+      h: '6. Jumla ya Fedha Zote Utakazolipa (Total Amount to Pay)',
+      p: `Ukijumlisha kiasi cha mkopo (${money(d.netLoanAmount)}) na riba (${money(d.interestAmount)}), jumla ya fedha zote utakazolipa mpaka mwisho wa mkopo ni <strong>${money(d.totalAmountToPay)}</strong>`
+        + ` (sawa na takribani ${money(totalOverTenure)} ukijumlisha makato ya kila mwezi kwa miezi ${d.tenureMonths}).`
+    });
+
+    items.push({
+      h: '7. Hali ya Sasa ya Mkopo',
+      p: `Hadi sasa, mkopo huu uko kwenye hali ya <strong>${d.loanState}</strong>, ikimaanisha ulipitishwa hatua zote (kuwasilishwa FSP, kukubaliwa na FSP, kuwasilishwa kwa mwajiri, kuidhinishwa na mwajiri, na hatimaye kutolewa/kulipwa na ${d.fspName}) tarehe ${d.lastUpdated}.`
+    });
+
+    document.getElementById('docsBody').innerHTML = items.map(it => `
+      <div class="docs-item">
+        <h4>${it.h}</h4>
+        <p>${it.p}</p>
+      </div>
+    `).join('');
+  }
+
+  function renderAll(d){
+    renderSummaryCards(d);
+    renderFlowTitle(d);
+    renderTimeline(d);
+    renderStatus(d);
+    renderLoanDetails(d);
+    renderFspDetails(d);
+    renderLoanExplanation(d);
+  }
+
+  renderAll(applicationData);
+
+  /* ---------- PASSWORD LOCK ---------- */
+  const PAGE_PASSWORD = '1145';
+  const passwordInput = document.getElementById('passwordInput');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const lockError = document.getElementById('lockError');
+
+  function tryUnlock(){
+    if(passwordInput.value.trim() === PAGE_PASSWORD){
+      document.body.classList.remove('locked');
+      lockError.textContent = '';
+    } else {
+      lockError.textContent = 'Password si sahihi. Jaribu tena.';
+      passwordInput.value = '';
+      passwordInput.focus();
+    }
+  }
+  unlockBtn.addEventListener('click', tryUnlock);
+  passwordInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') tryUnlock();
+  });
+
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+  const langSelect = document.getElementById('langSelect');
+
+  hamburgerBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    overlay.classList.toggle('show');
+  });
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+    overlay.classList.remove('show');
+  });
+  langSelect.addEventListener('click', () => {
+    langSelect.classList.toggle('open');
+  });
+</script>
+</body>
+</html>

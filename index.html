@@ -9,6 +9,11 @@
 
   Faili hii ni ukurasa wa mwanzo (viungo) peke yake — hati ya Kiapo na
   Kielelezo D imetenganishwa kwenye kiapo.html.
+
+  ONGEZO: Ukurasa huu sasa unahitaji NAMBA YA SIRI (password) kabla ya
+  kuonyesha maudhui. Hii ni ulinzi wa kimsingi upande wa kivinjari (client-side)
+  tu — si usalama kamili, bali inazuia mtu wa kawaida asifikie maudhui bila
+  kujua namba ya siri.
 -->
 <html lang="sw">
 <head>
@@ -19,8 +24,104 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+<style>
+  /* ---- Mtindo wa lango la namba ya siri (halihitaji style.css) ---- */
+  #password-gate {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0A1A2A;
+    padding: 24px;
+    box-sizing: border-box;
+    font-family: 'Source Serif 4', Georgia, serif;
+  }
+  #password-gate .gate-box {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 36px 28px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.35);
+  }
+  #password-gate .gate-flag {
+    width: 56px;
+    height: auto;
+    margin: 0 auto 14px;
+    display: block;
+  }
+  #password-gate h1 {
+    font-size: 1.15rem;
+    margin: 0 0 6px;
+    color: #101010;
+  }
+  #password-gate p.gate-sub {
+    font-size: 0.9rem;
+    color: #555;
+    margin: 0 0 20px;
+  }
+  #password-gate input[type="password"],
+  #password-gate input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    font-size: 1.1rem;
+    letter-spacing: 4px;
+    text-align: center;
+    border: 2px solid #cfd8dc;
+    border-radius: 8px;
+    margin-bottom: 12px;
+    outline: none;
+  }
+  #password-gate input:focus {
+    border-color: #0A7BC4;
+  }
+  #password-gate button {
+    width: 100%;
+    padding: 12px 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    background: #0A7BC4;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  #password-gate button:hover {
+    background: #086197;
+  }
+  #password-gate .gate-error {
+    color: #c0392b;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    min-height: 1.1em;
+  }
+  #landing {
+    display: none;
+  }
+</style>
 </head>
 <body>
+
+  <!-- ===================== LANGO LA NAMBA YA SIRI ===================== -->
+  <div id="password-gate">
+    <div class="gate-box">
+      <svg class="gate-flag" viewBox="0 0 900 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Bendera ya Tanzania">
+        <rect x="0" y="0" width="900" height="600" fill="#0A7BC4"/>
+        <polygon points="0,0 900,0 0,600" fill="#1EB53A"/>
+        <polygon points="-169,797 -247,680 1069,-80 1147,-197" fill="#FCD116"/>
+        <polygon points="-183,777 -234,700 1083,-100 1134,-177" fill="#101010"/>
+      </svg>
+      <h1>Kumbukumbu Binafsi</h1>
+      <p class="gate-sub">Ingiza namba ya siri ili kufungua ukurasa huu.</p>
+      <form id="gate-form" autocomplete="off">
+        <input type="password" id="gate-input" inputmode="numeric" pattern="[0-9]*" maxlength="8" placeholder="••••" autofocus>
+        <button type="submit">Fungua</button>
+        <div class="gate-error" id="gate-error"></div>
+      </form>
+    </div>
+  </div>
 
   <!-- ===================== LANDING (HOME) ===================== -->
   <div id="landing">
@@ -117,6 +218,51 @@
       </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      var CORRECT_CODE = "4944";
+      var STORAGE_KEY = "sade_kumbukumbu_unlocked";
+
+      var gate = document.getElementById("password-gate");
+      var landing = document.getElementById("landing");
+      var form = document.getElementById("gate-form");
+      var input = document.getElementById("gate-input");
+      var errorEl = document.getElementById("gate-error");
+
+      function unlock() {
+        gate.style.display = "none";
+        landing.style.display = "block";
+        try {
+          sessionStorage.setItem(STORAGE_KEY, "1");
+        } catch (e) {
+          // sessionStorage haipatikani (mfano: hali fulani za faragha) - endelea tu
+        }
+      }
+
+      // Kama tayari alifungua kwenye kikao hiki (session hii), usimuulize tena
+      try {
+        if (sessionStorage.getItem(STORAGE_KEY) === "1") {
+          unlock();
+        }
+      } catch (e) {
+        // endelea kuonyesha lango kama sessionStorage haipatikani
+      }
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var value = input.value.trim();
+        if (value === CORRECT_CODE) {
+          errorEl.textContent = "";
+          unlock();
+        } else {
+          errorEl.textContent = "Namba ya siri si sahihi. Jaribu tena.";
+          input.value = "";
+          input.focus();
+        }
+      });
+    })();
+  </script>
 
 </body>
 </html>

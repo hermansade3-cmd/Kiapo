@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<title>Mazungumzo na Zuu</title>
+<style>
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:#e9e9e9;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    font-family: Roboto, "Segoe UI", Helvetica, Arial, sans-serif;
+    padding:20px 0;
+    gap:24px;
+  }
+
+  /* ---------- SUMMARY CARD ---------- */
+  .summary{
+    width:390px;
+    max-width:92%;
+    background:#fff;
+    border-radius:14px;
+    padding:20px 22px;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);
+    color:#222;
+  }
+  .summary h2{
+    margin:0 0 10px;
+    font-size:18px;
+    color:#1a1a1a;
+  }
+  .summary p{
+    font-size:14.5px;
+    line-height:1.55;
+    margin:0 0 10px;
+    color:#333;
+  }
+  .summary .tag{
+    display:inline-block;
+    font-size:11.5px;
+    background:#eef2f7;
+    color:#456;
+    padding:2px 8px;
+    border-radius:10px;
+    margin-bottom:12px;
+  }
+
+  /* ---------- PHONE ---------- */
+  .phone{
+    width:390px;
+    max-width:92%;
+    background:#000;
+    min-height:800px;
+    border-radius:28px;
+    overflow:hidden;
+    box-shadow:0 8px 30px rgba(0,0,0,.35);
+    display:flex;
+    flex-direction:column;
+    color:#e9e9e9;
+  }
+
+  .statusbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 18px 4px;
+    font-size:13px;
+    color:#fff;
+    background:#111;
+    font-weight:500;
+  }
+  .statusbar .right{display:flex; align-items:center; gap:5px; font-size:13px;}
+
+  .chat-header{
+    display:flex;
+    align-items:center;
+    gap:16px;
+    padding:10px 14px 16px;
+    background:#111;
+    border-bottom:1px solid #1f1f1f;
+  }
+  .chat-header .back{font-size:22px; color:#e9e9e9; line-height:1;}
+  .chat-header .name{font-size:19px; font-weight:400; flex:1; color:#f2f2f2;}
+  .chat-header .icons{display:flex; gap:20px; color:#dcdcdc; font-size:17px; align-items:center;}
+
+  .messages{
+    flex:1;
+    padding:16px 10px 10px;
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+    background:#000;
+    overflow-y:auto;
+  }
+
+  .time-sep{
+    align-self:center;
+    color:#8d8d8d;
+    font-size:12px;
+    margin:14px 0 8px;
+    letter-spacing:.2px;
+  }
+
+  .row{
+    display:flex;
+    align-items:flex-end;
+    gap:8px;
+    width:100%;
+  }
+  .row.them{justify-content:flex-start;}
+  .row.me{justify-content:flex-end;}
+
+  .avatar{
+    width:26px;height:26px;border-radius:50%;
+    background:#3fae4a;
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    font-size:12px;font-weight:600;
+    flex-shrink:0;
+  }
+
+  .bubble{
+    padding:9px 14px 10px;
+    border-radius:20px;
+    font-size:15.5px;
+    line-height:1.28;
+    max-width:70%;
+    word-wrap:break-word;
+    margin:2px 0;
+  }
+  .bubble.them{
+    background:#3a3a3c;
+    color:#f0f0f0;
+    border-bottom-left-radius:6px;
+  }
+  .bubble.me{
+    background:#7fb2f4;
+    color:#0c1a2b;
+    border-bottom-right-radius:6px;
+  }
+  .bubble.underline{text-decoration:underline;}
+
+  .receipt{
+    align-self:flex-end;
+    font-size:11px;
+    color:#37c6e8;
+    margin:3px 8px 10px 0;
+  }
+
+  .inputbar{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 12px;
+    background:#111;
+    border-top:1px solid #1f1f1f;
+  }
+  .inputbar .icon{font-size:21px;color:#c8c8c8; flex-shrink:0;}
+  .inputbar .field{
+    flex:1;
+    background:#262626;
+    border-radius:22px;
+    padding:8px 12px;
+    color:#8a8a8a;
+    font-size:14.5px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+  }
+  .inputbar .field .badge{
+    background:#2f6fce;
+    color:#fff;
+    font-size:10px;
+    width:16px;height:16px;
+    border-radius:3px;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .inputbar .field .right-icons{display:flex; gap:8px; align-items:center; color:#9a9a9a; font-size:15px;}
+  .inputbar .mic{font-size:19px;color:#c8c8c8;}
+</style>
+</head>
+<body>
+
+<div class="summary">
+  <span class="tag">Muhtasari wa mazungumzo</span>
+  <h2>Herman Sade (Baba Lightness) na Zuwena Mkulia (Mama Lightness)</h2>
+  <p>
+  Mmiliki wa simu (ujumbe wa rangi ya bluu) ni <strong>Herman Sade</strong>, Baba Lightness.
+  Mtu mwingine, aliyehifadhiwa kwenye anwani za simu kama "Zuu" (ujumbe wa rangi ya kijivu),
+  ni <strong>Zuwena Mkulia</strong>, Mama Lightness. Mazungumzo yalifanyika ndani ya siku mbili
+  zilizofuatana, kwenye vipindi viwili tofauti vya jioni.
+  </p>
+  <p>
+  Katika sehemu ya kwanza, Zuwena anamweleza Herman kwamba amejipima na kugundua ana mimba,
+  akimwelekeza kuwa kipimo alichotumia kilikuwa kimefichwa kwenye kopo la sabuni. Herman
+  anamuuliza mimba hiyo ni ya nani, na Zuwena anajibu kwa msisitizo akimthibitishia kuwa ni
+  yake. Wanaendelea kuzungumzia hatua inayofuata — Herman anamwambia aanze kliniki, na
+  Zuwena anamweleza mimba ina wiki tatu, akitaja tarehe ya mwisho wa hedhi kuwa 27-5-2023.
+  </p>
+  <p>
+  Katika sehemu ya pili (siku iliyofuata, jioni), mazungumzo yanachukua sauti ya mvutano —
+  Zuwena analalamika kuhusu muda ambao Herman anampatia, na anataja neno "itoke", ambalo
+  linaonekana kumaanisha kutoa mimba. Herman anamuonya kuwa akikosa nafasi hiyo ya kupata
+  mtoto, asije akamlaumu mtu mwingine baadaye. Zuwena anaonekana kukata tamaa ("naacha tu,
+  sasa nitafanyaje"), na mazungumzo yanaishia bila hitimisho la wazi kuhusu uamuzi wa mwisho.
+  </p>
+</div>
+
+<div class="phone">
+
+  <div class="statusbar">
+    <div>18:07</div>
+    <div class="right">⚙️ ⚠️ ⏰ ▮▮▮ ▮▮ 🔋77%</div>
+  </div>
+
+  <div class="chat-header">
+    <div class="back">←</div>
+    <div class="name">Zuu</div>
+    <div class="icons">
+      <span>&#8942;</span>
+      <span>&#127909;</span>
+      <span>&#128222;</span>
+      <span>&#128269;</span>
+      <span>&#8942;</span>
+    </div>
+  </div>
+
+  <div class="messages" id="messages"></div>
+
+  <div class="inputbar">
+    <div class="icon">＋</div>
+    <div class="icon">🖼️</div>
+    <div class="field">
+      Text (S...
+      <span class="right-icons">
+        <span class="badge">1</span>
+        <span>🙂</span>
+      </span>
+    </div>
+    <div class="mic">🎙️</div>
+  </div>
+</div>
+
+<script>
+const convo = [
+  {sep: "Yesterday • 18:19"},
+  {who:"them", text:"za jioni"},
+  {who:"them", text:"nakuja"},
+  {who:"me", text:"Ok"},
+  {who:"me", text:"Ok"},
+  {who:"them", text:"nimejipima ujue"},
+  {who:"them", text:"navuka barabara"},
+  {sep:"11:28"},
+  {who:"them", text:"kwenye kopo la sabuni kuna kipimo cha mimba utakuta"},
+  {who:"me", text:"Kwahiyo una mpango gani"},
+  {who:"them", text:"mpango wa nini"},
+  {who:"me", text:"Kuhusu mimba"},
+  {who:"me", text:"Ukaanze kliniki"},
+  {who:"them", text:"klinik hiyo vipi"},
+  {who:"them", text:"kwahyo we unatakaje"},
+  {who:"me", text:"Kwani mimba ya nani hiyo"},
+  {who:"them", text:"nalo hilo swali anha kumbe kwahyo me nilikua natombana na baba au"},
+  {who:"them", text:"huelewi au"},
+  {who:"them", text:"wewe"},
+  {who:"me", text:"Nambie"},
+  {who:"them", text:"jibu"},
+  {who:"me", text:"Ukaanze kliniki umenielewa"},
+  {who:"them", text:"lini"},
+  {who:"me", text:"Mimba ina wiki tatu hiyo"},
+  {who:"them", text:"kwanza bado"},
+  {who:"me", text:"Poa"},
+  {who:"them", text:"siku ya mimba ilikua tarehe ngapi"},
+  {who:"me", text:"Sijui"},
+  {who:"me", text:"27-5-2023", underline:true},
+
+  {sep:"18:07"},
+  {who:"them", text:"ivi 'm' hata sio muda wake"},
+  {who:"me", text:"Ni"},
+  {who:"them", text:"tuchat tu sawa"},
+  {who:"me", text:"Nambie"},
+  {who:"me", text:"Sasa kama sio mda wake we ulitakaje"},
+  {who:"them", text:"itoke"},
+  {who:"me", text:"Na ukikosa kizazi usizae tena utamulaumu nani?"},
+  {who:"them", text:"aya"},
+  {who:"me", text:"Aya nini"},
+  {who:"them", text:"naacha tu sasa nitafanyaje"},
+  {who:"me", text:"Poa"},
+  {receipt:"18:05 ✓✓ Sade Halotel"}
+];
+
+const container = document.getElementById("messages");
+convo.forEach(item=>{
+  if(item.sep){
+    const d=document.createElement("div");
+    d.className="time-sep";
+    d.textContent=item.sep;
+    container.appendChild(d);
+    return;
+  }
+  if(item.receipt){
+    const d=document.createElement("div");
+    d.className="receipt";
+    d.textContent=item.receipt;
+    container.appendChild(d);
+    return;
+  }
+  const row=document.createElement("div");
+  row.className="row "+item.who;
+  if(item.who==="them"){
+    const av=document.createElement("div");
+    av.className="avatar";
+    av.textContent="Z";
+    row.appendChild(av);
+  }
+  const b=document.createElement("div");
+  b.className="bubble "+item.who+(item.underline?" underline":"");
+  b.textContent=item.text;
+  row.appendChild(b);
+  container.appendChild(row);
+});
+</script>
+</body>
+</html>
